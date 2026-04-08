@@ -116,3 +116,112 @@ export function formatCalendarWeek(date: Date): string {
   const year = getISOWeekYear(date)
   return `KW ${week.toString().padStart(2, "0")}/${year}`
 }
+
+/**
+ * Get the Monday of the current week as YYYY-MM-DD string.
+ */
+export function getCurrentMonday(): string {
+  const today = new Date()
+  const day = today.getDay()
+  const monday = new Date(today)
+  monday.setDate(today.getDate() - (day === 0 ? 6 : day - 1))
+  const y = monday.getFullYear()
+  const m = String(monday.getMonth() + 1).padStart(2, "0")
+  const d = String(monday.getDate()).padStart(2, "0")
+  return `${y}-${m}-${d}`
+}
+
+/**
+ * Get array of 7 date strings (YYYY-MM-DD) for a week starting from weekStart.
+ */
+export function getWeekDateStrings(weekStart: string): string[] {
+  const [y, m, d] = weekStart.split("-").map(Number)
+  return Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(Date.UTC(y, m - 1, d + i))
+    return date.toISOString().split("T")[0]
+  })
+}
+
+/**
+ * Format date string as DD.MM (e.g. "07.04").
+ */
+export function formatShortDate(dateStr: string): string {
+  const d = new Date(dateStr + "T12:00:00")
+  return `${d.getDate().toString().padStart(2, "0")}.${(d.getMonth() + 1).toString().padStart(2, "0")}`
+}
+
+/**
+ * Format date string as DD.MM.YYYY (e.g. "07.04.2026").
+ */
+export function formatFullDate(dateStr: string): string {
+  const d = new Date(dateStr + "T12:00:00")
+  return `${d.getDate().toString().padStart(2, "0")}.${(d.getMonth() + 1).toString().padStart(2, "0")}.${d.getFullYear()}`
+}
+
+/**
+ * Get week start shifted by +/- N weeks.
+ */
+export function shiftWeek(weekStart: string, weeks: number): string {
+  const d = new Date(weekStart + "T12:00:00")
+  d.setDate(d.getDate() + weeks * 7)
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, "0")
+  const dd = String(d.getDate()).padStart(2, "0")
+  return `${y}-${m}-${dd}`
+}
+
+/**
+ * Format a week range label: "DD.MM.YYYY - DD.MM.YYYY"
+ */
+export function formatWeekRangeLabel(weekStart: string): string {
+  const start = formatFullDate(weekStart)
+  const end = formatFullDate(shiftWeek(weekStart, 0).replace(/-(\d{2})$/, (_, d) => {
+    // Just calculate the Sunday
+    const dt = new Date(weekStart + "T12:00:00")
+    dt.setDate(dt.getDate() + 6)
+    const y = dt.getFullYear()
+    const m = String(dt.getMonth() + 1).padStart(2, "0")
+    const dd = String(dt.getDate()).padStart(2, "0")
+    return dd
+  }))
+  // Recalculate properly
+  const dt = new Date(weekStart + "T12:00:00")
+  dt.setDate(dt.getDate() + 6)
+  const endStr = formatFullDate(`${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`)
+  return `${start} – ${endStr}`
+}
+
+/**
+ * Get today's date as YYYY-MM-DD string (local timezone).
+ */
+export function getTodayString(): string {
+  const now = new Date()
+  const y = now.getFullYear()
+  const m = String(now.getMonth() + 1).padStart(2, "0")
+  const d = String(now.getDate()).padStart(2, "0")
+  return `${y}-${m}-${d}`
+}
+
+/**
+ * Get German weekday name for a date string.
+ */
+export function getWeekdayName(dateStr: string): string {
+  const days = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
+  return days[new Date(dateStr + "T12:00:00").getDay()]
+}
+
+/**
+ * Check if a time string (HH:MM) falls in night shift hours (22:00-06:00).
+ */
+export function isNightTime(time: string): boolean {
+  const [h] = time.split(":").map(Number)
+  return h >= 22 || h < 6
+}
+
+/**
+ * Check if a date string falls on Saturday or Sunday.
+ */
+export function isWeekendDate(dateStr: string): boolean {
+  const day = new Date(dateStr + "T12:00:00").getDay()
+  return day === 0 || day === 6
+}

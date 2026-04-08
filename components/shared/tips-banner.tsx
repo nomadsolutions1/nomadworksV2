@@ -11,6 +11,12 @@ const MODULE_TIPS: Record<string, string> = {
     "Tipp: Erstellen Sie Auftraege und verknuepfen Sie Kunden und Baustellen. Das Budget wird automatisch auf Baustellen verteilt.",
   baustellen:
     "Tipp: Weisen Sie jeder Baustelle einen Bauleiter zu. Kosten werden automatisch aus Zeiterfassung, Material und Geraeten berechnet.",
+  disposition:
+    "Tipp: Planen Sie die Woche im Voraus. Weisen Sie Mitarbeiter per Drag & Drop zu und nutzen Sie die Bulk-Funktion fuer wiederkehrende Einsaetze.",
+  zeiterfassung:
+    "Tipp: Mitarbeiter stempeln per App ein und aus. GPS-Koordinaten werden automatisch erfasst. Manager koennen Eintraege nachtraeglich korrigieren.",
+  bautagesbericht:
+    "Tipp: Erfassen Sie taeglich Wetter, Arbeiten und Vorkommnisse. Fotos und Dokumente koennen direkt angehaengt werden. Der Bautagesbericht ist ein rechtlich wichtiges Dokument.",
 }
 
 interface TipsBannerProps {
