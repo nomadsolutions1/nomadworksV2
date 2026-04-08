@@ -76,25 +76,25 @@ export const PLANS = {
 } as const
 
 export const SITE_STATUSES = {
-  active: { label: "Aktiv", color: "#10b981" },
-  paused: { label: "Pausiert", color: "#f59e0b" },
-  completed: { label: "Abgeschlossen", color: "#64748b" },
+  active: { label: "Aktiv", variant: "success" as const },
+  paused: { label: "Pausiert", variant: "warning" as const },
+  completed: { label: "Abgeschlossen", variant: "neutral" as const },
 } as const
 
 export const ORDER_STATUSES = {
-  offer: { label: "Angebot", color: "#64748b" },
-  commissioned: { label: "Beauftragt", color: "#3b82f6" },
-  in_progress: { label: "In Arbeit", color: "#f59e0b" },
-  acceptance: { label: "Abnahme", color: "#8b5cf6" },
-  completed: { label: "Abgeschlossen", color: "#10b981" },
-  complaint: { label: "Reklamation", color: "#ef4444" },
+  offer: { label: "Angebot", variant: "neutral" as const },
+  commissioned: { label: "Beauftragt", variant: "info" as const },
+  in_progress: { label: "In Arbeit", variant: "warning" as const },
+  acceptance: { label: "Abnahme", variant: "accent" as const },
+  completed: { label: "Abgeschlossen", variant: "success" as const },
+  complaint: { label: "Reklamation", variant: "danger" as const },
 } as const
 
 export const INVOICE_STATUSES = {
-  draft: { label: "Entwurf", color: "#64748b" },
-  sent: { label: "Gesendet", color: "#3b82f6" },
-  paid: { label: "Bezahlt", color: "#10b981" },
-  overdue: { label: "Überfällig", color: "#ef4444" },
+  draft: { label: "Entwurf", variant: "neutral" as const },
+  sent: { label: "Gesendet", variant: "info" as const },
+  paid: { label: "Bezahlt", variant: "success" as const },
+  overdue: { label: "Überfällig", variant: "danger" as const },
 } as const
 
 export const VEHICLE_TYPE_LABELS = {
@@ -121,17 +121,17 @@ export const WORKER_SUBTYPES = [
 ] as const
 
 export const VEHICLE_STATUSES = {
-  available: { label: "Frei", color: "#10b981" },
-  in_use: { label: "Im Einsatz", color: "#3b82f6" },
-  workshop: { label: "Werkstatt", color: "#f59e0b" },
-  reserved: { label: "Reserviert", color: "#8b5cf6" },
+  available: { label: "Frei", variant: "success" as const },
+  in_use: { label: "Im Einsatz", variant: "info" as const },
+  workshop: { label: "Werkstatt", variant: "warning" as const },
+  reserved: { label: "Reserviert", variant: "accent" as const },
 } as const
 
 export const WORKSHOP_STATUSES = {
-  received: { label: "Eingegangen", color: "#64748b" },
-  in_repair: { label: "In Reparatur", color: "#f59e0b" },
-  done: { label: "Fertig", color: "#10b981" },
-  picked_up: { label: "Abgeholt", color: "#3b82f6" },
+  received: { label: "Eingegangen", variant: "neutral" as const },
+  in_repair: { label: "In Reparatur", variant: "warning" as const },
+  done: { label: "Fertig", variant: "success" as const },
+  picked_up: { label: "Abgeholt", variant: "info" as const },
 } as const
 
 export const MATERIAL_CATEGORIES = [
@@ -189,10 +189,77 @@ export const QUALIFICATION_TYPES = [
 ] as const
 
 export const WEATHER_OPTIONS = [
-  { icon: "☀️", label: "Sonnig" },
+  { icon: "☀���", label: "Sonnig" },
   { icon: "⛅", label: "Bewölkt" },
   { icon: "🌧️", label: "Regen" },
   { icon: "❄️", label: "Schnee" },
   { icon: "🌫️", label: "Nebel" },
   { icon: "💨", label: "Wind" },
+] as const
+
+// ── DRY shared helpers ─────────────────────────────────────────────
+// AG employer contribution factor (~22.5%)
+export const AG_ANTEIL_PROZENT = 0.225
+
+// Cost category labels (used in orders, sites, cost comparisons)
+export const CATEGORY_LABELS: Record<string, string> = {
+  personal: "Personal",
+  material: "Material",
+  equipment: "Geräte",
+  vehicles: "Fahrzeuge",
+  subcontractor: "Subunternehmer",
+  other: "Sonstiges",
+}
+
+// Cost category variant mapping for StatusBadge
+export const CATEGORY_VARIANTS: Record<string, string> = {
+  personal: "info",
+  material: "warning",
+  equipment: "accent",
+  vehicles: "success",
+  subcontractor: "danger",
+  other: "neutral",
+}
+
+// Default budget split for Nachkalkulation SOLL estimation
+export const DEFAULT_BUDGET_SPLIT: Record<string, number> = {
+  personal: 0.4,
+  material: 0.3,
+  equipment: 0.1,
+  vehicles: 0.05,
+  subcontractor: 0.1,
+  other: 0.05,
+}
+
+// Contract type label resolver (single source of truth)
+export function contractLabel(type: string | null | undefined): string {
+  if (!type) return "—"
+  return CONTRACT_TYPE_LABELS[type as keyof typeof CONTRACT_TYPE_LABELS] ?? type
+}
+
+// Site status config resolver (single source of truth)
+export function getSiteStatusConfig(status: string) {
+  const cfg = SITE_STATUSES[status as keyof typeof SITE_STATUSES]
+  return cfg ?? { label: status, variant: "neutral" as const }
+}
+
+// Order status config resolver (single source of truth)
+export function getOrderStatusConfig(status: string) {
+  const cfg = ORDER_STATUSES[status as keyof typeof ORDER_STATUSES]
+  return cfg ?? { label: status, variant: "neutral" as const }
+}
+
+// Leave status config
+export const LEAVE_STATUS_CONFIG: Record<string, { label: string; variant: "success" | "warning" | "danger" | "neutral" }> = {
+  approved: { label: "Genehmigt", variant: "success" },
+  pending: { label: "Ausstehend", variant: "warning" },
+  rejected: { label: "Abgelehnt", variant: "danger" },
+}
+
+export const LEAVE_TYPES = [
+  { value: "vacation", label: "Urlaub" },
+  { value: "special", label: "Sonderurlaub" },
+  { value: "unpaid", label: "Unbezahlter Urlaub" },
+  { value: "care", label: "Pflegezeit" },
+  { value: "parental", label: "Elternzeit" },
 ] as const
