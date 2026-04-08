@@ -86,7 +86,7 @@ export function MarkPaidDialog({
               <Input
                 id="payment-method"
                 name="payment_method"
-                placeholder="z.B. Ueberweisung, Bar"
+                placeholder="z.B. Überweisung, Bar"
                 className="h-11 rounded-xl"
               />
             </div>

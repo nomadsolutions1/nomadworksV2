@@ -90,7 +90,7 @@ export function StundenzettelContent({ entries, employees, month, year }: Stunde
         <CardContent>
           {byEmployee.length === 0 ? (
             <p className="text-sm text-muted-foreground text-center py-8">
-              Keine Zeiteintraege in diesem Monat.
+              Keine Zeiteinträge in diesem Monat.
             </p>
           ) : (
             <div className="overflow-x-auto">
@@ -98,7 +98,7 @@ export function StundenzettelContent({ entries, employees, month, year }: Stunde
                 <thead>
                   <tr className="border-b text-left text-muted-foreground">
                     <th className="pb-3 font-medium">Mitarbeiter</th>
-                    <th className="pb-3 font-medium text-right">Eintraege</th>
+                    <th className="pb-3 font-medium text-right">Einträge</th>
                     <th className="pb-3 font-medium text-right">Stunden</th>
                     <th className="pb-3 font-medium text-right">Stundensatz</th>
                     <th className="pb-3 font-medium text-right">Lohn</th>

@@ -91,8 +91,8 @@ export function EmployeeFormWageSection({ employee, mode }: EmployeeFormWageSect
                 </div>
                 <Select value={taxClass} onValueChange={handleTaxClassChange}>
                   <SelectTrigger className="h-11 rounded-xl">
-                    <SelectValue placeholder="Klasse auswaehlen">
-                      {(value) => (value ? `Klasse ${value}` : "Klasse auswaehlen")}
+                    <SelectValue placeholder="Klasse auswählen">
+                      {(value) => (value ? `Klasse ${value}` : "Klasse auswählen")}
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>

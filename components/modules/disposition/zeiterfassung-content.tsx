@@ -83,8 +83,8 @@ export function ZeiterfassungContent({
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Zeituebersicht"
-        description="Zeiteintraege aller Mitarbeiter dieser Woche."
+        title="Zeitübersicht"
+        description="Zeiteinträge aller Mitarbeiter dieser Woche."
       />
 
       <WeekNavigator weekStart={weekStart} basePath="/disposition/zeiterfassung" />
@@ -115,7 +115,7 @@ export function ZeiterfassungContent({
         </Select>
 
         <div className="ml-auto text-sm text-muted-foreground">
-          {filtered.length} Eintraege ·{" "}
+          {filtered.length} Einträge ·{" "}
           <strong className="text-foreground">{totalHours.toFixed(2).replace(".", ",")} Std.</strong>
         </div>
       </div>
@@ -130,8 +130,8 @@ export function ZeiterfassungContent({
             pageSize={15}
             emptyState={{
               icon: Clock,
-              title: "Keine Zeiteintraege",
-              description: "Fuer diese Woche und Filter wurden keine Zeiteintraege gefunden.",
+              title: "Keine Zeiteinträge",
+              description: "Für diese Woche und Filter wurden keine Zeiteinträge gefunden.",
             }}
           />
         </CardContent>

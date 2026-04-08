@@ -20,7 +20,7 @@ export function DiaryNew({ sites, defaultSiteId }: DiaryNewProps) {
       />
       <PageHeader
         title="Bautagesbericht erstellen"
-        description="Erfassen Sie den Tagesbericht fuer eine Baustelle."
+        description="Erfassen Sie den Tagesbericht für eine Baustelle."
       />
       <DiaryForm mode="create" sites={sites} defaultSiteId={defaultSiteId} />
     </div>

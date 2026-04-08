@@ -25,10 +25,10 @@ export function SiteOverview({ site, stats, budgetUsed }: SiteOverviewProps) {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Arbeitsstunden" value={`${stats.totalHours} Std.`} context={`${stats.timeEntriesCount} Eintraege`} icon={Clock} />
+        <StatCard title="Arbeitsstunden" value={`${stats.totalHours} Std.`} context={`${stats.timeEntriesCount} Einträge`} icon={Clock} />
         <StatCard title="Budget" value={site.budget ? formatCurrency(site.budget) : "—"} context={site.budget ? `${budgetPercent}% verbraucht` : "Kein Budget festgelegt"} icon={Euro} />
         <StatCard title="Bautagesberichte" value={stats.diaryEntriesCount} context="Berichte gesamt" icon={ClipboardList} />
-        <StatCard title="Geraete" value={stats.equipmentCount} context="Zugewiesen" icon={HardHat} />
+        <StatCard title="Geräte" value={stats.equipmentCount} context="Zugewiesen" icon={HardHat} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

@@ -23,9 +23,9 @@ export function OrderStatusChanger({ orderId, currentStatus }: OrderStatusChange
     if (newStatus === status) return
     startTransition(async () => {
       const result = await updateOrderStatus(orderId, newStatus)
-      if (result.error) { toast.error("Fehler beim Aendern des Status"); return }
+      if (result.error) { toast.error("Fehler beim Ändern des Status"); return }
       setStatus(newStatus)
-      toast.success("Status wurde geaendert")
+      toast.success("Status wurde geändert")
     })
   }
 

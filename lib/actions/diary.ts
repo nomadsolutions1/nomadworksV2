@@ -74,7 +74,7 @@ const documentMetaSchema = z.object({
 
 const DIARY_TIPS: Record<string, string> = {
   bautagesbericht:
-    "Tipp: Erfassen Sie taeglich Wetter, Arbeiten und Vorkommnisse. Fotos und Dokumente koennen direkt angehaengt werden. Der Bautagesbericht ist ein rechtlich wichtiges Dokument.",
+    "Tipp: Erfassen Sie täglich Wetter, Arbeiten und Vorkommnisse. Fotos und Dokumente können direkt angehängt werden. Der Bautagesbericht ist ein rechtlich wichtiges Dokument.",
 }
 
 export async function getContextualTips(module: string): Promise<string | null> {
@@ -246,7 +246,7 @@ export async function createDiaryEntry(
       .eq("company_id", profile.company_id)
       .maybeSingle()
 
-    if (!siteCheck) return { error: "Baustelle gehoert nicht zu Ihrer Firma" }
+    if (!siteCheck) return { error: "Baustelle gehört nicht zu Ihrer Firma" }
 
     const { data: entry, error } = await db
       .from("diary_entries")
@@ -343,7 +343,7 @@ export async function deleteDiaryEntry(
   return withAuth("bautagesbericht", "write", async ({ user, profile, db }) => {
     // Only owner can delete
     if (profile.role !== "owner") {
-      return { error: "Nur der Inhaber darf Bautagesberichte loeschen" }
+      return { error: "Nur der Inhaber darf Bautagesberichte löschen" }
     }
 
     // Get entry info for activity log
@@ -362,7 +362,7 @@ export async function deleteDiaryEntry(
 
     if (error) {
       trackError("diary", "deleteDiaryEntry", error.message, { table: "diary_entries" })
-      return { error: "Bautagesbericht konnte nicht geloescht werden" }
+      return { error: "Bautagesbericht konnte nicht gelöscht werden" }
     }
 
     await logActivity({
@@ -372,8 +372,8 @@ export async function deleteDiaryEntry(
       entityType: "diary_entry",
       entityId: id,
       title: entry
-        ? `Bautagesbericht vom ${entry.entry_date} geloescht`
-        : "Bautagesbericht geloescht",
+        ? `Bautagesbericht vom ${entry.entry_date} gelöscht`
+        : "Bautagesbericht gelöscht",
     })
 
     revalidatePath("/bautagesbericht")
@@ -506,7 +506,7 @@ export async function deleteDiaryDocument(
 
     // Only owner or the uploader may delete (consistent with deleteDiaryEntry)
     if (profile.role !== "owner" && doc.uploaded_by !== user.id) {
-      return { error: "Nur der Inhaber oder der Uploader darf Dokumente loeschen" }
+      return { error: "Nur der Inhaber oder der Uploader darf Dokumente löschen" }
     }
 
     const { error } = await db
@@ -517,7 +517,7 @@ export async function deleteDiaryDocument(
 
     if (error) {
       trackError("diary", "deleteDiaryDocument", error.message, { table: "diary_documents" })
-      return { error: "Dokument konnte nicht geloescht werden" }
+      return { error: "Dokument konnte nicht gelöscht werden" }
     }
 
     await logActivity({
@@ -526,7 +526,7 @@ export async function deleteDiaryDocument(
       action: "delete",
       entityType: "diary_document",
       entityId: docId,
-      title: doc ? `Dokument "${doc.file_name}" geloescht` : "Dokument geloescht",
+      title: doc ? `Dokument "${doc.file_name}" gelöscht` : "Dokument gelöscht",
     })
 
     revalidatePath(`/bautagesbericht/${entryId}`)

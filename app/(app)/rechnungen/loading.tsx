@@ -12,9 +12,9 @@ export default function RechnungenLoading() {
         { title: "Entwurf", value: "...", icon: FilePen },
         { title: "Bezahlt", value: "...", icon: FileCheck2 },
         { title: "Offen", value: "...", icon: Clock },
-        { title: "Ueberfaellig", value: "...", icon: AlertTriangle },
+        { title: "Überfällig", value: "...", icon: AlertTriangle },
       ]}
-      tableHeaders={["Nr.", "Kunde", "Betrag", "Status", "Datum", "Faellig am"]}
+      tableHeaders={["Nr.", "Kunde", "Betrag", "Status", "Datum", "Fällig am"]}
     />
   )
 }

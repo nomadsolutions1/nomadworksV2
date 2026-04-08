@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "NomadWorks",
-  description: "ERP fuer Bauunternehmer",
+  description: "ERP für Bauunternehmer",
 };
 
 export default function RootLayout({

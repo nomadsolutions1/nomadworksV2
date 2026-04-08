@@ -32,7 +32,7 @@ export function CustomerList({ customers }: CustomerListProps) {
 
   return (
     <div className="space-y-6">
-      <Breadcrumbs items={[{ label: "Auftraege", href: "/auftraege" }, { label: "Kunden" }]} />
+      <Breadcrumbs items={[{ label: "Aufträge", href: "/auftraege" }, { label: "Kunden" }]} />
       <PageHeader title="Kunden" description="Verwalten Sie Ihre Kunden und Auftraggeber.">
         <Link href="/auftraege/kunden/neu">
           <Button className="rounded-xl font-semibold h-11 gap-2"><Plus className="h-4 w-4" /> Kunde anlegen</Button>

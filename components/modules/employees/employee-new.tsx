@@ -14,7 +14,7 @@ export function EmployeeNew() {
       />
       <div>
         <h1 className="text-2xl font-semibold font-heading text-foreground">
-          Mitarbeiter hinzufuegen
+          Mitarbeiter hinzufügen
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
           Legen Sie einen neuen Mitarbeiter an — mit oder ohne App-Zugang.

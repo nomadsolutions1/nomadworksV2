@@ -66,7 +66,7 @@ export function OrderList({ orders }: OrderListProps) {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Auftraege" description="Verwalten Sie Ihre Auftraege von Angebot bis Abschluss.">
+      <PageHeader title="Aufträge" description="Verwalten Sie Ihre Aufträge von Angebot bis Abschluss.">
         <Link href="/auftraege/kunden">
           <Button variant="outline" className="rounded-xl h-11 gap-2"><Users className="h-4 w-4" /> Kunden</Button>
         </Link>
@@ -76,16 +76,16 @@ export function OrderList({ orders }: OrderListProps) {
       </PageHeader>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Auftraege gesamt" value={total} icon={FileText} />
+        <StatCard title="Aufträge gesamt" value={total} icon={FileText} />
         <StatCard title="In Arbeit" value={inProgress} icon={Clock} />
         <StatCard title="Abgeschlossen" value={completed} icon={CheckCircle2} />
-        <StatCard title="Auftragswert gesamt" value={totalBudget > 0 ? formatCurrency(totalBudget) : "—"} context={total > 0 ? `Ueber ${total} ${total === 1 ? "Auftrag" : "Auftraege"}` : undefined} icon={Euro} />
+        <StatCard title="Auftragswert gesamt" value={totalBudget > 0 ? formatCurrency(totalBudget) : "—"} context={total > 0 ? `Über ${total} ${total === 1 ? "Auftrag" : "Aufträge"}` : undefined} icon={Euro} />
       </div>
 
       {orders.length === 0 ? (
-        <EmptyState icon={FileText} title="Keine Auftraege vorhanden" description="Legen Sie Ihren ersten Auftrag an." action={{ label: "Auftrag anlegen", href: "/auftraege/neu" }} />
+        <EmptyState icon={FileText} title="Keine Aufträge vorhanden" description="Legen Sie Ihren ersten Auftrag an." action={{ label: "Auftrag anlegen", href: "/auftraege/neu" }} />
       ) : (
-        <DataTable columns={columns} data={orders} searchKey="title" searchPlaceholder="Auftraege suchen..." pageSize={15} onRowClick={(row) => router.push(`/auftraege/${row.id}`)} />
+        <DataTable columns={columns} data={orders} searchKey="title" searchPlaceholder="Aufträge suchen..." pageSize={15} onRowClick={(row) => router.push(`/auftraege/${row.id}`)} />
       )}
     </div>
   )

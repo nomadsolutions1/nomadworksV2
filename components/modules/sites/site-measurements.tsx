@@ -36,7 +36,7 @@ export function SiteMeasurements({ siteId }: SiteMeasurementsProps) {
     startTransition(async () => {
       const result = await addSiteMeasurement(siteId, fd)
       if (result.error) { toast.error(typeof result.error === "string" ? result.error : "Fehler"); return }
-      toast.success("Aufmass hinzugefuegt"); setShowDialog(false); load()
+      toast.success("Aufmaß hinzugefügt"); setShowDialog(false); load()
     })
   }
 
@@ -44,7 +44,7 @@ export function SiteMeasurements({ siteId }: SiteMeasurementsProps) {
     startTransition(async () => {
       const result = await deleteSiteMeasurement(id, siteId)
       if (result.error) { toast.error(result.error); return }
-      toast.success("Aufmass geloescht"); load()
+      toast.success("Aufmaß gelöscht"); load()
     })
   }
 
@@ -54,12 +54,12 @@ export function SiteMeasurements({ siteId }: SiteMeasurementsProps) {
     <>
       <Card className="rounded-2xl shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between pb-3">
-          <CardTitle className="text-base font-semibold">Aufmass ({measurements.length})</CardTitle>
-          <Button size="sm" className="rounded-lg text-xs h-8" onClick={() => setShowDialog(true)}><Plus className="h-3.5 w-3.5 mr-1" /> Hinzufuegen</Button>
+          <CardTitle className="text-base font-semibold">Aufmaß ({measurements.length})</CardTitle>
+          <Button size="sm" className="rounded-lg text-xs h-8" onClick={() => setShowDialog(true)}><Plus className="h-3.5 w-3.5 mr-1" /> Hinzufügen</Button>
         </CardHeader>
         <CardContent>
           {measurements.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-6">Noch keine Aufmasse erfasst.</p>
+            <p className="text-sm text-muted-foreground text-center py-6">Noch keine Aufmaße erfasst.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -72,7 +72,7 @@ export function SiteMeasurements({ siteId }: SiteMeasurementsProps) {
                       <td className="py-2 text-right">{m.unit}</td>
                       <td className="py-2 text-right font-mono">{m.quantity}</td>
                       <td className="py-2 text-right font-mono font-medium">{m.calculated_value?.toFixed(2) ?? "—"}</td>
-                      <td className="py-2"><button onClick={() => handleDelete(m.id)} className="text-muted-foreground hover:text-danger" disabled={isPending} aria-label="Messung loeschen"><Trash2 className="h-3.5 w-3.5" /></button></td>
+                      <td className="py-2"><button onClick={() => handleDelete(m.id)} className="text-muted-foreground hover:text-danger" disabled={isPending} aria-label="Messung löschen"><Trash2 className="h-3.5 w-3.5" /></button></td>
                     </tr>
                   ))}
                 </tbody>
@@ -83,20 +83,20 @@ export function SiteMeasurements({ siteId }: SiteMeasurementsProps) {
       </Card>
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent className="rounded-2xl max-w-md">
-          <DialogHeader><DialogTitle>Aufmass hinzufuegen</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>Aufmaß hinzufügen</DialogTitle></DialogHeader>
           <form onSubmit={handleAdd} className="space-y-4">
             <div className="space-y-1.5"><Label>Beschreibung *</Label><Input name="description" placeholder="z.B. Bodenplatte Block A" className="h-11 rounded-xl" required /></div>
             <div className="grid grid-cols-3 gap-3">
-              <div className="space-y-1.5"><Label className="text-xs">Laenge</Label><Input name="length" type="number" step="0.01" placeholder="m" className="h-11 rounded-xl" /></div>
+              <div className="space-y-1.5"><Label className="text-xs">Länge</Label><Input name="length" type="number" step="0.01" placeholder="m" className="h-11 rounded-xl" /></div>
               <div className="space-y-1.5"><Label className="text-xs">Breite</Label><Input name="width" type="number" step="0.01" placeholder="m" className="h-11 rounded-xl" /></div>
-              <div className="space-y-1.5"><Label className="text-xs">Hoehe</Label><Input name="height" type="number" step="0.01" placeholder="m" className="h-11 rounded-xl" /></div>
+              <div className="space-y-1.5"><Label className="text-xs">Höhe</Label><Input name="height" type="number" step="0.01" placeholder="m" className="h-11 rounded-xl" /></div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5"><Label>Einheit *</Label><Input name="unit" defaultValue="m2" className="h-11 rounded-xl" required /></div>
               <div className="space-y-1.5"><Label>Menge</Label><Input name="quantity" type="number" step="0.01" defaultValue="1" className="h-11 rounded-xl" /></div>
             </div>
             <div className="space-y-1.5"><Label>Notizen</Label><Input name="notes" placeholder="Optional" className="h-11 rounded-xl" /></div>
-            <Button type="submit" disabled={isPending} className="w-full rounded-xl font-semibold h-11">{isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />} Hinzufuegen</Button>
+            <Button type="submit" disabled={isPending} className="w-full rounded-xl font-semibold h-11">{isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />} Hinzufügen</Button>
           </form>
         </DialogContent>
       </Dialog>

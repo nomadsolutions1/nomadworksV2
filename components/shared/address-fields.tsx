@@ -34,7 +34,7 @@ export function AddressFields({
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       <div className="sm:col-span-2 space-y-1.5">
-        <Label htmlFor={`${namePrefix}street`}>Strasse + Hausnummer{required ? " *" : ""}</Label>
+        <Label htmlFor={`${namePrefix}street`}>Straße + Hausnummer{required ? " *" : ""}</Label>
         <Input
           id={`${namePrefix}street`}
           name={`${namePrefix}street`}

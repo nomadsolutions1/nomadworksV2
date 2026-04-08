@@ -34,7 +34,7 @@ export function CompleteStep({ companyName, employeesCreated, siteCreated }: Com
       done: employeesCreated > 0,
     },
     {
-      label: siteCreated ? "Baustelle angelegt" : "Noch keine Baustelle",
+      label: siteCreated ? "Erster Auftrag angelegt" : "Noch kein Auftrag",
       done: siteCreated,
     },
   ]

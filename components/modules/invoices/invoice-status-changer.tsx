@@ -48,7 +48,7 @@ export function InvoiceStatusChanger({
     startTransition(async () => {
       const result = await updateInvoiceStatus(invoiceId, newStatus)
       if (result.error) {
-        toast.error("Status konnte nicht geaendert werden")
+        toast.error("Status konnte nicht geändert werden")
         return
       }
       setStatus(newStatus)

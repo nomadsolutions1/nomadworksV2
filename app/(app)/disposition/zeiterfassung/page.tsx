@@ -5,7 +5,7 @@ import { getCurrentMonday } from "@/lib/utils/dates"
 import { ZeiterfassungContent } from "@/components/modules/disposition/zeiterfassung-content"
 import type { Metadata } from "next"
 
-export const metadata: Metadata = { title: "Zeituebersicht" }
+export const metadata: Metadata = { title: "Zeitübersicht" }
 
 type SearchParams = { week?: string }
 

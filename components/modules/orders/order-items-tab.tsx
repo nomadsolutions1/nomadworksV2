@@ -34,9 +34,9 @@ export function OrderItemsTab({ orderId, items: initialItems }: OrderItemsTabPro
     formData.set("position", String(items.length + 1))
     startTransition(async () => {
       const result = await addOrderItem(orderId, formData)
-      if (result.error) { toast.error("Fehler beim Hinzufuegen"); return }
+      if (result.error) { toast.error("Fehler beim Hinzufügen"); return }
       if (result.data) setItems((prev) => [...prev, result.data!])
-      toast.success("Position wurde hinzugefuegt")
+      toast.success("Position wurde hinzugefügt")
       setIsAddOpen(false)
     })
   }
@@ -62,9 +62,9 @@ export function OrderItemsTab({ orderId, items: initialItems }: OrderItemsTabPro
   async function handleDelete(itemId: string) {
     startTransition(async () => {
       const result = await deleteOrderItem(itemId, orderId)
-      if (result.error) { toast.error("Fehler beim Loeschen"); return }
+      if (result.error) { toast.error("Fehler beim Löschen"); return }
       setItems((prev) => prev.filter((i) => i.id !== itemId))
-      toast.success("Position wurde geloescht")
+      toast.success("Position wurde gelöscht")
       setDeleteId(null)
     })
   }
@@ -75,11 +75,11 @@ export function OrderItemsTab({ orderId, items: initialItems }: OrderItemsTabPro
         <p className="text-sm text-muted-foreground">
           {items.length} {items.length === 1 ? "Position" : "Positionen"} · <span className="font-semibold text-foreground">{formatCurrency(totalValue)}</span>
         </p>
-        <Button onClick={() => setIsAddOpen(true)} className="rounded-xl font-semibold h-9 gap-2 text-sm"><Plus className="h-3.5 w-3.5" /> Position hinzufuegen</Button>
+        <Button onClick={() => setIsAddOpen(true)} className="rounded-xl font-semibold h-9 gap-2 text-sm"><Plus className="h-3.5 w-3.5" /> Position hinzufügen</Button>
       </div>
 
       {items.length === 0 ? (
-        <EmptyState icon={FileText} title="Keine Positionen vorhanden" description="Fuegen Sie Leistungspositionen hinzu." action={{ label: "Position hinzufuegen", onClick: () => setIsAddOpen(true) }} />
+        <EmptyState icon={FileText} title="Keine Positionen vorhanden" description="Fügen Sie Leistungspositionen hinzu." action={{ label: "Position hinzufügen", onClick: () => setIsAddOpen(true) }} />
       ) : (
         <Card className="rounded-2xl shadow-sm overflow-hidden">
           <CardContent className="p-0">
@@ -126,7 +126,7 @@ export function OrderItemsTab({ orderId, items: initialItems }: OrderItemsTabPro
       {/* Add dialog */}
       <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
         <DialogContent className="rounded-2xl max-w-lg">
-          <DialogHeader><DialogTitle>Position hinzufuegen</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>Position hinzufügen</DialogTitle></DialogHeader>
           <form onSubmit={handleAdd} className="space-y-4">
             <div className="space-y-1.5"><Label htmlFor="description">Beschreibung *</Label><Input id="description" name="description" placeholder="z.B. Betonarbeiten Fundament" className="h-11 rounded-xl" required /></div>
             <div className="grid grid-cols-3 gap-3">
@@ -136,7 +136,7 @@ export function OrderItemsTab({ orderId, items: initialItems }: OrderItemsTabPro
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" className="rounded-xl" onClick={() => setIsAddOpen(false)}>Abbrechen</Button>
-              <Button type="submit" disabled={isPending} className="rounded-xl font-semibold">{isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />} Hinzufuegen</Button>
+              <Button type="submit" disabled={isPending} className="rounded-xl font-semibold">{isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />} Hinzufügen</Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -162,8 +162,8 @@ export function OrderItemsTab({ orderId, items: initialItems }: OrderItemsTabPro
       </Dialog>
 
       <AlertDialog open={!!deleteId} onOpenChange={(open) => { if (!open) setDeleteId(null) }}>
-        <AlertDialogContent className="rounded-2xl"><AlertDialogHeader><AlertDialogTitle>Position loeschen?</AlertDialogTitle><AlertDialogDescription>Diese Position wird unwiderruflich geloescht.</AlertDialogDescription></AlertDialogHeader>
-          <AlertDialogFooter><AlertDialogCancel className="rounded-xl">Abbrechen</AlertDialogCancel><AlertDialogAction onClick={() => deleteId && handleDelete(deleteId)} variant="destructive" className="rounded-xl font-semibold">Loeschen</AlertDialogAction></AlertDialogFooter>
+        <AlertDialogContent className="rounded-2xl"><AlertDialogHeader><AlertDialogTitle>Position löschen?</AlertDialogTitle><AlertDialogDescription>Diese Position wird unwiderruflich gelöscht.</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogFooter><AlertDialogCancel className="rounded-xl">Abbrechen</AlertDialogCancel><AlertDialogAction onClick={() => deleteId && handleDelete(deleteId)} variant="destructive" className="rounded-xl font-semibold">Löschen</AlertDialogAction></AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </div>

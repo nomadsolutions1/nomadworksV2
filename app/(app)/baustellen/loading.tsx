@@ -5,7 +5,7 @@ export default function BaustellenLoading() {
   return (
     <ModulePageSkeleton
       title="Baustellen"
-      description="Alle Baustellen und deren Status im Ueberblick."
+      description="Alle Baustellen und deren Status im Überblick."
       actionLabel="Baustelle anlegen"
       stats={[
         { title: "Baustellen gesamt", value: "...", icon: MapPin },

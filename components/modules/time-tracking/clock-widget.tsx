@@ -57,7 +57,7 @@ export function ClockWidget({ openEntry: initialOpenEntry, sites, assignedSiteId
 
   function handleClockIn() {
     if (!selectedSite) {
-      toast.error("Bitte eine Baustelle auswaehlen")
+      toast.error("Bitte eine Baustelle auswählen")
       return
     }
     startTransition(async () => {
@@ -172,7 +172,7 @@ export function ClockWidget({ openEntry: initialOpenEntry, sites, assignedSiteId
         </div>
         <div className="text-center py-4">
           <Clock className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-          <p className="text-sm text-muted-foreground">Waehlen Sie eine Baustelle und stempeln Sie ein</p>
+          <p className="text-sm text-muted-foreground">Wählen Sie eine Baustelle und stempeln Sie ein</p>
         </div>
         <div className="space-y-1.5">
           <Label className="text-sm">Baustelle *</Label>
@@ -183,7 +183,7 @@ export function ClockWidget({ openEntry: initialOpenEntry, sites, assignedSiteId
             </div>
           ) : (
             <Select value={selectedSite} onValueChange={(v) => setSelectedSite(v ?? "")}>
-              <SelectTrigger className="h-11 rounded-xl"><SelectValue placeholder="Baustelle auswaehlen..." /></SelectTrigger>
+              <SelectTrigger className="h-11 rounded-xl"><SelectValue placeholder="Baustelle auswählen..." /></SelectTrigger>
               <SelectContent>
                 {sites.map((site) => (
                   <SelectItem key={site.id} value={site.id}>{site.name}</SelectItem>

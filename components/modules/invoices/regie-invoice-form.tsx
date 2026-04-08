@@ -77,7 +77,7 @@ export function RegieInvoiceForm({
               <Label>Baustelle *</Label>
               <Select name="site_id" required>
                 <SelectTrigger className="h-11 rounded-xl">
-                  <SelectValue placeholder="Baustelle waehlen" />
+                  <SelectValue placeholder="Baustelle wählen" />
                 </SelectTrigger>
                 <SelectContent>
                   {activeSites.map((s) => (
@@ -114,7 +114,7 @@ export function RegieInvoiceForm({
               <Label>Kunde *</Label>
               <Select name="customer_id" required>
                 <SelectTrigger className="h-11 rounded-xl">
-                  <SelectValue placeholder="Kunde waehlen" />
+                  <SelectValue placeholder="Kunde wählen" />
                 </SelectTrigger>
                 <SelectContent>
                   {customers.map((c) => (

@@ -25,7 +25,7 @@ export function ConfirmDialog({
   trigger,
   title,
   description,
-  confirmLabel = "Bestaetigen",
+  confirmLabel = "Bestätigen",
   onConfirm,
   destructive = false,
 }: ConfirmDialogProps) {

@@ -21,7 +21,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
       </header>
       <main className="mx-auto max-w-3xl px-6 py-10" aria-label="Rechtlicher Inhalt">{children}</main>
       <footer className="border-t py-6 text-center text-xs text-muted-foreground/70">
-        <Link href="/login" className="text-primary hover:underline">Zurueck zur App</Link>
+        <Link href="/login" className="text-primary hover:underline">Zurück zur App</Link>
       </footer>
     </div>
   )

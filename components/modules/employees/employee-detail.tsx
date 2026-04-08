@@ -111,7 +111,7 @@ export function EmployeeDetail({
             <div className="lg:col-span-1 space-y-4">
               <Card className="rounded-2xl shadow-sm">
                 <CardHeader>
-                  <CardTitle className="text-base font-semibold text-foreground">Uebersicht</CardTitle>
+                  <CardTitle className="text-base font-semibold text-foreground">Übersicht</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="flex justify-between text-sm">

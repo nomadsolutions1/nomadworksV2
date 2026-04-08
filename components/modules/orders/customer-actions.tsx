@@ -21,8 +21,8 @@ export function CustomerActions({ customerId }: CustomerActionsProps) {
   function handleDelete() {
     startTransition(async () => {
       const result = await deleteCustomer(customerId)
-      if (result.error) { toast.error("Fehler beim Loeschen des Kunden"); return }
-      toast.success("Kunde wurde geloescht")
+      if (result.error) { toast.error("Fehler beim Löschen des Kunden"); return }
+      toast.success("Kunde wurde gelöscht")
       router.refresh()
     })
   }
@@ -32,12 +32,12 @@ export function CustomerActions({ customerId }: CustomerActionsProps) {
       <DropdownMenu>
         <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Aktionen" />}><MoreHorizontal className="h-4 w-4" /></DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="rounded-xl">
-          <DropdownMenuItem className="text-danger gap-2 cursor-pointer" onClick={() => setShowDelete(true)}><Trash2 className="h-4 w-4" /> Loeschen</DropdownMenuItem>
+          <DropdownMenuItem className="text-danger gap-2 cursor-pointer" onClick={() => setShowDelete(true)}><Trash2 className="h-4 w-4" /> Löschen</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <AlertDialog open={showDelete} onOpenChange={setShowDelete}>
-        <AlertDialogContent className="rounded-2xl"><AlertDialogHeader><AlertDialogTitle>Kunden loeschen?</AlertDialogTitle><AlertDialogDescription>Dieser Kunde wird unwiderruflich geloescht. Bestehende Auftraege bleiben erhalten.</AlertDialogDescription></AlertDialogHeader>
-          <AlertDialogFooter><AlertDialogCancel className="rounded-xl">Abbrechen</AlertDialogCancel><AlertDialogAction onClick={handleDelete} disabled={isPending} variant="destructive" className="rounded-xl font-semibold">Loeschen</AlertDialogAction></AlertDialogFooter>
+        <AlertDialogContent className="rounded-2xl"><AlertDialogHeader><AlertDialogTitle>Kunden löschen?</AlertDialogTitle><AlertDialogDescription>Dieser Kunde wird unwiderruflich gelöscht. Bestehende Aufträge bleiben erhalten.</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogFooter><AlertDialogCancel className="rounded-xl">Abbrechen</AlertDialogCancel><AlertDialogAction onClick={handleDelete} disabled={isPending} variant="destructive" className="rounded-xl font-semibold">Löschen</AlertDialogAction></AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </>

@@ -60,7 +60,7 @@ export function TimeEntryRow({ entry, showEmployee = false }: TimeEntryRowProps)
             {entry.clock_out ? (
               formatTime(entry.clock_out)
             ) : (
-              <span className="text-success font-semibold">laeuft</span>
+              <span className="text-success font-semibold">läuft</span>
             )}
           </span>
           {entry.break_minutes > 0 && (

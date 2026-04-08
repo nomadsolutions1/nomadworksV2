@@ -35,7 +35,7 @@ export function DashboardKPICards({ kpis, utilization }: DashboardKPIsProps) {
           icon={MapPin}
         />
         <StatCard
-          title="Auftraege"
+          title="Aufträge"
           value={kpis.orders.total}
           context={`${kpis.orders.offers} Angebote, ${kpis.orders.inProgress} in Arbeit, ${kpis.orders.completed} abgeschlossen`}
           icon={FileText}
@@ -55,7 +55,7 @@ export function DashboardKPICards({ kpis, utilization }: DashboardKPIsProps) {
         <StatCard
           title="Offene Rechnungen"
           value={formatCurrency(kpis.openInvoices.total)}
-          context={`${kpis.openInvoices.count} Rechnungen${kpis.openInvoices.overdueCount > 0 ? `, ${kpis.openInvoices.overdueCount} ueberfaellig` : ""}`}
+          context={`${kpis.openInvoices.count} Rechnungen${kpis.openInvoices.overdueCount > 0 ? `, ${kpis.openInvoices.overdueCount} überfällig` : ""}`}
           icon={Receipt}
         />
       </div>

@@ -24,8 +24,8 @@ interface Props {
 }
 
 const SHIFTS = [
-  { key: "frueh", label: "Frueh", icon: Sun, start: "06:00", end: "14:30", br: 30 },
-  { key: "spaet", label: "Spaet", icon: Clock, start: "14:00", end: "22:00", br: 30 },
+  { key: "frueh", label: "Früh", icon: Sun, start: "06:00", end: "14:30", br: 30 },
+  { key: "spaet", label: "Spät", icon: Clock, start: "14:00", end: "22:00", br: 30 },
   { key: "nacht", label: "Nacht", icon: Moon, start: "22:00", end: "06:00", br: 30 },
   { key: "ganztag", label: "Ganztag", icon: Coffee, start: "07:00", end: "17:00", br: 60 },
 ] as const
@@ -125,7 +125,7 @@ export function AssignmentDialog({
       if (result.error) {
         toast.error(result.error)
       } else {
-        toast.success("Zuweisung geloescht")
+        toast.success("Zuweisung gelöscht")
         router.refresh()
         onClose()
       }
@@ -147,7 +147,7 @@ export function AssignmentDialog({
             <Label>Mitarbeiter</Label>
             <Select value={userId} onValueChange={(v) => setUserId(v ?? "")} disabled={!!prefilledUserId || isEdit}>
               <SelectTrigger className="h-11 rounded-xl">
-                <SelectValue placeholder="Mitarbeiter waehlen..." />
+                <SelectValue placeholder="Mitarbeiter wählen..." />
               </SelectTrigger>
               <SelectContent>
                 {employees.map((emp) => (
@@ -164,7 +164,7 @@ export function AssignmentDialog({
             <Label>Baustelle</Label>
             <Select value={siteId} onValueChange={(v) => setSiteId(v ?? "")}>
               <SelectTrigger className="h-11 rounded-xl">
-                <SelectValue placeholder="Baustelle waehlen..." />
+                <SelectValue placeholder="Baustelle wählen..." />
               </SelectTrigger>
               <SelectContent>
                 {activeSites.map((site) => (
@@ -241,7 +241,7 @@ export function AssignmentDialog({
                       key={idx}
                       type="button"
                       onClick={() => toggleDay(idx)}
-                      aria-label={`Tag auswaehlen: ${label}`}
+                      aria-label={`Tag auswählen: ${label}`}
                       aria-pressed={selectedDays.includes(idx)}
                       className={`flex-1 py-2 rounded-lg text-xs font-medium transition-colors ${
                         selectedDays.includes(idx)
@@ -280,7 +280,7 @@ export function AssignmentDialog({
               disabled={isDeleting || isPending}
             >
               {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-              Loeschen
+              Löschen
             </Button>
           )}
           <Button variant="outline" className="rounded-xl" onClick={onClose} disabled={isPending || isDeleting}>

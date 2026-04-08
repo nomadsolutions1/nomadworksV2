@@ -25,7 +25,9 @@ export function CompanyCreateForm() {
   // Store all form values in React state so step navigation preserves data
   const [formValues, setFormValues] = useState({
     name: "",
-    address: "",
+    street: "",
+    zip: "",
+    city: "",
     tax_id: "",
     trade_license: "",
     owner_first_name: "",
@@ -118,14 +120,37 @@ export function CompanyCreateForm() {
                 />
               </div>
               <div className="space-y-1 sm:col-span-2">
-                <Label htmlFor="address">Adresse</Label>
+                <Label htmlFor="street">Straße + Hausnummer</Label>
                 <Input
-                  id="address"
-                  name="address"
-                  placeholder="Musterstraße 1, 10115 Berlin"
+                  id="street"
+                  name="street"
+                  placeholder="Musterstraße 42"
                   className="h-11 rounded-xl"
-                  value={formValues.address}
-                  onChange={(e) => updateField("address", e.target.value)}
+                  value={formValues.street}
+                  onChange={(e) => updateField("street", e.target.value)}
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="zip">PLZ</Label>
+                <Input
+                  id="zip"
+                  name="zip"
+                  placeholder="10115"
+                  className="h-11 rounded-xl"
+                  maxLength={5}
+                  value={formValues.zip}
+                  onChange={(e) => updateField("zip", e.target.value)}
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="city">Stadt</Label>
+                <Input
+                  id="city"
+                  name="city"
+                  placeholder="Berlin"
+                  className="h-11 rounded-xl"
+                  value={formValues.city}
+                  onChange={(e) => updateField("city", e.target.value)}
                 />
               </div>
               <div className="space-y-1">

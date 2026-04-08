@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Loader2, Plus, X } from "lucide-react"
 import { createEmployee } from "@/lib/actions/employees"
+import { WORKER_SUBTYPES } from "@/lib/utils/constants"
 import { toast } from "sonner"
 
 interface TeamStepProps {
@@ -58,7 +59,13 @@ export function TeamStep({ onNext, onSkip }: TeamStepProps) {
         const fd = new FormData()
         fd.set("first_name", m.firstName)
         fd.set("last_name", m.lastName)
-        fd.set("role", m.role)
+        // Parse worker subtypes: "worker:Polier" -> role=worker, worker_subtype=Polier
+        if (m.role.startsWith("worker:")) {
+          fd.set("role", "worker")
+          fd.set("worker_subtype", m.role.split(":")[1])
+        } else {
+          fd.set("role", m.role)
+        }
         if (m.email) fd.set("email", m.email)
         if (m.hourlyRate) fd.set("hourly_rate", m.hourlyRate)
         fd.set("status", "active")
@@ -127,8 +134,11 @@ export function TeamStep({ onNext, onSkip }: TeamStepProps) {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="foreman">Bauleiter</SelectItem>
-                          <SelectItem value="worker">Bauarbeiter</SelectItem>
-                          <SelectItem value="office">Verwaltung</SelectItem>
+                          <SelectItem value="office">Bürokraft</SelectItem>
+                          {WORKER_SUBTYPES.map((subtype) => (
+                            <SelectItem key={subtype} value={`worker:${subtype}`}>{subtype}</SelectItem>
+                          ))}
+                          <SelectItem value="worker">Bauarbeiter (Sonstige)</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

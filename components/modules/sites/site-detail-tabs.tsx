@@ -23,10 +23,10 @@ interface SiteDetailTabsProps {
 }
 
 const TAB_LABELS: Record<string, string> = {
-  uebersicht: "Uebersicht",
+  uebersicht: "Übersicht",
   kosten: "Kosten",
   nachkalkulation: "Nachkalkulation",
-  aufmass: "Aufmass",
+  aufmass: "Aufmaß",
   zeiterfassung: "Zeiterfassung",
   team: "Team",
   bautagesbericht: "Bautagesbericht",

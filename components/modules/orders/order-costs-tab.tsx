@@ -37,7 +37,7 @@ export function OrderCostsTab({ orderId, costsByCategory: initial }: OrderCostsT
     formData.set("category", selectedCategory)
     startTransition(async () => {
       const result = await addOrderCost(orderId, formData)
-      if (result.error) { toast.error("Fehler beim Hinzufuegen"); return }
+      if (result.error) { toast.error("Fehler beim Hinzufügen"); return }
       if (result.data) {
         setCategories((prev) => {
           const updated = [...prev]
@@ -47,7 +47,7 @@ export function OrderCostsTab({ orderId, costsByCategory: initial }: OrderCostsT
           return updated
         })
       }
-      toast.success("Kosteneintrag wurde hinzugefuegt")
+      toast.success("Kosteneintrag wurde hinzugefügt")
       setIsAddOpen(false)
     })
   }
@@ -55,9 +55,9 @@ export function OrderCostsTab({ orderId, costsByCategory: initial }: OrderCostsT
   async function handleDelete(costId: string) {
     startTransition(async () => {
       const result = await deleteOrderCost(costId, orderId)
-      if (result.error) { toast.error("Fehler beim Loeschen"); return }
+      if (result.error) { toast.error("Fehler beim Löschen"); return }
       setCategories((prev) => prev.map((cat) => { const items = cat.items.filter((i) => i.id !== costId); return { ...cat, items, total: items.reduce((s, i) => s + i.amount, 0) } }).filter((cat) => cat.items.length > 0))
-      toast.success("Kosteneintrag wurde geloescht")
+      toast.success("Kosteneintrag wurde gelöscht")
       setDeleteTarget(null)
     })
   }
@@ -65,7 +65,7 @@ export function OrderCostsTab({ orderId, costsByCategory: initial }: OrderCostsT
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">{allItems.length} {allItems.length === 1 ? "Eintrag" : "Eintraege"} · <span className="font-semibold text-foreground">{formatCurrency(totalCosts)}</span></p>
+        <p className="text-sm text-muted-foreground">{allItems.length} {allItems.length === 1 ? "Eintrag" : "Einträge"} · <span className="font-semibold text-foreground">{formatCurrency(totalCosts)}</span></p>
         <Button onClick={() => setIsAddOpen(true)} className="rounded-xl font-semibold h-9 gap-2 text-sm"><Plus className="h-3.5 w-3.5" /> Kosten eintragen</Button>
       </div>
 
@@ -76,7 +76,7 @@ export function OrderCostsTab({ orderId, costsByCategory: initial }: OrderCostsT
               <CardContent className="p-3">
                 <span className="text-xs font-medium text-muted-foreground">{CATEGORY_LABELS[cat.category] || cat.category}</span>
                 <p className="text-base font-semibold font-mono text-foreground">{formatCurrency(cat.total)}</p>
-                <p className="text-xs text-muted-foreground">{cat.items.length} {cat.items.length === 1 ? "Eintrag" : "Eintraege"}</p>
+                <p className="text-xs text-muted-foreground">{cat.items.length} {cat.items.length === 1 ? "Eintrag" : "Einträge"}</p>
               </CardContent>
             </Card>
           ))}
@@ -131,8 +131,8 @@ export function OrderCostsTab({ orderId, costsByCategory: initial }: OrderCostsT
       </Dialog>
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null) }}>
-        <AlertDialogContent className="rounded-2xl"><AlertDialogHeader><AlertDialogTitle>Kosteneintrag loeschen?</AlertDialogTitle><AlertDialogDescription>Dieser Kosteneintrag wird unwiderruflich geloescht.</AlertDialogDescription></AlertDialogHeader>
-          <AlertDialogFooter><AlertDialogCancel className="rounded-xl">Abbrechen</AlertDialogCancel><AlertDialogAction onClick={() => deleteTarget && handleDelete(deleteTarget.id)} variant="destructive" className="rounded-xl font-semibold">Loeschen</AlertDialogAction></AlertDialogFooter>
+        <AlertDialogContent className="rounded-2xl"><AlertDialogHeader><AlertDialogTitle>Kosteneintrag löschen?</AlertDialogTitle><AlertDialogDescription>Dieser Kosteneintrag wird unwiderruflich gelöscht.</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogFooter><AlertDialogCancel className="rounded-xl">Abbrechen</AlertDialogCancel><AlertDialogAction onClick={() => deleteTarget && handleDelete(deleteTarget.id)} variant="destructive" className="rounded-xl font-semibold">Löschen</AlertDialogAction></AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </div>

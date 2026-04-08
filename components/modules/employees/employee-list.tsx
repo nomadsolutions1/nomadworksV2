@@ -98,7 +98,7 @@ export function EmployeeList({ employees, stats, canEdit = false }: EmployeeList
           <Link href="/mitarbeiter/neu">
             <Button className="rounded-xl font-semibold">
               <Users className="h-4 w-4 mr-2" />
-              Mitarbeiter hinzufuegen
+              Mitarbeiter hinzufügen
             </Button>
           </Link>
         )}
@@ -163,8 +163,8 @@ export function EmployeeList({ employees, stats, canEdit = false }: EmployeeList
             emptyState={{
               icon: Users,
               title: "Noch keine Mitarbeiter",
-              description: "Fuegen Sie Ihren ersten Mitarbeiter hinzu, um loszulegen.",
-              action: { label: "Mitarbeiter hinzufuegen", onClick: () => {} },
+              description: "Fügen Sie Ihren ersten Mitarbeiter hinzu, um loszulegen.",
+              action: { label: "Mitarbeiter hinzufügen", onClick: () => {} },
             }}
           />
         </CardContent>

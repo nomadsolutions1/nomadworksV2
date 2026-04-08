@@ -408,7 +408,7 @@ export async function updateInvoice(
       .single()
 
     if ((existing as AnyRow | null)?.status !== "draft") {
-      return { error: "Nur Entwuerfe koennen bearbeitet werden" }
+      return { error: "Nur Entwürfe können bearbeitet werden" }
     }
 
     const updateData = {
@@ -473,7 +473,7 @@ export async function deleteInvoice(
       .single()
 
     if ((invoice as AnyRow | null)?.status !== "draft") {
-      return { error: "Nur Entwuerfe koennen geloescht werden" }
+      return { error: "Nur Entwürfe können gelöscht werden" }
     }
 
     // Delete sub-entities first
@@ -499,7 +499,7 @@ export async function deleteInvoice(
       action: "delete",
       entityType: "invoice",
       entityId: id,
-      title: `Rechnung ${(invoice as AnyRow | null)?.invoice_number ?? ""} geloescht`,
+      title: `Rechnung ${(invoice as AnyRow | null)?.invoice_number ?? ""} gelöscht`,
     })
 
     revalidatePath("/rechnungen")
@@ -515,7 +515,7 @@ export async function updateInvoiceStatus(
     // Zod validation for status
     const parsed = invoiceStatusSchema.safeParse(status)
     if (!parsed.success) {
-      return { error: "Ungueltiger Status" }
+      return { error: "Ungültiger Status" }
     }
 
     const { error } = await db
@@ -537,7 +537,7 @@ export async function updateInvoiceStatus(
       action: "update",
       entityType: "invoice",
       entityId: id,
-      title: `Rechnungsstatus auf "${parsed.data}" geaendert`,
+      title: `Rechnungsstatus auf "${parsed.data}" geändert`,
     })
 
     revalidatePath("/rechnungen")
@@ -1083,7 +1083,7 @@ export async function createRegieInvoice(
     ]
 
     if (userIds.length === 0) {
-      return { error: "Keine Zeiteintraege im gewaehlten Zeitraum" }
+      return { error: "Keine Zeiteinträge im gewählten Zeitraum" }
     }
 
     // 2. Load profiles for job_title + hourly_rate

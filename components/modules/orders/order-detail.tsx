@@ -36,7 +36,7 @@ export function OrderDetail({ order, items, costsByCategory, measurements, finan
 
   return (
     <div className="space-y-6">
-      <Breadcrumbs items={[{ label: "Auftraege", href: "/auftraege" }, { label: order.title }]} />
+      <Breadcrumbs items={[{ label: "Aufträge", href: "/auftraege" }, { label: order.title }]} />
       <PageHeader title={order.title} description={order.customer_name ?? undefined}>
         <OrderStatusChanger orderId={order.id} currentStatus={order.status} />
       </PageHeader>
@@ -46,7 +46,7 @@ export function OrderDetail({ order, items, costsByCategory, measurements, finan
           <AlertTriangle className="h-5 w-5 text-warning shrink-0" />
           <p className="text-sm font-medium text-warning">
             Budgetwarnung: {Math.round(fin.budgetUsedPercent)}% des Budgets verbraucht
-            {fin.budgetUsedPercent >= 100 && " — Budget ueberschritten!"}
+            {fin.budgetUsedPercent >= 100 && " — Budget überschritten!"}
           </p>
         </div>
       )}
@@ -61,7 +61,7 @@ export function OrderDetail({ order, items, costsByCategory, measurements, finan
 
       <Tabs defaultValue="uebersicht" className="space-y-4">
         <TabsList className="rounded-xl bg-muted p-1 h-auto flex-wrap gap-1">
-          <TabsTrigger value="uebersicht" className="rounded-lg text-sm"><FileText className="h-3.5 w-3.5 mr-1.5" />Uebersicht</TabsTrigger>
+          <TabsTrigger value="uebersicht" className="rounded-lg text-sm"><FileText className="h-3.5 w-3.5 mr-1.5" />Übersicht</TabsTrigger>
           <TabsTrigger value="baustellen" className="rounded-lg text-sm"><MapPin className="h-3.5 w-3.5 mr-1.5" />Baustellen</TabsTrigger>
           <TabsTrigger value="positionen" className="rounded-lg text-sm"><FileText className="h-3.5 w-3.5 mr-1.5" />Positionen</TabsTrigger>
           <TabsTrigger value="kostenvergleich" className="rounded-lg text-sm"><BarChart2 className="h-3.5 w-3.5 mr-1.5" />Kostenvergleich</TabsTrigger>

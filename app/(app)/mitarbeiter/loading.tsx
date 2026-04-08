@@ -6,7 +6,7 @@ export default function MitarbeiterLoading() {
     <ModulePageSkeleton
       title="Mitarbeiter"
       description="Verwalten Sie Ihr Team und deren Qualifikationen."
-      actionLabel="Mitarbeiter hinzufuegen"
+      actionLabel="Mitarbeiter hinzufügen"
       stats={[
         { title: "Gesamt", value: "...", icon: Users },
         { title: "Aktiv", value: "...", icon: UserCheck },

@@ -40,7 +40,7 @@ export function OrderOverviewTab({ order, financials: fin, budget }: OrderOvervi
     const result = await addChangeOrder(order.id, description, amount)
     setNachtragPending(false)
     if (result.error) { toast.error(result.error); return }
-    toast.success("Nachtrag hinzugefuegt")
+    toast.success("Nachtrag hinzugefügt")
     setShowNachtrag(false)
     router.refresh()
   }
@@ -97,24 +97,24 @@ export function OrderOverviewTab({ order, financials: fin, budget }: OrderOvervi
 
       <Card className="rounded-2xl shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-base font-semibold">Budget & Nachtraege</CardTitle>
+          <CardTitle className="text-base font-semibold">Budget & Nachträge</CardTitle>
           <Button variant="outline" size="sm" className="rounded-lg" onClick={() => setShowNachtrag(true)}><Plus className="h-3 w-3 mr-1" /> Nachtrag</Button>
         </CardHeader>
         <CardContent className="space-y-2">
           <div className="flex justify-between text-sm"><span className="text-muted-foreground">Original-Budget:</span><span className="font-mono font-semibold">{formatCurrency(order.original_budget || order.budget || 0)}</span></div>
-          {order.change_order_notes && (<div className="bg-muted rounded-xl p-3 mt-2"><p className="text-xs font-medium text-foreground mb-1">Nachtraege:</p><p className="text-xs text-muted-foreground whitespace-pre-wrap">{order.change_order_notes}</p></div>)}
+          {order.change_order_notes && (<div className="bg-muted rounded-xl p-3 mt-2"><p className="text-xs font-medium text-foreground mb-1">Nachträge:</p><p className="text-xs text-muted-foreground whitespace-pre-wrap">{order.change_order_notes}</p></div>)}
           <div className="flex justify-between text-sm pt-2 border-t border-border"><span className="font-medium text-foreground">Aktuelles Budget:</span><span className="font-mono font-semibold text-primary">{formatCurrency(order.budget || 0)}</span></div>
         </CardContent>
       </Card>
 
       <Dialog open={showNachtrag} onOpenChange={setShowNachtrag}>
         <DialogContent className="rounded-2xl">
-          <DialogHeader><DialogTitle>Nachtrag hinzufuegen</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>Nachtrag hinzufügen</DialogTitle></DialogHeader>
           <form onSubmit={handleAddNachtrag} className="space-y-4">
-            <div className="space-y-1.5"><Label>Beschreibung</Label><Textarea name="description" placeholder="z.B. Zusaetzliche Erdarbeiten" className="rounded-xl" required /></div>
+            <div className="space-y-1.5"><Label>Beschreibung</Label><Textarea name="description" placeholder="z.B. Zusätzliche Erdarbeiten" className="rounded-xl" required /></div>
             <div className="space-y-1.5"><Label>Betrag (EUR)</Label><Input name="amount" type="number" step="0.01" min="0" placeholder="z.B. 15000" className="h-11 rounded-xl" required /></div>
             <Button type="submit" className="w-full rounded-xl font-semibold h-11" disabled={nachtragPending}>
-              {nachtragPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />} Nachtrag hinzufuegen
+              {nachtragPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />} Nachtrag hinzufügen
             </Button>
           </form>
         </DialogContent>

@@ -16,11 +16,11 @@ import { Award, Plus, Trash2, AlertTriangle, Loader2 } from "lucide-react"
 import type { Qualification } from "@/lib/actions/employees"
 
 const PREDEFINED_QUALIFICATIONS = [
-  "Fuehrerschein Klasse B", "Fuehrerschein Klasse C/CE", "Staplerschein",
-  "Kranfuehrerschein", "Schweisserschein", "Elektrofachkraft (5kV)",
+  "Führerschein Klasse B", "Führerschein Klasse C/CE", "Staplerschein",
+  "Kranführerschein", "Schweißerschein", "Elektrofachkraft (5kV)",
   "Asbestschutzkurs (TRGS 519)", "Schadstoffkunde", "SiGe-Koordinator (RAB 30)",
-  "Baumaschinenfuehrer", "Hebebuehnenfuehrerschein", "Erste-Hilfe-Ausbildung",
-  "Baggerfuehrerschein", "Geruestbauerschein", "Sicherheitsunterweisung (DGUV)",
+  "Baumaschinenführer", "Hebebühnenführerschein", "Erste-Hilfe-Ausbildung",
+  "Baggerführerschein", "Gerüstbauerschein", "Sicherheitsunterweisung (DGUV)",
 ]
 
 interface QualificationListProps {
@@ -61,7 +61,7 @@ export function QualificationList({ userId, qualifications: initial }: Qualifica
         setOpen(false)
         setQualName("")
         setCustomName("")
-        toast.success("Qualifikation hinzugefuegt")
+        toast.success("Qualifikation hinzugefügt")
       }
     })
   }
@@ -84,15 +84,15 @@ export function QualificationList({ userId, qualifications: initial }: Qualifica
         </p>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger render={<Button size="sm" className="rounded-xl font-semibold" />}>
-            <Plus className="h-4 w-4 mr-1.5" /> Qualifikation hinzufuegen
+            <Plus className="h-4 w-4 mr-1.5" /> Qualifikation hinzufügen
           </DialogTrigger>
           <DialogContent className="rounded-2xl">
-            <DialogHeader><DialogTitle>Qualifikation hinzufuegen</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle>Qualifikation hinzufügen</DialogTitle></DialogHeader>
             <form onSubmit={handleAdd} className="space-y-4 mt-2">
               <div className="space-y-1.5">
                 <Label>Bezeichnung *</Label>
                 <Select value={qualName} onValueChange={handleQualNameChange}>
-                  <SelectTrigger className="h-11 rounded-xl"><SelectValue placeholder="Qualifikation auswaehlen" /></SelectTrigger>
+                  <SelectTrigger className="h-11 rounded-xl"><SelectValue placeholder="Qualifikation auswählen" /></SelectTrigger>
                   <SelectContent>
                     {PREDEFINED_QUALIFICATIONS.map((q) => (<SelectItem key={q} value={q}>{q}</SelectItem>))}
                     <SelectItem value="__custom__">Sonstige / Eigene...</SelectItem>
@@ -107,9 +107,9 @@ export function QualificationList({ userId, qualifications: initial }: Qualifica
               )}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5"><Label htmlFor="issued_date">Ausgestellt am</Label><Input id="issued_date" name="issued_date" type="date" className="h-11 rounded-xl" /></div>
-                <div className="space-y-1.5"><Label htmlFor="expiry_date">Gueltig bis</Label><Input id="expiry_date" name="expiry_date" type="date" className="h-11 rounded-xl" /></div>
+                <div className="space-y-1.5"><Label htmlFor="expiry_date">Gültig bis</Label><Input id="expiry_date" name="expiry_date" type="date" className="h-11 rounded-xl" /></div>
               </div>
-              <div className="space-y-1.5"><Label htmlFor="issued_by">Ausstellende Stelle</Label><Input id="issued_by" name="issued_by" placeholder="z.B. TUEV Rheinland" className="h-11 rounded-xl" /></div>
+              <div className="space-y-1.5"><Label htmlFor="issued_by">Ausstellende Stelle</Label><Input id="issued_by" name="issued_by" placeholder="z.B. TÜV Rheinland" className="h-11 rounded-xl" /></div>
               <div className="space-y-1.5"><Label htmlFor="notes">Notizen</Label><Textarea id="notes" name="notes" placeholder="Zertifikatsnummer, etc." className="rounded-xl resize-none" rows={2} /></div>
               <div className="flex justify-end gap-2">
                 <Button type="button" variant="outline" className="rounded-xl" onClick={() => setOpen(false)}>Abbrechen</Button>
@@ -123,7 +123,7 @@ export function QualificationList({ userId, qualifications: initial }: Qualifica
       </div>
 
       {qualifications.length === 0 ? (
-        <EmptyState icon={Award} title="Noch keine Qualifikationen" description="Fuegen Sie Fuehrerscheine, Zertifikate und Weiterbildungen hinzu." />
+        <EmptyState icon={Award} title="Noch keine Qualifikationen" description="Fügen Sie Führerscheine, Zertifikate und Weiterbildungen hinzu." />
       ) : (
         <div className="space-y-2">
           {qualifications.map((qual) => {
@@ -144,7 +144,7 @@ export function QualificationList({ userId, qualifications: initial }: Qualifica
                       {qual.issued_date && <span className="text-xs text-muted-foreground">Ausgestellt: {formatDate(qual.issued_date)}</span>}
                       {qual.expiry_date && (
                         <span className={`text-xs font-medium ${status === "expired" ? "text-danger" : status === "expiring" ? "text-warning" : "text-muted-foreground"}`}>
-                          {status === "expired" ? "Abgelaufen" : "Gueltig bis"}: {formatDate(qual.expiry_date)}
+                          {status === "expired" ? "Abgelaufen" : "Gültig bis"}: {formatDate(qual.expiry_date)}
                         </span>
                       )}
                     </div>

@@ -73,7 +73,7 @@ export function DayView({ date, assignments, onDateChange }: DayViewProps) {
       <CardContent>
         {siteEntries.length === 0 ? (
           <p className="text-sm text-muted-foreground text-center py-12">
-            Keine Zuweisungen fuer diesen Tag.
+            Keine Zuweisungen für diesen Tag.
           </p>
         ) : (
           <div className="flex">

@@ -45,7 +45,7 @@ export function DispositionContent({
     <div className="space-y-6">
       <PageHeader
         title="Disposition"
-        description="Planen Sie die Einsaetze Ihrer Mitarbeiter und ueberblicken Sie die Auslastung."
+        description="Planen Sie die Einsätze Ihrer Mitarbeiter und überblicken Sie die Auslastung."
       />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -68,7 +68,7 @@ export function DispositionContent({
           </TabsTrigger>
           <TabsTrigger value="zeiten" className="rounded-lg flex items-center gap-1.5">
             <Clock className="h-3.5 w-3.5" />
-            Zeituebersicht
+            Zeitübersicht
           </TabsTrigger>
         </TabsList>
 
@@ -111,7 +111,7 @@ export function DispositionContent({
               href="/disposition/zeiterfassung"
               className="text-primary hover:underline font-medium"
             >
-              Zur Zeituebersicht
+              Zur Zeitübersicht
             </a>
           </div>
         </TabsContent>

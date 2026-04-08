@@ -36,7 +36,7 @@ export function SiteList({ sites, totalSites, activeSites, pausedSites, totalBud
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Baustellen" description="Alle Baustellen und deren Status im Ueberblick.">
+      <PageHeader title="Baustellen" description="Alle Baustellen und deren Status im Überblick.">
         <Link href="/baustellen/karte"><Button variant="outline" className="rounded-xl h-11 gap-2"><Map className="h-4 w-4" /> Kartenansicht</Button></Link>
         <Link href="/baustellen/neu"><Button className="rounded-xl font-semibold h-11 gap-2"><Plus className="h-4 w-4" /> Baustelle anlegen</Button></Link>
       </PageHeader>

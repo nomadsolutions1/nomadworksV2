@@ -74,7 +74,7 @@ export function DiaryForm({ mode, entry, sites, defaultSiteId }: DiaryFormProps)
               <Label>Baustelle *</Label>
               <Select value={siteId} onValueChange={(v) => setSiteId(v ?? "")}>
                 <SelectTrigger className="h-11 rounded-xl">
-                  <SelectValue placeholder="Baustelle waehlen" />
+                  <SelectValue placeholder="Baustelle wählen" />
                 </SelectTrigger>
                 <SelectContent>
                   {sites.map((s) => (
@@ -115,10 +115,10 @@ export function DiaryForm({ mode, entry, sites, defaultSiteId }: DiaryFormProps)
 
       <Card className="rounded-2xl shadow-sm">
         <CardHeader>
-          <CardTitle className="text-base font-semibold text-foreground">Durchgefuehrte Arbeiten</CardTitle>
+          <CardTitle className="text-base font-semibold text-foreground">Durchgeführte Arbeiten</CardTitle>
         </CardHeader>
         <CardContent>
-          <Textarea id="work_description" name="work_description" defaultValue={entry?.work_description ?? ""} placeholder="Beschreiben Sie die heute durchgefuehrten Arbeiten..." rows={5} className="rounded-xl resize-none" />
+          <Textarea id="work_description" name="work_description" defaultValue={entry?.work_description ?? ""} placeholder="Beschreiben Sie die heute durchgeführten Arbeiten..." rows={5} className="rounded-xl resize-none" />
         </CardContent>
       </Card>
 
@@ -141,9 +141,9 @@ export function DiaryForm({ mode, entry, sites, defaultSiteId }: DiaryFormProps)
               <span className="inline-flex items-center justify-center h-5 w-5 rounded bg-warning/10">
                 <Wrench className="h-3 w-3 text-warning" />
               </span>
-              <span className="text-warning">Maengel</span>
+              <span className="text-warning">Mängel</span>
             </Label>
-            <Textarea id="defects" name="defects" defaultValue={entry?.defects ?? ""} placeholder="z.B. Materialfehler, Ausfuehrungsmaengel..." rows={3} className="rounded-xl resize-none border-warning/20 focus:border-warning/40" />
+            <Textarea id="defects" name="defects" defaultValue={entry?.defects ?? ""} placeholder="z.B. Materialfehler, Ausführungsmängel..." rows={3} className="rounded-xl resize-none border-warning/20 focus:border-warning/40" />
           </div>
         </CardContent>
       </Card>
@@ -160,7 +160,7 @@ export function DiaryForm({ mode, entry, sites, defaultSiteId }: DiaryFormProps)
       <div className="flex items-center gap-3">
         <Button type="submit" disabled={isPending || !siteId} className="rounded-xl font-semibold h-11 px-6">
           {isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-          {mode === "create" ? "Bericht erstellen" : "Aenderungen speichern"}
+          {mode === "create" ? "Bericht erstellen" : "Änderungen speichern"}
         </Button>
         <Button type="button" variant="outline" className="rounded-xl h-11" onClick={() => router.back()}>
           Abbrechen

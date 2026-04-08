@@ -40,7 +40,7 @@ export function AddItemDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-2xl max-w-lg">
         <DialogHeader>
-          <DialogTitle>Position hinzufuegen</DialogTitle>
+          <DialogTitle>Position hinzufügen</DialogTitle>
         </DialogHeader>
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-1.5">
@@ -68,10 +68,10 @@ export function AddItemDialog({
               type="submit"
               disabled={isPending}
               className="rounded-xl font-semibold"
-              aria-label="Position hinzufuegen"
+              aria-label="Position hinzufügen"
             >
               {isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-              Hinzufuegen
+              Hinzufügen
             </Button>
           </DialogFooter>
         </form>
@@ -154,9 +154,9 @@ export function DeleteItemDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="rounded-2xl">
         <AlertDialogHeader>
-          <AlertDialogTitle>Position loeschen?</AlertDialogTitle>
+          <AlertDialogTitle>Position löschen?</AlertDialogTitle>
           <AlertDialogDescription>
-            Diese Position wird unwiderruflich geloescht und der
+            Diese Position wird unwiderruflich gelöscht und der
             Rechnungsbetrag neu berechnet.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -165,9 +165,9 @@ export function DeleteItemDialog({
           <AlertDialogAction
             onClick={onConfirm}
             className="rounded-xl font-semibold bg-danger hover:bg-danger/90"
-            aria-label="Position endgueltig loeschen"
+            aria-label="Position endgültig löschen"
           >
-            Loeschen
+            Löschen
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

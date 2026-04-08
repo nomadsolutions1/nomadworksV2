@@ -34,12 +34,12 @@ export function ResetPasswordDialog({ employeeId, employeeName }: ResetPasswordD
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={<Button variant="outline" size="sm" className="rounded-xl gap-1.5" />}>
-        <KeyRound className="h-4 w-4" /> Passwort zuruecksetzen
+        <KeyRound className="h-4 w-4" /> Passwort zurücksetzen
       </DialogTrigger>
       <DialogContent className="rounded-2xl">
         <DialogHeader>
-          <DialogTitle>Passwort zuruecksetzen</DialogTitle>
-          <DialogDescription>Neues Passwort fuer {employeeName} festlegen.</DialogDescription>
+          <DialogTitle>Passwort zurücksetzen</DialogTitle>
+          <DialogDescription>Neues Passwort für {employeeName} festlegen.</DialogDescription>
         </DialogHeader>
         <div className="space-y-3 py-2">
           <div className="space-y-1.5">

@@ -107,7 +107,7 @@ export function ReminderSection({
         <div className="flex items-center gap-3 rounded-2xl border border-danger/30 bg-danger/10 p-4">
           <AlertTriangle className="h-5 w-5 text-danger shrink-0" />
           <p className="text-sm font-medium text-danger">
-            Diese Rechnung ist ueberfaellig. Erstellen Sie jetzt die erste
+            Diese Rechnung ist überfällig. Erstellen Sie jetzt die erste
             Mahnung.
           </p>
         </div>
@@ -117,7 +117,7 @@ export function ReminderSection({
         <EmptyState
           icon={Bell}
           title="Keine Mahnungen vorhanden"
-          description="Sobald eine Rechnung ueberfaellig ist, koennen Sie hier Mahnungen mit automatischer Gebuehrenberechnung erstellen."
+          description="Sobald eine Rechnung überfällig ist, können Sie hier Mahnungen mit automatischer Gebührenberechnung erstellen."
           action={
             canCreateReminder
               ? {
@@ -255,7 +255,7 @@ export function ReminderSection({
               <Textarea
                 id="reminder-notes"
                 name="notes"
-                placeholder="Zusaetzliche Hinweise zur Mahnung..."
+                placeholder="Zusätzliche Hinweise zur Mahnung..."
                 rows={3}
                 className="rounded-xl resize-none"
               />

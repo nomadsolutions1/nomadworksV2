@@ -118,8 +118,8 @@ export function EmployeeForm({ employee, mode }: EmployeeFormProps) {
                 <Label htmlFor="role">Rolle *</Label>
                 <Select value={role} onValueChange={handleRoleChange}>
                   <SelectTrigger className="h-11 rounded-xl">
-                    <SelectValue placeholder="Rolle auswaehlen">
-                      {(value) => ROLE_OPTIONS.find((o) => o.value === value)?.label ?? "Rolle auswaehlen"}
+                    <SelectValue placeholder="Rolle auswählen">
+                      {(value) => ROLE_OPTIONS.find((o) => o.value === value)?.label ?? "Rolle auswählen"}
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
@@ -172,8 +172,8 @@ export function EmployeeForm({ employee, mode }: EmployeeFormProps) {
                 <Label>Vertragsart</Label>
                 <Select value={contractType} onValueChange={handleContractChange}>
                   <SelectTrigger className="h-11 rounded-xl">
-                    <SelectValue placeholder="Vertragsart auswaehlen">
-                      {(value) => CONTRACT_OPTIONS.find((o) => o.value === value)?.label ?? "Vertragsart auswaehlen"}
+                    <SelectValue placeholder="Vertragsart auswählen">
+                      {(value) => CONTRACT_OPTIONS.find((o) => o.value === value)?.label ?? "Vertragsart auswählen"}
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
@@ -195,8 +195,8 @@ export function EmployeeForm({ employee, mode }: EmployeeFormProps) {
                     <Label>Kuendigungsfrist</Label>
                     <Select value={noticePeriod} onValueChange={handleNoticePeriodChange}>
                       <SelectTrigger className="h-11 rounded-xl">
-                        <SelectValue placeholder="Frist auswaehlen">
-                          {(value) => NOTICE_PERIOD_OPTIONS.find((o) => o.value === value)?.label ?? "Frist auswaehlen"}
+                        <SelectValue placeholder="Frist auswählen">
+                          {(value) => NOTICE_PERIOD_OPTIONS.find((o) => o.value === value)?.label ?? "Frist auswählen"}
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
@@ -260,7 +260,7 @@ export function EmployeeForm({ employee, mode }: EmployeeFormProps) {
           </Button>
           <Button type="submit" className="rounded-xl font-semibold" disabled={isPending}>
             {isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-            {mode === "create" ? "Mitarbeiter anlegen" : "Aenderungen speichern"}
+            {mode === "create" ? "Mitarbeiter anlegen" : "Änderungen speichern"}
           </Button>
         </div>
       </form>

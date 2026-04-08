@@ -48,7 +48,7 @@ export function OrderForm({ order, customers: initialCustomers, mode }: OrderFor
       } else if (order) {
         const result = await updateOrder(order.id, formData)
         if (result.error) { toast.error("Fehler beim Speichern"); return }
-        toast.success("Aenderungen wurden gespeichert")
+        toast.success("Änderungen wurden gespeichert")
         router.refresh()
       }
     })
@@ -82,7 +82,7 @@ export function OrderForm({ order, customers: initialCustomers, mode }: OrderFor
                   <div className="flex-1">
                     <Select value={customerId} onValueChange={(v) => setCustomerId(v ?? "")}>
                       <SelectTrigger className="h-11 rounded-xl">
-                        <SelectValue placeholder="Kunde waehlen">{(value) => customers.find((c) => c.id === value)?.name ?? "Kunde waehlen"}</SelectValue>
+                        <SelectValue placeholder="Kunde wählen">{(value) => customers.find((c) => c.id === value)?.name ?? "Kunde wählen"}</SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="">Kein Kunde</SelectItem>
@@ -97,7 +97,7 @@ export function OrderForm({ order, customers: initialCustomers, mode }: OrderFor
                 <Label>Status</Label>
                 <Select value={status} onValueChange={(v) => setStatus(v ?? "offer")}>
                   <SelectTrigger className="h-11 rounded-xl">
-                    <SelectValue placeholder="Status waehlen">{(value) => getOrderStatusConfig(value as string).label}</SelectValue>
+                    <SelectValue placeholder="Status wählen">{(value) => getOrderStatusConfig(value as string).label}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {Object.entries(ORDER_STATUSES).map(([key, val]) => (<SelectItem key={key} value={key}>{val.label}</SelectItem>))}
@@ -114,7 +114,7 @@ export function OrderForm({ order, customers: initialCustomers, mode }: OrderFor
         <div className="flex items-center gap-3">
           <Button type="submit" disabled={isPending} className="rounded-xl font-semibold h-11 px-6">
             {isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-            {mode === "create" ? "Auftrag anlegen" : "Aenderungen speichern"}
+            {mode === "create" ? "Auftrag anlegen" : "Änderungen speichern"}
           </Button>
           <Button type="button" variant="outline" className="rounded-xl h-11" onClick={() => router.back()}>Abbrechen</Button>
         </div>
@@ -124,7 +124,7 @@ export function OrderForm({ order, customers: initialCustomers, mode }: OrderFor
           <div className="p-6 border-b border-border">
             <SheetHeader>
               <SheetTitle className="text-lg font-semibold text-foreground">Neuen Kunden anlegen</SheetTitle>
-              <p className="text-sm text-muted-foreground">Erstellen Sie einen neuen Kunden fuer diesen Auftrag.</p>
+              <p className="text-sm text-muted-foreground">Erstellen Sie einen neuen Kunden für diesen Auftrag.</p>
             </SheetHeader>
           </div>
           <form onSubmit={handleCreateCustomer} className="p-6 space-y-4">

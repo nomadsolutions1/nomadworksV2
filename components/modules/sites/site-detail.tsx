@@ -48,10 +48,10 @@ export function SiteDetail({ site, stats, foremanList, timeEntries, activeTab, b
           zeiterfassung: (
             <div className="space-y-4">
               {timeEntries.length === 0 ? (
-                <EmptyState icon={Clock} title="Keine Zeiteintraege" description="Fuer diese Baustelle wurden noch keine Arbeitszeiten erfasst." />
+                <EmptyState icon={Clock} title="Keine Zeiteinträge" description="Für diese Baustelle wurden noch keine Arbeitszeiten erfasst." />
               ) : (
                 <Card className="rounded-2xl shadow-sm">
-                  <CardHeader><CardTitle className="text-base font-semibold text-foreground">Zeiterfassung ({timeEntries.length} Eintraege)</CardTitle></CardHeader>
+                  <CardHeader><CardTitle className="text-base font-semibold text-foreground">Zeiterfassung ({timeEntries.length} Einträge)</CardTitle></CardHeader>
                   <CardContent className="p-0">
                     <div className="rounded-xl border border-border overflow-hidden mx-6 mb-6">
                       <Table>
@@ -78,9 +78,9 @@ export function SiteDetail({ site, stats, foremanList, timeEntries, activeTab, b
           nachkalkulation: <SiteNachkalkulation siteId={site.id} />,
           aufmass: <SiteMeasurementsComp siteId={site.id} />,
           team: <SiteTeamComp siteId={site.id} />,
-          bautagesbericht: <EmptyState icon={FileText} title="Bautagesberichte" description="Berichte fuer diese Baustelle finden Sie im Bautagesbericht-Modul." />,
-          fuhrpark: <EmptyState icon={HardHat} title="Fuhrpark-Zuweisungen" description="Geraete und Fahrzeuge koennen dieser Baustelle ueber den Fuhrpark zugewiesen werden." />,
-          material: <EmptyState icon={Package} title="Material" description="Materialentnahmen fuer diese Baustelle werden im Lager-Modul erfasst." />,
+          bautagesbericht: <EmptyState icon={FileText} title="Bautagesberichte" description="Berichte für diese Baustelle finden Sie im Bautagesbericht-Modul." />,
+          fuhrpark: <EmptyState icon={HardHat} title="Fuhrpark-Zuweisungen" description="Geräte und Fahrzeuge können dieser Baustelle über den Fuhrpark zugewiesen werden." />,
+          material: <EmptyState icon={Package} title="Material" description="Materialentnahmen für diese Baustelle werden im Lager-Modul erfasst." />,
           bearbeiten: <SiteForm mode="edit" site={site} foremanList={foremanList} />,
         }}
       </SiteDetailTabs>

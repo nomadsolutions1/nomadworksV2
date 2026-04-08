@@ -12,7 +12,7 @@ export function SiteNew({ foremanList, orders }: SiteNewProps) {
   return (
     <div className="space-y-6">
       <Breadcrumbs items={[{ label: "Baustellen", href: "/baustellen" }, { label: "Neue Baustelle" }]} />
-      <PageHeader title="Baustelle anlegen" description="Erstellen Sie eine neue Baustelle fuer Ihr Unternehmen." />
+      <PageHeader title="Baustelle anlegen" description="Erstellen Sie eine neue Baustelle für Ihr Unternehmen." />
       <SiteForm mode="create" foremanList={foremanList} orders={orders} />
     </div>
   )

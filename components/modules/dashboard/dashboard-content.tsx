@@ -98,7 +98,7 @@ export function DashboardContent({
         description={
           isEmpty
             ? "Willkommen bei NomadWorks! Richten Sie Ihr Unternehmen ein."
-            : "Hier ist die Uebersicht Ihres Unternehmens."
+            : "Hier ist die Übersicht Ihres Unternehmens."
         }
       />
 

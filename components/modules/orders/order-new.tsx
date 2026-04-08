@@ -12,8 +12,8 @@ interface OrderNewProps {
 export function OrderNew({ customers }: OrderNewProps) {
   return (
     <div className="space-y-6">
-      <Breadcrumbs items={[{ label: "Auftraege", href: "/auftraege" }, { label: "Neuer Auftrag" }]} />
-      <PageHeader title="Auftrag anlegen" description="Erstellen Sie einen neuen Auftrag fuer Ihr Unternehmen." />
+      <Breadcrumbs items={[{ label: "Aufträge", href: "/auftraege" }, { label: "Neuer Auftrag" }]} />
+      <PageHeader title="Auftrag anlegen" description="Erstellen Sie einen neuen Auftrag für Ihr Unternehmen." />
       <OrderForm mode="create" customers={customers} />
     </div>
   )

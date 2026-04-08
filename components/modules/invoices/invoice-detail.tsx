@@ -96,7 +96,7 @@ export function InvoiceDetail({
       {/* Tabs */}
       <Tabs defaultValue="uebersicht" className="space-y-4">
         <TabsList className="rounded-xl bg-muted p-1 h-auto gap-1">
-          <TabsTrigger value="uebersicht" className="rounded-lg text-sm" aria-label="Tab Uebersicht">
+          <TabsTrigger value="uebersicht" className="rounded-lg text-sm" aria-label="Tab Übersicht">
             <FileText className="h-3.5 w-3.5 mr-1.5" />
             Uebersicht
           </TabsTrigger>

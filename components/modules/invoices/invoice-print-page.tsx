@@ -45,10 +45,10 @@ export function InvoicePrintPage({
           <Button
             variant="outline"
             className="rounded-xl h-9 gap-2 text-sm"
-            aria-label="Zurueck zur Rechnung"
+            aria-label="Zurück zur Rechnung"
           >
             <ArrowLeft className="h-4 w-4" />
-            Zurueck
+            Zurück
           </Button>
         </Link>
         <div className="flex items-center gap-2">

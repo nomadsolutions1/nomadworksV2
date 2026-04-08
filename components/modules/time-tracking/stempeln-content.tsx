@@ -35,7 +35,7 @@ export function StempelnContent({
     <div className="space-y-6 max-w-2xl mx-auto">
       <PageHeader
         title="Stempeluhr"
-        description="Ein- und Ausstempeln, Stundenuebersicht"
+        description="Ein- und Ausstempeln, Stundenübersicht"
       />
 
       {assignedSite && <AssignmentInfo assignment={assignedSite} />}
@@ -64,7 +64,7 @@ export function StempelnContent({
           {todayEntries.length === 0 ? (
             <EmptyState
               icon={Clock}
-              title="Noch keine Eintraege heute"
+              title="Noch keine Einträge heute"
               description="Stempeln Sie ein, um Ihre Arbeitszeit zu erfassen."
             />
           ) : (
@@ -82,7 +82,7 @@ export function StempelnContent({
         <CardHeader className="pb-3">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle className="text-base font-semibold font-heading">
-              Wochenuebersicht
+              Wochenübersicht
             </CardTitle>
             <WeekNavigator weekStart={weekStart} />
           </div>
@@ -99,8 +99,8 @@ export function StempelnContent({
           {weekEntries.length === 0 ? (
             <EmptyState
               icon={Clock}
-              title="Keine Eintraege diese Woche"
-              description="Fuer diese Woche wurden noch keine Arbeitszeiten erfasst."
+              title="Keine Einträge diese Woche"
+              description="Für diese Woche wurden noch keine Arbeitszeiten erfasst."
             />
           ) : (
             <div className="space-y-2">

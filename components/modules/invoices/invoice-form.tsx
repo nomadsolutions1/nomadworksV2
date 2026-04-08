@@ -81,7 +81,7 @@ export function InvoiceForm({
     formData.set("tax_rate", taxRate)
 
     if (!customerId) {
-      toast.error("Bitte waehlen Sie einen Kunden aus")
+      toast.error("Bitte wählen Sie einen Kunden aus")
       return
     }
 
@@ -143,7 +143,7 @@ export function InvoiceForm({
                 Leere Rechnung
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Positionen manuell hinzufuegen
+                Positionen manuell hinzufügen
               </p>
             </button>
             <button
@@ -167,10 +167,10 @@ export function InvoiceForm({
 
           {useOrder && (
             <div className="space-y-1.5">
-              <Label>Auftrag auswaehlen</Label>
+              <Label>Auftrag auswählen</Label>
               <Select value={orderId} onValueChange={handleOrderSelect}>
                 <SelectTrigger className="h-11 rounded-xl">
-                  <SelectValue placeholder="Auftrag waehlen..." />
+                  <SelectValue placeholder="Auftrag wählen..." />
                 </SelectTrigger>
                 <SelectContent>
                   {availableOrders.map((o) => (
@@ -206,7 +206,7 @@ export function InvoiceForm({
                 onValueChange={(v: string | null) => setCustomerId(v ?? "")}
               >
                 <SelectTrigger className="h-11 rounded-xl">
-                  <SelectValue placeholder="Kunde auswaehlen..." />
+                  <SelectValue placeholder="Kunde auswählen..." />
                 </SelectTrigger>
                 <SelectContent>
                   {customers.map((c) => (

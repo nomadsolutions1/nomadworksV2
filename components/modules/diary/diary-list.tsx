@@ -133,7 +133,7 @@ export function DiaryList({ entries, stats, siteOptions }: DiaryListProps) {
         <EmptyState
           icon={ClipboardList}
           title="Keine Berichte vorhanden"
-          description="Erstellen Sie den ersten Bautagesbericht fuer Ihre Baustellen."
+          description="Erstellen Sie den ersten Bautagesbericht für Ihre Baustellen."
         />
       ) : (
         <DataTable

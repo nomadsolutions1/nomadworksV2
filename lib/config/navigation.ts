@@ -36,14 +36,15 @@ export interface WorkerTab {
 export const APP_MODULES: NavModule[] = [
   { key: "dashboard", label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { key: "mitarbeiter", label: "Mitarbeiter", href: "/mitarbeiter", icon: Users, module: "mitarbeiter" },
+  { key: "auftraege", label: "Aufträge", href: "/auftraege", icon: FileText, module: "auftraege" },
   { key: "baustellen", label: "Baustellen", href: "/baustellen", icon: MapPin, module: "baustellen" },
   { key: "disposition", label: "Disposition", href: "/disposition", icon: CalendarDays, module: "disposition" },
-  { key: "auftraege", label: "Auftraege", href: "/auftraege", icon: FileText, module: "auftraege" },
+  { key: "zeiterfassung", label: "Zeiterfassung", href: "/disposition/zeiterfassung", icon: Clock, module: "zeiterfassung" },
+  { key: "rechnungen", label: "Rechnungen", href: "/rechnungen", icon: Receipt, module: "rechnungen" },
+  { key: "bautagesbericht", label: "Bautagesbericht", href: "/bautagesbericht", icon: ClipboardList, module: "bautagesbericht" },
   { key: "fuhrpark", label: "Fuhrpark", href: "/fuhrpark", icon: Truck, module: "fuhrpark" },
   { key: "lager", label: "Lager & Einkauf", href: "/lager", icon: Package, module: "lager" },
-  { key: "rechnungen", label: "Rechnungen", href: "/rechnungen", icon: Receipt, module: "rechnungen" },
   { key: "subunternehmer", label: "Subunternehmer", href: "/subunternehmer", icon: Handshake, module: "subunternehmer" },
-  { key: "bautagesbericht", label: "Bautagesbericht", href: "/bautagesbericht", icon: ClipboardList, module: "bautagesbericht" },
 ]
 
 // ── Admin Modules (super_admin) ──

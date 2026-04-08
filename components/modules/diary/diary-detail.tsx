@@ -53,7 +53,7 @@ export function DiaryDetail({ entry, documents }: DiaryDetailProps) {
               <CardHeader>
                 <CardTitle className="text-base font-semibold text-foreground flex items-center gap-2">
                   <FileText className="h-4 w-4 text-primary" />
-                  Durchgefuehrte Arbeiten
+                  Durchgeführte Arbeiten
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -84,7 +84,7 @@ export function DiaryDetail({ entry, documents }: DiaryDetailProps) {
                   <div className="rounded-xl border border-warning/20 bg-warning/5 p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <Wrench className="h-4 w-4 text-warning" />
-                      <span className="text-sm font-semibold text-warning">Maengel</span>
+                      <span className="text-sm font-semibold text-warning">Mängel</span>
                     </div>
                     <p className="text-sm text-muted-foreground whitespace-pre-wrap">{entry.defects}</p>
                   </div>

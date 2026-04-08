@@ -27,7 +27,7 @@ export function SiteMapPage({ sites }: SiteMapPageProps) {
   return (
     <div className="flex flex-col h-full space-y-4">
       <Breadcrumbs items={[{ label: "Baustellen", href: "/baustellen" }, { label: "Kartenansicht" }]} />
-      <PageHeader title="Baustellen — Karte" description="Geografische Uebersicht aller Baustellen.">
+      <PageHeader title="Baustellen — Karte" description="Geografische Übersicht aller Baustellen.">
         <Link href="/baustellen"><Button variant="outline" className="rounded-xl h-11">Zur Liste</Button></Link>
       </PageHeader>
 

@@ -97,7 +97,7 @@ export function InvoiceList({ invoices }: InvoiceListProps) {
     },
     {
       key: "due_date",
-      header: "Faellig am",
+      header: "Fällig am",
       render: (row) => {
         const dueDate = row.due_date as string | null
         if (!dueDate) return <span className="text-muted-foreground text-sm">\u2014</span>
@@ -157,7 +157,7 @@ export function InvoiceList({ invoices }: InvoiceListProps) {
           context={open > 0 ? `${open} Rechnungen` : undefined}
         />
         <StatCard
-          title="Ueberfaellig"
+          title="Überfällig"
           value={overdue}
           icon={AlertTriangle}
           className={overdue > 0 ? "border-danger/30" : ""}
@@ -187,7 +187,7 @@ export function InvoiceList({ invoices }: InvoiceListProps) {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">
-                  Ausstehend (offen + ueberfaellig)
+                  Ausstehend (offen + überfällig)
                 </p>
                 <p className="text-lg font-semibold font-mono text-accent-foreground">
                   {formatCurrency(openVolume)}

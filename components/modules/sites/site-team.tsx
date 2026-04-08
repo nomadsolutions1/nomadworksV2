@@ -32,7 +32,7 @@ export function SiteTeam({ siteId }: SiteTeamProps) {
       <CardHeader><CardTitle className="text-base font-semibold">Team ({team.length} Mitarbeiter)</CardTitle></CardHeader>
       <CardContent>
         {team.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-6">Noch keine Zeiteintraege fuer diese Baustelle.</p>
+          <p className="text-sm text-muted-foreground text-center py-6">Noch keine Zeiteinträge für diese Baustelle.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

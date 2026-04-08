@@ -70,7 +70,7 @@ export function BautagesberichtFilters({ sites }: BautagesberichtFiltersProps) {
           onClick={() => router.push("/bautagesbericht")}
         >
           <X className="h-3.5 w-3.5" />
-          Filter zuruecksetzen
+          Filter zurücksetzen
         </Button>
       )}
     </div>

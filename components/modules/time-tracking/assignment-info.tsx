@@ -7,8 +7,8 @@ interface AssignmentInfoProps {
 }
 
 const SHIFT_LABELS: Record<string, string> = {
-  frueh: "Fruehschicht",
-  spaet: "Spaetschicht",
+  frueh: "Frühschicht",
+  spaet: "Spätschicht",
   nacht: "Nachtschicht",
   ganztag: "Ganztag",
 }

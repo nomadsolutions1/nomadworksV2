@@ -55,11 +55,11 @@ export function InvoiceItemsEditor({
     startTransition(async () => {
       const result = await addInvoiceItem(invoiceId, formData)
       if (result.error) {
-        toast.error("Fehler beim Hinzufuegen der Position")
+        toast.error("Fehler beim Hinzufügen der Position")
         return
       }
       if (result.data) setItems((prev) => [...prev, result.data!])
-      toast.success("Position hinzugefuegt")
+      toast.success("Position hinzugefügt")
       setIsAddOpen(false)
     })
   }
@@ -93,11 +93,11 @@ export function InvoiceItemsEditor({
     startTransition(async () => {
       const result = await deleteInvoiceItem(itemId, invoiceId)
       if (result.error) {
-        toast.error("Fehler beim Loeschen der Position")
+        toast.error("Fehler beim Löschen der Position")
         return
       }
       setItems((prev) => prev.filter((i) => i.id !== itemId))
-      toast.success("Position geloescht")
+      toast.success("Position gelöscht")
       setDeleteId(null)
     })
   }
@@ -111,10 +111,10 @@ export function InvoiceItemsEditor({
         <Button
           onClick={() => setIsAddOpen(true)}
           className="rounded-xl font-semibold h-9 gap-2 text-sm"
-          aria-label="Position hinzufuegen"
+          aria-label="Position hinzufügen"
         >
           <Plus className="h-3.5 w-3.5" />
-          Position hinzufuegen
+          Position hinzufügen
         </Button>
       </div>
 
@@ -122,8 +122,8 @@ export function InvoiceItemsEditor({
         <EmptyState
           icon={FileText}
           title="Keine Positionen vorhanden"
-          description="Fuegen Sie Leistungspositionen hinzu, um den Rechnungsbetrag zu berechnen."
-          action={{ label: "Position hinzufuegen", onClick: () => setIsAddOpen(true) }}
+          description="Fügen Sie Leistungspositionen hinzu, um den Rechnungsbetrag zu berechnen."
+          action={{ label: "Position hinzufügen", onClick: () => setIsAddOpen(true) }}
         />
       ) : (
         <Card className="rounded-2xl shadow-sm overflow-hidden">
@@ -154,7 +154,7 @@ export function InvoiceItemsEditor({
                         <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-primary" onClick={() => setEditItem(item)} aria-label={`Position ${item.position} bearbeiten`}>
                           <Pencil className="h-3.5 w-3.5" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-7 w-7 text-danger hover:text-danger hover:bg-danger/10" onClick={() => setDeleteId(item.id)} aria-label={`Position ${item.position} loeschen`}>
+                        <Button variant="ghost" size="icon" className="h-7 w-7 text-danger hover:text-danger hover:bg-danger/10" onClick={() => setDeleteId(item.id)} aria-label={`Position ${item.position} löschen`}>
                           <Trash2 className="h-3.5 w-3.5" />
                         </Button>
                       </div>

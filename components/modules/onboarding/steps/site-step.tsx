@@ -6,8 +6,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { CurrencyInput } from "@/components/shared/currency-input"
 import { Loader2 } from "lucide-react"
-import { createSite } from "@/lib/actions/sites"
+import { createOrder } from "@/lib/actions/orders"
 import { toast } from "sonner"
 
 interface SiteStepProps {
@@ -21,19 +22,19 @@ export function SiteStep({ onNext, onSkip }: SiteStepProps) {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    if (!formData.get("name")?.toString().trim()) {
-      toast.error("Bitte einen Baustellennamen eingeben")
+    if (!formData.get("title")?.toString().trim()) {
+      toast.error("Bitte einen Auftragsnamen eingeben")
       return
     }
-    formData.set("status", "active")
+    formData.set("status", "commissioned")
 
     startTransition(async () => {
-      const result = await createSite(formData)
+      const result = await createOrder(formData)
       if (result.error) {
         toast.error(typeof result.error === "string" ? result.error : "Fehler beim Anlegen")
         return
       }
-      toast.success("Baustelle angelegt")
+      toast.success("Auftrag angelegt")
       onNext(true)
     })
   }
@@ -46,27 +47,27 @@ export function SiteStep({ onNext, onSkip }: SiteStepProps) {
       className="max-w-xl mx-auto space-y-6"
     >
       <div className="text-center space-y-1">
-        <h2 className="text-2xl font-semibold text-foreground">Ihre erste Baustelle</h2>
-        <p className="text-sm text-muted-foreground">Optional — Sie können auch später Baustellen anlegen</p>
+        <h2 className="text-2xl font-semibold text-foreground">Ihren ersten Auftrag erstellen</h2>
+        <p className="text-sm text-muted-foreground">Optional — Sie können auch später Aufträge anlegen. Baustellen weisen Sie dann im Auftragsmodul zu.</p>
       </div>
 
       <Card className="rounded-2xl shadow-sm">
         <CardContent className="p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="name">Baustellenname *</Label>
-              <Input id="name" name="name" placeholder="z.B. Neubau Mehrfamilienhaus" className="h-11 rounded-xl" />
+              <Label htmlFor="title">Auftragsname *</Label>
+              <Input id="title" name="title" placeholder="z.B. Neubau Mehrfamilienhaus" className="h-11 rounded-xl" />
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="address">Adresse</Label>
-              <Input id="address" name="address" placeholder="Straße, PLZ, Stadt" className="h-11 rounded-xl" />
+              <Label htmlFor="customer_name">Kunde</Label>
+              <Input id="customer_name" name="customer_name" placeholder="z.B. Mustermann Bau GmbH" className="h-11 rounded-xl" />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="budget">Budget (€)</Label>
-                <Input id="budget" name="budget" type="number" placeholder="0" className="h-11 rounded-xl" />
+                <Label>Budget (€)</Label>
+                <CurrencyInput name="budget" placeholder="z.B. 125.000,00" />
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="start_date">Startdatum</Label>
@@ -80,7 +81,7 @@ export function SiteStep({ onNext, onSkip }: SiteStepProps) {
               </button>
               <Button type="submit" disabled={isPending} className="rounded-xl bg-primary hover:bg-primary/80 font-semibold px-8 h-11">
                 {isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                Baustelle anlegen
+                Auftrag anlegen
               </Button>
             </div>
           </form>

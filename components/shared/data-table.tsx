@@ -179,7 +179,7 @@ export function DataTable<T extends Record<string, unknown>>({
       {/* Selection bar */}
       {selectable && selectedIds.size > 0 && (
         <div className="flex items-center gap-3 bg-primary text-primary-foreground rounded-xl px-4 py-2">
-          <span className="text-sm font-medium">{selectedIds.size} ausgewaehlt</span>
+          <span className="text-sm font-medium">{selectedIds.size} ausgewählt</span>
           <Button size="sm" variant="ghost" className="text-primary-foreground hover:bg-primary-foreground/10 rounded-lg text-xs" onClick={() => { setSelectedIds(new Set()); onSelectionChange?.([]) }}>
             Auswahl aufheben
           </Button>
@@ -240,7 +240,7 @@ export function DataTable<T extends Record<string, unknown>>({
       {totalPages > 1 && (
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <span>
-            {sorted.length} {sorted.length === 1 ? "Eintrag" : "Eintraege"}
+            {sorted.length} {sorted.length === 1 ? "Eintrag" : "Einträge"}
           </span>
           <div className="flex items-center gap-2">
             <Button

@@ -67,7 +67,7 @@ function CapacityRow({ capacity, siteColorMap }: { capacity: EmployeeCapacity; s
       {expanded && (
         <div className="border-t bg-muted/30 px-4 py-3">
           {capacity.assignments.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-1">Keine Einsaetze diese Woche</p>
+            <p className="text-sm text-muted-foreground py-1">Keine Einsätze diese Woche</p>
           ) : (
             <div className="space-y-2">
               {capacity.assignments.map((a) => {

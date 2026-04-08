@@ -68,7 +68,7 @@ export function Header({ user, unreadCount = 0, role, allowedModules, isClockedI
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background px-4 lg:px-6">
       {!isWorker && (
         <Sheet>
-          <SheetTrigger render={<Button variant="ghost" size="icon" className="lg:hidden" aria-label="Menue oeffnen" />}>
+          <SheetTrigger render={<Button variant="ghost" size="icon" className="lg:hidden" aria-label="Menü öffnen" />}>
             <Menu className="h-5 w-5" />
           </SheetTrigger>
           <SheetContent side="left" className="w-64 bg-sidebar-bg p-0 border-none">

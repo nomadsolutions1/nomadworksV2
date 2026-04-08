@@ -3,7 +3,7 @@ import { OrderList } from "@/components/modules/orders/order-list"
 import { TipsBanner } from "@/components/shared/tips-banner"
 import type { Metadata } from "next"
 
-export const metadata: Metadata = { title: "Auftraege" }
+export const metadata: Metadata = { title: "Aufträge" }
 
 export default async function AuftraegePage() {
   const { data: orders = [] } = await getOrders()

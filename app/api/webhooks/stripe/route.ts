@@ -145,7 +145,7 @@ export async function POST(req: NextRequest) {
               company_id: company.id,
               type: "billing",
               title: "Zahlung fehlgeschlagen",
-              message: "Die letzte Zahlung fuer Ihr Abonnement konnte nicht verarbeitet werden. Bitte aktualisieren Sie Ihre Zahlungsmethode.",
+              message: "Die letzte Zahlung für Ihr Abonnement konnte nicht verarbeitet werden. Bitte aktualisieren Sie Ihre Zahlungsmethode.",
               severity: "warning",
             })
 

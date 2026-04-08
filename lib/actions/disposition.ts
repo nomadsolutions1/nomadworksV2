@@ -179,7 +179,7 @@ export async function getCapacities(
 
     if (profilesRes.error) {
       trackError("disposition", "getCapacities", profilesRes.error.message, { table: "profiles" })
-      return { error: "Kapazitaeten konnten nicht geladen werden" }
+      return { error: "Kapazitäten konnten nicht geladen werden" }
     }
 
     const employees = profilesRes.data ?? []
@@ -247,8 +247,8 @@ export async function createAssignment(
         .maybeSingle(),
     ])
 
-    if (!empRes.data) return { error: "Mitarbeiter gehoert nicht zu Ihrer Firma" }
-    if (!siteRes.data) return { error: "Baustelle gehoert nicht zu Ihrer Firma" }
+    if (!empRes.data) return { error: "Mitarbeiter gehört nicht zu Ihrer Firma" }
+    if (!siteRes.data) return { error: "Baustelle gehört nicht zu Ihrer Firma" }
 
     // Conflict detection: employee already assigned on this day?
     let warning: string | undefined
@@ -342,8 +342,8 @@ export async function updateAssignment(
         .maybeSingle(),
     ])
 
-    if (!empRes.data) return { error: "Mitarbeiter gehoert nicht zu Ihrer Firma" }
-    if (!siteRes.data) return { error: "Baustelle gehoert nicht zu Ihrer Firma" }
+    if (!empRes.data) return { error: "Mitarbeiter gehört nicht zu Ihrer Firma" }
+    if (!siteRes.data) return { error: "Baustelle gehört nicht zu Ihrer Firma" }
 
     const { error } = await db
       .from("schedule_entries")
@@ -399,7 +399,7 @@ export async function deleteAssignment(
         .maybeSingle()
 
       if (!createLog || createLog.user_id !== user.id) {
-        return { error: "Nur der Inhaber oder der Ersteller darf Zuweisungen loeschen" }
+        return { error: "Nur der Inhaber oder der Ersteller darf Zuweisungen löschen" }
       }
     }
 
@@ -411,7 +411,7 @@ export async function deleteAssignment(
 
     if (error) {
       trackError("disposition", "deleteAssignment", error.message, { table: "schedule_entries" })
-      return { error: "Zuweisung konnte nicht geloescht werden" }
+      return { error: "Zuweisung konnte nicht gelöscht werden" }
     }
 
     await logActivity({
@@ -420,7 +420,7 @@ export async function deleteAssignment(
       action: "delete",
       entityType: "assignment",
       entityId: id,
-      title: "Zuweisung geloescht",
+      title: "Zuweisung gelöscht",
     })
 
     revalidatePath("/disposition")
@@ -472,8 +472,8 @@ export async function bulkCreateAssignments(
         .maybeSingle(),
     ])
 
-    if (!empRes.data) return { error: "Mitarbeiter gehoert nicht zu Ihrer Firma" }
-    if (!siteRes.data) return { error: "Baustelle gehoert nicht zu Ihrer Firma" }
+    if (!empRes.data) return { error: "Mitarbeiter gehört nicht zu Ihrer Firma" }
+    if (!siteRes.data) return { error: "Baustelle gehört nicht zu Ihrer Firma" }
 
     // Conflict detection: check which days already have assignments
     const warnings: string[] = []

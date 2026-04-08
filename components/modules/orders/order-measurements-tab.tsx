@@ -43,9 +43,9 @@ export function OrderMeasurementsTab({ orderId, measurements: initial }: OrderMe
     formData.set("unit", unit)
     startTransition(async () => {
       const result = await addMeasurement(orderId, formData)
-      if (result.error) { toast.error("Fehler beim Hinzufuegen"); return }
+      if (result.error) { toast.error("Fehler beim Hinzufügen"); return }
       if (result.data) setMeasurements((prev) => [result.data!, ...prev])
-      toast.success("Aufmass wurde hinzugefuegt")
+      toast.success("Aufmaß wurde hinzugefügt")
       setIsAddOpen(false)
       setLength(""); setWidth(""); setHeight("")
     })
@@ -54,9 +54,9 @@ export function OrderMeasurementsTab({ orderId, measurements: initial }: OrderMe
   async function handleDelete(id: string) {
     startTransition(async () => {
       const result = await deleteMeasurement(id, orderId)
-      if (result.error) { toast.error("Fehler beim Loeschen"); return }
+      if (result.error) { toast.error("Fehler beim Löschen"); return }
       setMeasurements((prev) => prev.filter((m) => m.id !== id))
-      toast.success("Aufmass wurde geloescht")
+      toast.success("Aufmaß wurde gelöscht")
       setDeleteId(null)
     })
   }
@@ -69,11 +69,11 @@ export function OrderMeasurementsTab({ orderId, measurements: initial }: OrderMe
         <div className="flex gap-4 text-sm text-muted-foreground">
           {totalCalculated > 0 && <span>Gesamt: <span className="font-semibold text-foreground">{formatNumber(totalCalculated)}</span></span>}
         </div>
-        <Button onClick={() => setIsAddOpen(true)} className="rounded-xl font-semibold h-9 gap-2 text-sm"><Plus className="h-3.5 w-3.5" /> Aufmass hinzufuegen</Button>
+        <Button onClick={() => setIsAddOpen(true)} className="rounded-xl font-semibold h-9 gap-2 text-sm"><Plus className="h-3.5 w-3.5" /> Aufmaß hinzufügen</Button>
       </div>
 
       {measurements.length === 0 ? (
-        <EmptyState icon={Ruler} title="Kein Aufmass vorhanden" description="Fuegen Sie Masse hinzu — Flaechen und Volumen werden automatisch berechnet." action={{ label: "Aufmass hinzufuegen", onClick: () => setIsAddOpen(true) }} />
+        <EmptyState icon={Ruler} title="Kein Aufmaß vorhanden" description="Fügen Sie Masse hinzu — Flächen und Volumen werden automatisch berechnet." action={{ label: "Aufmaß hinzufügen", onClick: () => setIsAddOpen(true) }} />
       ) : (
         <Card className="rounded-2xl shadow-sm overflow-hidden">
           <CardContent className="p-0">
@@ -100,24 +100,24 @@ export function OrderMeasurementsTab({ orderId, measurements: initial }: OrderMe
 
       <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
         <DialogContent className="rounded-2xl max-w-md">
-          <DialogHeader><DialogTitle>Aufmass hinzufuegen</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>Aufmaß hinzufügen</DialogTitle></DialogHeader>
           <form onSubmit={handleAdd} className="space-y-4">
             <div className="space-y-1.5"><Label htmlFor="description">Beschreibung *</Label><Input id="description" name="description" placeholder="z.B. Wand Nord" className="h-11 rounded-xl" required /></div>
             <div className="grid grid-cols-3 gap-3">
-              <div className="space-y-1.5"><Label>Laenge (m)</Label><Input name="length" type="number" step="0.01" min="0" className="h-11 rounded-xl" value={length} onChange={(e) => setLength(e.target.value)} /></div>
+              <div className="space-y-1.5"><Label>Länge (m)</Label><Input name="length" type="number" step="0.01" min="0" className="h-11 rounded-xl" value={length} onChange={(e) => setLength(e.target.value)} /></div>
               <div className="space-y-1.5"><Label>Breite (m)</Label><Input name="width" type="number" step="0.01" min="0" className="h-11 rounded-xl" value={width} onChange={(e) => setWidth(e.target.value)} /></div>
-              <div className="space-y-1.5"><Label>Hoehe (m)</Label><Input name="height" type="number" step="0.01" min="0" className="h-11 rounded-xl" value={height} onChange={(e) => setHeight(e.target.value)} /></div>
+              <div className="space-y-1.5"><Label>Höhe (m)</Label><Input name="height" type="number" step="0.01" min="0" className="h-11 rounded-xl" value={height} onChange={(e) => setHeight(e.target.value)} /></div>
             </div>
             {previewValue !== null && <div className="rounded-xl bg-muted p-3 text-sm"><p className="text-muted-foreground">Ergebnis: <span className="font-semibold text-foreground">{formatNumber(previewValue)} {unit}</span></p></div>}
             <div className="space-y-1.5"><Label>Einheit *</Label><Select value={unit} onValueChange={(v) => setUnit(v ?? "m2")}><SelectTrigger className="h-11 rounded-xl"><SelectValue /></SelectTrigger><SelectContent>{UNITS.map((u) => (<SelectItem key={u} value={u}>{u}</SelectItem>))}</SelectContent></Select></div>
-            <DialogFooter><Button type="button" variant="outline" className="rounded-xl" onClick={() => setIsAddOpen(false)}>Abbrechen</Button><Button type="submit" disabled={isPending} className="rounded-xl font-semibold">{isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />} Hinzufuegen</Button></DialogFooter>
+            <DialogFooter><Button type="button" variant="outline" className="rounded-xl" onClick={() => setIsAddOpen(false)}>Abbrechen</Button><Button type="submit" disabled={isPending} className="rounded-xl font-semibold">{isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />} Hinzufügen</Button></DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={!!deleteId} onOpenChange={(open) => { if (!open) setDeleteId(null) }}>
-        <AlertDialogContent className="rounded-2xl"><AlertDialogHeader><AlertDialogTitle>Aufmass loeschen?</AlertDialogTitle><AlertDialogDescription>Dieser Eintrag wird unwiderruflich geloescht.</AlertDialogDescription></AlertDialogHeader>
-          <AlertDialogFooter><AlertDialogCancel className="rounded-xl">Abbrechen</AlertDialogCancel><AlertDialogAction onClick={() => deleteId && handleDelete(deleteId)} variant="destructive" className="rounded-xl font-semibold">Loeschen</AlertDialogAction></AlertDialogFooter>
+        <AlertDialogContent className="rounded-2xl"><AlertDialogHeader><AlertDialogTitle>Aufmaß löschen?</AlertDialogTitle><AlertDialogDescription>Dieser Eintrag wird unwiderruflich gelöscht.</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogFooter><AlertDialogCancel className="rounded-xl">Abbrechen</AlertDialogCancel><AlertDialogAction onClick={() => deleteId && handleDelete(deleteId)} variant="destructive" className="rounded-xl font-semibold">Löschen</AlertDialogAction></AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </div>

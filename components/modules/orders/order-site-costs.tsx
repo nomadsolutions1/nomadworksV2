@@ -57,9 +57,9 @@ export function OrderSiteCosts({ orderId, orderBudget, siteCount }: OrderSiteCos
     <div className="space-y-4">
       <Card className="rounded-2xl shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between pb-3">
-          <CardTitle className="text-base font-semibold">Baustellen fuer diesen Auftrag</CardTitle>
+          <CardTitle className="text-base font-semibold">Baustellen für diesen Auftrag</CardTitle>
           <Link href={`/baustellen/neu?order_id=${orderId}`}>
-            <Button size="sm" className="rounded-lg text-xs h-8"><Plus className="h-3.5 w-3.5 mr-1" /> Baustelle hinzufuegen</Button>
+            <Button size="sm" className="rounded-lg text-xs h-8"><Plus className="h-3.5 w-3.5 mr-1" /> Baustelle hinzufügen</Button>
           </Link>
         </CardHeader>
         <CardContent className="space-y-4">

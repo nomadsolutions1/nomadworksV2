@@ -58,7 +58,7 @@ export type AssignedSiteInfo = {
 // ─── Zod Schemas ──────────────────────────────────────────────
 
 const clockInSchema = z.object({
-  site_id: z.string().uuid("Bitte eine Baustelle auswaehlen"),
+  site_id: z.string().uuid("Bitte eine Baustelle auswählen"),
   lat: z.string().optional().transform((v) => (v ? parseFloat(v) : null)),
   lng: z.string().optional().transform((v) => (v ? parseFloat(v) : null)),
   notes: z.string().optional().transform((v) => v || null),
@@ -75,7 +75,7 @@ const correctTimeEntrySchema = z.object({
   clock_in: z.string().min(1, "Beginn ist erforderlich"),
   clock_out: z.string().optional().transform((v) => v || null),
   break_minutes: z.coerce.number().min(0).default(0),
-  site_id: z.string().uuid("Bitte eine Baustelle auswaehlen"),
+  site_id: z.string().uuid("Bitte eine Baustelle auswählen"),
   notes: z.string().optional().transform((v) => v || null),
 })
 
@@ -138,7 +138,7 @@ function buildTimeEntry(
 }
 
 // ─── clockIn ──────────────────────────────────────────────────
-// withAuth(null, "write") — Workers muessen stempeln koennen!
+// withAuth(null, "write") — Workers muessen stempeln können!
 
 export async function clockIn(
   formData: FormData
@@ -170,7 +170,7 @@ export async function clockIn(
       .eq("company_id", profile.company_id)
       .maybeSingle()
 
-    if (!siteCheck) return { error: "Baustelle gehoert nicht zu Ihrer Firma" }
+    if (!siteCheck) return { error: "Baustelle gehört nicht zu Ihrer Firma" }
 
     const { data: entry, error } = await db
       .from("time_entries")
@@ -208,7 +208,7 @@ export async function clockIn(
 }
 
 // ─── clockOut ─────────────────────────────────────────────────
-// withAuth(null, "write") — Workers muessen stempeln koennen!
+// withAuth(null, "write") — Workers muessen stempeln können!
 
 export async function clockOut(
   formData: FormData
@@ -290,7 +290,7 @@ export async function clockOut(
 }
 
 // ─── getMyOpenEntry ───────────────────────────────────────────
-// withAuth(null, "read") — Workers muessen ihre offene Schicht sehen koennen
+// withAuth(null, "read") — Workers muessen ihre offene Schicht sehen können
 
 export async function getMyOpenEntry(): Promise<{ data?: OpenTimeEntry | null; error?: string }> {
   return withAuth(null, "read", async ({ user, profile, db }) => {
@@ -324,7 +324,7 @@ export async function getMyOpenEntry(): Promise<{ data?: OpenTimeEntry | null; e
 }
 
 // ─── getMyTimeEntries ─────────────────────────────────────────
-// withAuth(null, "read") — Workers sehen ihre eigenen Eintraege
+// withAuth(null, "read") — Workers sehen ihre eigenen Einträge
 
 export async function getMyTimeEntries(
   weekStart: string
@@ -346,7 +346,7 @@ export async function getMyTimeEntries(
 
     if (error) {
       trackError("time-entries", "getMyTimeEntries", error.message, { table: "time_entries" })
-      return { error: "Zeiteintraege konnten nicht geladen werden" }
+      return { error: "Zeiteinträge konnten nicht geladen werden" }
     }
 
     const rows = entries ?? []
@@ -367,7 +367,7 @@ export async function getMyTimeEntries(
 }
 
 // ─── getAllTimeEntries ────────────────────────────────────────
-// Admin/Dispo-Uebersicht: alle Eintraege der Firma
+// Admin/Dispo-Uebersicht: alle Einträge der Firma
 
 export async function getAllTimeEntries(
   weekStart: string
@@ -388,7 +388,7 @@ export async function getAllTimeEntries(
 
     if (error) {
       trackError("time-entries", "getAllTimeEntries", error.message, { table: "time_entries" })
-      return { error: "Zeiteintraege konnten nicht geladen werden" }
+      return { error: "Zeiteinträge konnten nicht geladen werden" }
     }
 
     const rows = entries ?? []

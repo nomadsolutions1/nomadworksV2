@@ -90,7 +90,7 @@ export function LeaveSection({ userId, leaveRequests: initial, sickDays: initial
 
       <TabsContent value="leave" className="space-y-4 mt-0">
         <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">{leaveRequests.length} Eintraege · {approvedLeaveDays} genehmigte Tage</p>
+          <p className="text-sm text-muted-foreground">{leaveRequests.length} Einträge · {approvedLeaveDays} genehmigte Tage</p>
           <Dialog open={leaveOpen} onOpenChange={setLeaveOpen}>
             <DialogTrigger render={<Button size="sm" className="rounded-xl font-semibold" />}>
               <Plus className="h-4 w-4 mr-1.5" /> Urlaub eintragen
@@ -101,7 +101,7 @@ export function LeaveSection({ userId, leaveRequests: initial, sickDays: initial
                 <div className="space-y-1.5">
                   <Label>Art des Urlaubs *</Label>
                   <Select value={leaveType} onValueChange={handleLeaveTypeChange} required>
-                    <SelectTrigger className="h-11 rounded-xl"><SelectValue placeholder="Typ auswaehlen" /></SelectTrigger>
+                    <SelectTrigger className="h-11 rounded-xl"><SelectValue placeholder="Typ auswählen" /></SelectTrigger>
                     <SelectContent>{LEAVE_TYPES.map((t) => (<SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>))}</SelectContent>
                   </Select>
                 </div>
@@ -122,7 +122,7 @@ export function LeaveSection({ userId, leaveRequests: initial, sickDays: initial
           </Dialog>
         </div>
         {leaveRequests.length === 0 ? (
-          <EmptyState icon={CalendarDays} title="Keine Urlaubsantraege" description="Noch keine Urlaubsantraege fuer diesen Mitarbeiter vorhanden." />
+          <EmptyState icon={CalendarDays} title="Keine Urlaubsanträge" description="Noch keine Urlaubsanträge für diesen Mitarbeiter vorhanden." />
         ) : (
           <div className="space-y-2">
             {leaveRequests.map((req) => {
@@ -169,7 +169,7 @@ export function LeaveSection({ userId, leaveRequests: initial, sickDays: initial
                 <div className="space-y-1.5"><Label htmlFor="sick_days">Krankheitstage *</Label><Input id="sick_days" name="days" type="number" min={1} max={365} placeholder="3" className="h-11 rounded-xl" required /></div>
                 <div className="flex items-center gap-3">
                   <Checkbox id="has_certificate" checked={hasCertificate} onCheckedChange={(c) => setHasCertificate(c === true)} />
-                  <Label htmlFor="has_certificate" className="cursor-pointer font-normal">Arbeitsunfaehigkeitsbescheinigung liegt vor</Label>
+                  <Label htmlFor="has_certificate" className="cursor-pointer font-normal">Arbeitsunfähigkeitsbescheinigung liegt vor</Label>
                 </div>
                 <div className="space-y-1.5"><Label htmlFor="sick_notes">Notizen</Label><Textarea id="sick_notes" name="notes" placeholder="Weitere Informationen..." className="rounded-xl resize-none" rows={2} /></div>
                 <div className="flex justify-end gap-2">
@@ -183,7 +183,7 @@ export function LeaveSection({ userId, leaveRequests: initial, sickDays: initial
           </Dialog>
         </div>
         {sickDays.length === 0 ? (
-          <EmptyState icon={Stethoscope} title="Keine Krankmeldungen" description="Noch keine Krankmeldungen fuer diesen Mitarbeiter vorhanden." />
+          <EmptyState icon={Stethoscope} title="Keine Krankmeldungen" description="Noch keine Krankmeldungen für diesen Mitarbeiter vorhanden." />
         ) : (
           <div className="space-y-2">
             {sickDays.map((sick) => (

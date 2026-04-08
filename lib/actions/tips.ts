@@ -32,7 +32,7 @@ const DATA_TIPS: {
     module: "mitarbeiter",
     message: (n) => `${n} Mitarbeiter haben keinen Stundensatz hinterlegt. Ohne Stundensatz keine automatische Kostenberechnung.`,
     link: "/mitarbeiter",
-    linkText: "Stundensaetze hinterlegen",
+    linkText: "Stundensätze hinterlegen",
     severity: "warning",
     check: async (db, companyId) => {
       const { count } = await db
@@ -47,7 +47,7 @@ const DATA_TIPS: {
   {
     key: "sites-no-budget",
     module: "baustellen",
-    message: (n) => `${n} Baustellen haben kein Budget hinterlegt. Ohne Budget keine Kostenueberwachung.`,
+    message: (n) => `${n} Baustellen haben kein Budget hinterlegt. Ohne Budget keine Kostenüberwachung.`,
     link: "/baustellen",
     linkText: "Budget hinterlegen",
     severity: "warning",
@@ -83,7 +83,7 @@ const DATA_TIPS: {
     module: "subunternehmer",
     message: (n) => `${n} Subunternehmer: Freistellungsbescheinigung fehlt oder abgelaufen.`,
     link: "/subunternehmer",
-    linkText: "Bescheinigungen pruefen",
+    linkText: "Bescheinigungen prüfen",
     severity: "warning",
     check: async (db, companyId) => {
       const today = new Date().toISOString().split("T")[0]
@@ -98,9 +98,9 @@ const DATA_TIPS: {
   {
     key: "vehicles-tuev",
     module: "fuhrpark",
-    message: (n) => `${n} Fahrzeuge: TUEV laeuft in den naechsten 30 Tagen ab.`,
+    message: (n) => `${n} Fahrzeuge: TÜV läuft in den nächsten 30 Tagen ab.`,
     link: "/fuhrpark/fahrzeuge",
-    linkText: "TUEV-Termine pruefen",
+    linkText: "TÜV-Termine prüfen",
     severity: "warning",
     check: async (db, companyId) => {
       const thirtyDays = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
@@ -120,7 +120,7 @@ const DATA_TIPS: {
     module: "lager",
     message: (n) => `${n} Materialien unter Mindestbestand.`,
     link: "/lager",
-    linkText: "Lagerbestaende pruefen",
+    linkText: "Lagerbestände prüfen",
     severity: "warning",
     check: async (db, companyId) => {
       const { data } = await db
@@ -138,13 +138,13 @@ const DATA_TIPS: {
 // Onboarding tips — shown once on first visit
 const ONBOARDING_TIPS: Tip[] = [
   { key: "onboard-dashboard", module: "dashboard", severity: "info", message: "Ihr Dashboard zeigt alle wichtigen Kennzahlen auf einen Blick. Die Warnungen oben zeigen was Ihre Aufmerksamkeit braucht.", link: "", linkText: "" },
-  { key: "onboard-mitarbeiter", module: "mitarbeiter", severity: "info", message: "Hier verwalten Sie Ihr Team. Legen Sie Stundensaetze fest — damit berechnet NomadWorks automatisch Ihre Personalkosten.", link: "", linkText: "" },
-  { key: "onboard-baustellen", module: "baustellen", severity: "info", message: "Jede Baustelle sammelt automatisch Kosten aus Zeiterfassung, Material und Geraeten. Hinterlegen Sie ein Budget fuer die Kostenueberwachung.", link: "", linkText: "" },
+  { key: "onboard-mitarbeiter", module: "mitarbeiter", severity: "info", message: "Hier verwalten Sie Ihr Team. Legen Sie Stundensätze fest — damit berechnet NomadWorks automatisch Ihre Personalkosten.", link: "", linkText: "" },
+  { key: "onboard-baustellen", module: "baustellen", severity: "info", message: "Jede Baustelle sammelt automatisch Kosten aus Zeiterfassung, Material und Geräten. Hinterlegen Sie ein Budget für die Kostenüberwachung.", link: "", linkText: "" },
   { key: "onboard-disposition", module: "disposition", severity: "info", message: "Weisen Sie Mitarbeiter per Drag & Drop Baustellen zu. Die Zuweisung erscheint automatisch in der Stempeluhr des Bauarbeiters.", link: "", linkText: "" },
   { key: "onboard-auftraege", module: "auftraege", severity: "info", message: "Vom Angebot bis zur Abrechnung — verfolgen Sie jeden Auftrag mit automatischer Nachkalkulation.", link: "", linkText: "" },
-  { key: "onboard-fuhrpark", module: "fuhrpark", severity: "info", message: "Fahrzeuge und Maschinen verwalten, TUEV-Termine im Blick behalten, Werkstatt-Auftraege tracken.", link: "", linkText: "" },
-  { key: "onboard-lager", module: "lager", severity: "info", message: "Material einbuchen, entnehmen, Mindestbestaende ueberwachen. Entnahmen fliessen automatisch in die Baustellenkosten.", link: "", linkText: "" },
-  { key: "onboard-rechnungen", module: "rechnungen", severity: "info", message: "Rechnungen aus Auftraegen generieren, Mahnwesen nutzen, Zahlungseingaenge verbuchen.", link: "", linkText: "" },
+  { key: "onboard-fuhrpark", module: "fuhrpark", severity: "info", message: "Fahrzeuge und Maschinen verwalten, TÜV-Termine im Blick behalten, Werkstatt-Aufträge tracken.", link: "", linkText: "" },
+  { key: "onboard-lager", module: "lager", severity: "info", message: "Material einbuchen, entnehmen, Mindestbestände überwachen. Entnahmen fließen automatisch in die Baustellenkosten.", link: "", linkText: "" },
+  { key: "onboard-rechnungen", module: "rechnungen", severity: "info", message: "Rechnungen aus Aufträgen generieren, Mahnwesen nutzen, Zahlungseingänge verbuchen.", link: "", linkText: "" },
 ]
 
 // ─── Actions ──────────────────────────────────────────────────

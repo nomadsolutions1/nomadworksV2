@@ -22,16 +22,16 @@ export function DocumentUpload({ entryId, documents }: DocumentUploadProps) {
     startTransition(async () => {
       const result = await deleteDiaryDocument(docId, entryId)
       if (result.error) {
-        toast.error("Fehler beim Loeschen des Dokuments")
+        toast.error("Fehler beim Löschen des Dokuments")
         return
       }
-      toast.success("Dokument geloescht")
+      toast.success("Dokument gelöscht")
       setDocs((prev) => prev.filter((d) => d.id !== docId))
     })
   }
 
   function handleUploadPlaceholder() {
-    toast.info("PDF-Upload wird in einer zukuenftigen Version aktiviert.")
+    toast.info("PDF-Upload wird in einer zukünftigen Version aktiviert.")
   }
 
   return (
@@ -84,7 +84,7 @@ export function DocumentUpload({ entryId, documents }: DocumentUploadProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center h-8 w-8 rounded-lg hover:bg-muted transition-colors"
-                    title="Oeffnen"
+                    title="Öffnen"
                   >
                     <ExternalLink className="h-4 w-4 text-muted-foreground" />
                   </a>
@@ -93,8 +93,8 @@ export function DocumentUpload({ entryId, documents }: DocumentUploadProps) {
                     onClick={() => handleDelete(doc.id)}
                     disabled={isPending}
                     className="inline-flex items-center justify-center h-8 w-8 rounded-lg hover:bg-destructive/10 transition-colors"
-                    title="Loeschen"
-                    aria-label={`Dokument loeschen: ${doc.file_name}`}
+                    title="Löschen"
+                    aria-label={`Dokument löschen: ${doc.file_name}`}
                   >
                     <Trash2 className="h-4 w-4 text-destructive" />
                   </button>

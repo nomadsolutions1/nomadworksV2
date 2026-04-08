@@ -34,7 +34,7 @@ export function CustomerForm({ customer, mode }: CustomerFormProps) {
       } else if (customer) {
         const result = await updateCustomer(customer.id, formData)
         if (result.error) { toast.error("Fehler beim Speichern"); return }
-        toast.success("Aenderungen wurden gespeichert")
+        toast.success("Änderungen wurden gespeichert")
         router.refresh()
       }
     })
@@ -57,7 +57,7 @@ export function CustomerForm({ customer, mode }: CustomerFormProps) {
         </CardContent>
       </Card>
       <div className="flex items-center gap-3">
-        <Button type="submit" disabled={isPending} className="rounded-xl font-semibold h-11 px-6">{isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}{mode === "create" ? "Kunde anlegen" : "Aenderungen speichern"}</Button>
+        <Button type="submit" disabled={isPending} className="rounded-xl font-semibold h-11 px-6">{isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}{mode === "create" ? "Kunde anlegen" : "Änderungen speichern"}</Button>
         <Button type="button" variant="outline" className="rounded-xl h-11" onClick={() => router.back()}>Abbrechen</Button>
       </div>
     </form>

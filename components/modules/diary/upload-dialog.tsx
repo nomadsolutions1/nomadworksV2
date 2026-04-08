@@ -39,7 +39,7 @@ export function UploadDialog({ open, onClose, sites, companyId }: UploadDialogPr
 
   function handleSubmit() {
     if (!siteId || !date || files.length === 0) {
-      toast.error("Bitte Baustelle, Datum und mindestens eine Datei auswaehlen")
+      toast.error("Bitte Baustelle, Datum und mindestens eine Datei auswählen")
       return
     }
 
@@ -94,7 +94,7 @@ export function UploadDialog({ open, onClose, sites, companyId }: UploadDialogPr
             <Label>Baustelle *</Label>
             <Select value={siteId} onValueChange={(v) => setSiteId(v ?? "")}>
               <SelectTrigger className="h-11 rounded-xl">
-                <SelectValue placeholder="Baustelle auswaehlen" />
+                <SelectValue placeholder="Baustelle auswählen" />
               </SelectTrigger>
               <SelectContent>
                 {sites.map((s) => (

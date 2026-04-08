@@ -69,9 +69,9 @@ function StatusLabel({ status }: { status: string }) {
     case "trialing":
       return <StatusBadge label="Testphase" variant="warning" />
     case "past_due":
-      return <StatusBadge label="Zahlung ueberfaellig" variant="danger" />
+      return <StatusBadge label="Zahlung überfällig" variant="danger" />
     case "canceled":
-      return <StatusBadge label="Gekuendigt" variant="neutral" />
+      return <StatusBadge label="Gekündigt" variant="neutral" />
     default:
       return <StatusBadge label={status} variant="neutral" />
   }
