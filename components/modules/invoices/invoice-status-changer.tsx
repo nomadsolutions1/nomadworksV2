@@ -74,7 +74,7 @@ export function InvoiceStatusChanger({
             variant="outline"
             disabled={isPending}
             className="rounded-xl h-9 gap-2 text-sm"
-            aria-label={`Status aendern, aktuell: ${cfg?.label ?? status}`}
+            aria-label={`Status ändern, aktuell: ${cfg?.label ?? status}`}
           />
         }
       >

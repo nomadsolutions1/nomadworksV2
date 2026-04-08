@@ -16,7 +16,7 @@ export function SiteNachkalkulation({ siteId }: SiteNachkalkulationProps) {
   useEffect(() => { getSiteCosts(siteId).then(({ data }) => { setCosts(data ?? null); setLoading(false) }) }, [siteId])
 
   if (loading) return <Skeleton className="h-64 rounded-2xl" />
-  if (!costs) return <p className="text-sm text-muted-foreground">Keine Kostendaten verfuegbar.</p>
+  if (!costs) return <p className="text-sm text-muted-foreground">Keine Kostendaten verfügbar.</p>
 
   const budget = costs.budget ?? 0
   const remaining = budget - costs.totalCosts

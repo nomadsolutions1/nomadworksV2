@@ -86,7 +86,7 @@ export function InvoiceOverviewTab({
       <Card className="rounded-2xl shadow-sm">
         <CardHeader>
           <CardTitle className="text-base font-semibold text-foreground">
-            Finanzuebersicht
+            Finanzübersicht
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">

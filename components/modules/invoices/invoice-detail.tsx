@@ -75,7 +75,7 @@ export function InvoiceDetail({
         <div className="flex items-center gap-3 rounded-2xl border border-danger/30 bg-danger/10 p-4">
           <Calendar className="h-5 w-5 text-danger shrink-0" />
           <p className="text-sm font-medium text-danger">
-            Diese Rechnung ist seit {formatDate(invoice.due_date!)} faellig und noch nicht bezahlt.
+            Diese Rechnung ist seit {formatDate(invoice.due_date!)} fällig und noch nicht bezahlt.
           </p>
         </div>
       )}
@@ -98,7 +98,7 @@ export function InvoiceDetail({
         <TabsList className="rounded-xl bg-muted p-1 h-auto gap-1">
           <TabsTrigger value="uebersicht" className="rounded-lg text-sm" aria-label="Tab Übersicht">
             <FileText className="h-3.5 w-3.5 mr-1.5" />
-            Uebersicht
+            Übersicht
           </TabsTrigger>
           <TabsTrigger value="positionen" className="rounded-lg text-sm" aria-label="Tab Positionen">
             <Receipt className="h-3.5 w-3.5 mr-1.5" />

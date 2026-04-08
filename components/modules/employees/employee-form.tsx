@@ -100,7 +100,7 @@ export function EmployeeForm({ employee, mode }: EmployeeFormProps) {
         {/* Personal Data */}
         <Card className="rounded-2xl shadow-sm">
           <CardHeader>
-            <CardTitle className="text-base font-semibold text-foreground">Persoenliche Daten</CardTitle>
+            <CardTitle className="text-base font-semibold text-foreground">Persönliche Daten</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -153,7 +153,7 @@ export function EmployeeForm({ employee, mode }: EmployeeFormProps) {
                   <Input id="birth_date" name="birth_date" type="date" defaultValue={employee?.birth_date ?? ""} className="h-11 rounded-xl" />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="nationality">Nationalitaet</Label>
+                  <Label htmlFor="nationality">Nationalität</Label>
                   <Input id="nationality" name="nationality" defaultValue={employee?.nationality ?? ""} placeholder="Deutsch" className="h-11 rounded-xl" />
                 </div>
               </div>
@@ -192,7 +192,7 @@ export function EmployeeForm({ employee, mode }: EmployeeFormProps) {
               <>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5">
-                    <Label>Kuendigungsfrist</Label>
+                    <Label>Kündigungsfrist</Label>
                     <Select value={noticePeriod} onValueChange={handleNoticePeriodChange}>
                       <SelectTrigger className="h-11 rounded-xl">
                         <SelectValue placeholder="Frist auswählen">

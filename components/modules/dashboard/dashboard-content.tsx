@@ -77,7 +77,7 @@ export function DashboardContent({
                     } in der kostenlosen Testphase`}
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Alle Features verfuegbar. Upgraden Sie jetzt fuer
+                Alle Features verfügbar. Upgraden Sie jetzt für
                 unterbrechungsfreien Zugriff.
               </p>
             </div>

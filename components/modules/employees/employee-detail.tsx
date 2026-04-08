@@ -132,7 +132,7 @@ export function EmployeeDetail({
                   )}
                   {employee.nationality && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Nationalitaet</span>
+                      <span className="text-muted-foreground">Nationalität</span>
                       <span className="font-medium">{employee.nationality}</span>
                     </div>
                   )}

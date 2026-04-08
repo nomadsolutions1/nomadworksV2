@@ -101,7 +101,7 @@ export function InvoicePrint({ invoice, items, company, customer }: InvoicePrint
         </div>
         {invoice.due_date && (
           <p style={{ marginTop: "12px", fontSize: "12px", opacity: 0.6 }}>
-            Bitte ueberweisen Sie den Betrag von <strong>{formatCurrency(total)}</strong> bis zum{" "}
+            Bitte überweisen Sie den Betrag von <strong>{formatCurrency(total)}</strong> bis zum{" "}
             <strong>{formatDate(invoice.due_date)}</strong> unter Angabe der Rechnungsnummer{" "}
             <strong>{invoice.invoice_number}</strong>.
             {company.payment_terms_days != null && <> Zahlungsziel: {company.payment_terms_days} Tage netto.</>}

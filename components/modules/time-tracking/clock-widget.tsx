@@ -179,7 +179,7 @@ export function ClockWidget({ openEntry: initialOpenEntry, sites, assignedSiteId
           {sites.length === 0 ? (
             <div className="flex items-center gap-2 rounded-xl border border-warning/30 bg-warning/5 p-3">
               <AlertCircle className="h-4 w-4 text-warning shrink-0" />
-              <p className="text-sm text-warning">Keine aktiven Baustellen verfuegbar</p>
+              <p className="text-sm text-warning">Keine aktiven Baustellen verfügbar</p>
             </div>
           ) : (
             <Select value={selectedSite} onValueChange={(v) => setSelectedSite(v ?? "")}>

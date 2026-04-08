@@ -64,7 +64,7 @@ const DATA_TIPS: {
   {
     key: "equipment-no-rate",
     module: "fuhrpark",
-    message: (n) => `${n} Geraete haben keinen Tagessatz. Ohne Tagessatz keine automatische Geraetekosten-Berechnung.`,
+    message: (n) => `${n} Geräte haben keinen Tagessatz. Ohne Tagessatz keine automatische Gerätekosten-Berechnung.`,
     link: "/fuhrpark/maschinen",
     linkText: "Tagessaetze hinterlegen",
     severity: "warning",

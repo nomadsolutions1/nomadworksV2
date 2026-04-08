@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { CurrencyInput } from "@/components/shared/currency-input"
 import { HelpCircle } from "lucide-react"
 import { formatCurrency } from "@/lib/utils/format"
 import { AG_ANTEIL_PROZENT } from "@/lib/utils/constants"
@@ -20,30 +21,30 @@ interface EmployeeFormWageSectionProps {
 }
 
 export function EmployeeFormWageSection({ employee, mode }: EmployeeFormWageSectionProps) {
-  const [hourlyRate, setHourlyRate] = useState(employee?.hourly_rate?.toString() ?? "")
-  const [monthlySalary, setMonthlySalary] = useState(employee?.monthly_salary?.toString() ?? "")
+  const [hourlyRate, setHourlyRate] = useState<number | null>(employee?.hourly_rate ?? null)
+  const [monthlySalary, setMonthlySalary] = useState<number | null>(employee?.monthly_salary ?? null)
   const [taxClass, setTaxClass] = useState(employee?.tax_class ?? "")
 
   const handleTaxClassChange = (v: string | null) => { setTaxClass(v ?? "") }
 
-  const hourlyTotal = hourlyRate ? parseFloat(hourlyRate) * (1 + AG_ANTEIL_PROZENT) : null
-  const monthlyTotal = monthlySalary ? parseFloat(monthlySalary) * (1 + AG_ANTEIL_PROZENT) : null
+  const hourlyTotal = hourlyRate ? hourlyRate * (1 + AG_ANTEIL_PROZENT) : null
+  const monthlyTotal = monthlySalary ? monthlySalary * (1 + AG_ANTEIL_PROZENT) : null
   const effectiveHourlyRate = monthlyTotal ? monthlyTotal / 169 : null
 
   return (
     <Card className="rounded-2xl shadow-sm">
       <CardHeader>
-        <CardTitle className="text-base font-semibold text-foreground">Verguetung</CardTitle>
+        <CardTitle className="text-base font-semibold text-foreground">Vergütung</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
             <Label htmlFor="hourly_rate">Stundenlohn (EUR)</Label>
-            <Input id="hourly_rate" name="hourly_rate" type="number" step="0.01" min={0} value={hourlyRate} onChange={(e) => setHourlyRate(e.target.value)} placeholder="16.00" className="h-11 rounded-xl" />
+            <CurrencyInput name="hourly_rate" defaultValue={employee?.hourly_rate} placeholder="16,00" onValueChange={setHourlyRate} />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="monthly_salary">Monatsgehalt (EUR)</Label>
-            <Input id="monthly_salary" name="monthly_salary" type="number" step="0.01" min={0} value={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)} placeholder="2500.00" className="h-11 rounded-xl" />
+            <CurrencyInput name="monthly_salary" defaultValue={employee?.monthly_salary} placeholder="2.500,00" onValueChange={setMonthlySalary} />
           </div>
         </div>
 
@@ -130,7 +131,7 @@ export function EmployeeFormWageSection({ employee, mode }: EmployeeFormWageSect
                       <HelpCircle className="h-3.5 w-3.5 text-muted-foreground" />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p className="max-w-xs text-xs">Fuer die Gehaltsueberweisung.</p>
+                      <p className="max-w-xs text-xs">Für die Gehaltsüberweisung.</p>
                     </TooltipContent>
                   </Tooltip>
                 </div>

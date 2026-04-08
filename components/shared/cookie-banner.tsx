@@ -41,9 +41,9 @@ export function CookieBanner() {
           </div>
           <div className="flex-1">
             <p className="text-sm text-foreground leading-relaxed">
-              Wir verwenden technisch notwendige Cookies fuer die Anmeldung und Sitzungsverwaltung.
+              Wir verwenden technisch notwendige Cookies für die Anmeldung und Sitzungsverwaltung.
               Mehr in unserer{" "}
-              <Link href="/datenschutz" className="text-primary underline">Datenschutzerklaerung</Link>.
+              <Link href="/datenschutz" className="text-primary underline">Datenschutzerklärung</Link>.
             </p>
             <div className="mt-3">
               <Button

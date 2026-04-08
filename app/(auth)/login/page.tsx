@@ -45,7 +45,7 @@ export default function LoginPage() {
       <Card className="rounded-2xl shadow-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-xl font-semibold font-heading">
-            Willkommen zurueck
+            Willkommen zurück
           </CardTitle>
           <CardDescription>
             Melden Sie sich bei Ihrem Konto an

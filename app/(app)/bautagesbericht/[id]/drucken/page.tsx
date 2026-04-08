@@ -60,7 +60,7 @@ export default async function DruckenPage({ params }: { params: Promise<{ id: st
 
       {(entry.incidents || entry.defects) && (
         <div className="mb-6">
-          <h2 className="font-bold mb-2 text-xs uppercase tracking-wide">Aenderungen / Behinderungen / Sonstiges</h2>
+          <h2 className="font-bold mb-2 text-xs uppercase tracking-wide">Änderungen / Behinderungen / Sonstiges</h2>
           {entry.incidents && <p className="mb-1"><span className="font-semibold">Vorfälle:</span> {entry.incidents}</p>}
           {entry.defects && <p className="mb-1"><span className="font-semibold">Mängel:</span> {entry.defects}</p>}
         </div>

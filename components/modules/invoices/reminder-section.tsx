@@ -5,6 +5,7 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { CurrencyInput } from "@/components/shared/currency-input"
 import { Textarea } from "@/components/ui/textarea"
 import {
   Dialog,
@@ -164,12 +165,12 @@ export function ReminderSection({
                       />
                       {reminder.fee != null && reminder.fee > 0 && (
                         <p className="text-xs font-mono font-semibold text-danger mt-1">
-                          + {formatCurrency(reminder.fee)} Mahngebuehr
+                          + {formatCurrency(reminder.fee)} Mahngebühr
                         </p>
                       )}
                       {(reminder.fee === null || reminder.fee === 0) && (
                         <p className="text-xs text-muted-foreground mt-1">
-                          Keine Gebuehr
+                          Keine Gebühr
                         </p>
                       )}
                     </div>
@@ -196,8 +197,8 @@ export function ReminderSection({
         <div className="flex items-center gap-3 rounded-2xl border border-danger/30 bg-danger/10 p-4">
           <AlertTriangle className="h-5 w-5 text-danger shrink-0" />
           <p className="text-sm font-medium text-danger">
-            Alle 3 Mahnstufen wurden versendet. Bitte uebergeben Sie den Fall
-            an ein Inkassobuero oder einen Rechtsanwalt.
+            Alle 3 Mahnstufen wurden versendet. Bitte übergeben Sie den Fall
+            an ein Inkassobüro oder einen Rechtsanwalt.
           </p>
         </div>
       )}
@@ -234,18 +235,14 @@ export function ReminderSection({
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="reminder-fee">Mahngebuehr (EUR)</Label>
-              <Input
-                id="reminder-fee"
+              <Label htmlFor="reminder-fee">Mahngebühr (EUR)</Label>
+              <CurrencyInput
                 name="fee"
-                type="number"
-                step="0.01"
-                min="0"
                 defaultValue={defaultFee}
-                className="h-11 rounded-xl"
+                placeholder="0,00"
               />
               <p className="text-xs text-muted-foreground">
-                Empfehlung: {formatCurrency(defaultFee)} fuer Mahnstufe{" "}
+                Empfehlung: {formatCurrency(defaultFee)} für Mahnstufe{" "}
                 {nextLevel}
               </p>
             </div>

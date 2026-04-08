@@ -61,7 +61,7 @@ export function StundenzettelContent({ entries, employees, month, year }: Stunde
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-foreground">Stundenzettel</h1>
-          <p className="text-sm text-muted-foreground mt-1">Monatsuebersicht aller Mitarbeiter-Stunden</p>
+          <p className="text-sm text-muted-foreground mt-1">Monatsübersicht aller Mitarbeiter-Stunden</p>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="outline" size="icon" className="rounded-lg h-9 w-9" onClick={() => navigateMonth(-1)}>

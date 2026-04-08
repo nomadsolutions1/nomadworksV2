@@ -5,6 +5,7 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { CurrencyInput } from "@/components/shared/currency-input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
@@ -132,7 +133,7 @@ export function OrderItemsTab({ orderId, items: initialItems }: OrderItemsTabPro
             <div className="grid grid-cols-3 gap-3">
               <div className="space-y-1.5"><Label htmlFor="quantity">Menge *</Label><Input id="quantity" name="quantity" type="number" step="0.01" min="0" placeholder="1" className="h-11 rounded-xl" required /></div>
               <div className="space-y-1.5"><Label htmlFor="unit">Einheit *</Label><Input id="unit" name="unit" placeholder="m2, Std., Stk." className="h-11 rounded-xl" required /></div>
-              <div className="space-y-1.5"><Label htmlFor="unit_price">EP (EUR) *</Label><Input id="unit_price" name="unit_price" type="number" step="0.01" min="0" placeholder="0.00" className="h-11 rounded-xl" required /></div>
+              <div className="space-y-1.5"><Label htmlFor="unit_price">EP (EUR) *</Label><CurrencyInput name="unit_price" placeholder="0,00" required /></div>
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" className="rounded-xl" onClick={() => setIsAddOpen(false)}>Abbrechen</Button>
@@ -151,7 +152,7 @@ export function OrderItemsTab({ orderId, items: initialItems }: OrderItemsTabPro
             <div className="grid grid-cols-3 gap-3">
               <div className="space-y-1.5"><Label>Menge *</Label><Input name="quantity" type="number" step="0.01" min="0" defaultValue={editItem?.quantity} className="h-11 rounded-xl" required /></div>
               <div className="space-y-1.5"><Label>Einheit *</Label><Input name="unit" defaultValue={editItem?.unit} className="h-11 rounded-xl" required /></div>
-              <div className="space-y-1.5"><Label>EP (EUR) *</Label><Input name="unit_price" type="number" step="0.01" min="0" defaultValue={editItem?.unit_price} className="h-11 rounded-xl" required /></div>
+              <div className="space-y-1.5"><Label>EP (EUR) *</Label><CurrencyInput name="unit_price" defaultValue={editItem?.unit_price} placeholder="0,00" required /></div>
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" className="rounded-xl" onClick={() => setEditItem(null)}>Abbrechen</Button>

@@ -138,7 +138,7 @@ function buildTimeEntry(
 }
 
 // ─── clockIn ──────────────────────────────────────────────────
-// withAuth(null, "write") — Workers muessen stempeln können!
+// withAuth(null, "write") — Workers müssen stempeln können!
 
 export async function clockIn(
   formData: FormData
@@ -208,7 +208,7 @@ export async function clockIn(
 }
 
 // ─── clockOut ─────────────────────────────────────────────────
-// withAuth(null, "write") — Workers muessen stempeln können!
+// withAuth(null, "write") — Workers müssen stempeln können!
 
 export async function clockOut(
   formData: FormData
@@ -290,7 +290,7 @@ export async function clockOut(
 }
 
 // ─── getMyOpenEntry ───────────────────────────────────────────
-// withAuth(null, "read") — Workers muessen ihre offene Schicht sehen können
+// withAuth(null, "read") — Workers müssen ihre offene Schicht sehen können
 
 export async function getMyOpenEntry(): Promise<{ data?: OpenTimeEntry | null; error?: string }> {
   return withAuth(null, "read", async ({ user, profile, db }) => {
@@ -367,7 +367,7 @@ export async function getMyTimeEntries(
 }
 
 // ─── getAllTimeEntries ────────────────────────────────────────
-// Admin/Dispo-Uebersicht: alle Einträge der Firma
+// Admin/Dispo-Übersicht: alle Einträge der Firma
 
 export async function getAllTimeEntries(
   weekStart: string
@@ -439,7 +439,7 @@ export async function getActiveSitesForClockIn(): Promise<{
 }
 
 // ─── getTodayAssignment ──────────────────────────────────────
-// Heutige Dispo-Zuweisung fuer den aktuellen User
+// Heutige Dispo-Zuweisung für den aktuellen User
 
 export async function getTodayAssignment(): Promise<{
   data?: AssignedSiteInfo | null

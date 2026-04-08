@@ -10,9 +10,10 @@ interface CurrencyInputProps {
   className?: string
   required?: boolean
   max?: number
+  onValueChange?: (value: number | null) => void
 }
 
-export function CurrencyInput({ name, defaultValue, placeholder, className, required, max }: CurrencyInputProps) {
+export function CurrencyInput({ name, defaultValue, placeholder, className, required, max, onValueChange }: CurrencyInputProps) {
   const [display, setDisplay] = useState(() => {
     if (!defaultValue) return ""
     const num = typeof defaultValue === "string" ? parseFloat(defaultValue) : defaultValue
@@ -25,6 +26,7 @@ export function CurrencyInput({ name, defaultValue, placeholder, className, requ
     setDisplay(input)
     const num = parseFloat(input.replace(/\./g, "").replace(",", "."))
     setRawValue(isNaN(num) ? "" : num.toString())
+    onValueChange?.(isNaN(num) ? null : num)
   }
 
   function handleBlur() {

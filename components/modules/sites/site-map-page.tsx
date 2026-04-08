@@ -44,7 +44,7 @@ export function SiteMapPage({ sites }: SiteMapPageProps) {
           <div className="flex flex-col items-center justify-center h-full text-center">
             <div className="rounded-2xl bg-muted p-4 mb-4"><MapPin className="h-8 w-8 text-muted-foreground" /></div>
             <h3 className="text-lg font-semibold text-foreground mb-1">Keine Baustellen vorhanden</h3>
-            <p className="text-sm text-muted-foreground mb-6">Legen Sie zunaechst Baustellen an.</p>
+            <p className="text-sm text-muted-foreground mb-6">Legen Sie zunächst Baustellen an.</p>
             <Link href="/baustellen/neu"><Button className="rounded-xl font-semibold">Baustelle anlegen</Button></Link>
           </div>
         )}

@@ -60,7 +60,7 @@ export function StundennachweisOverview({ employees, entries }: StundennachweisO
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-foreground">Stundennachweise</h1>
-          <p className="text-sm text-muted-foreground mt-1">Monatsuebersicht aller Mitarbeiter-Stunden</p>
+          <p className="text-sm text-muted-foreground mt-1">Monatsübersicht aller Mitarbeiter-Stunden</p>
         </div>
         <div className="flex items-center gap-3">
           <Select value={month} onValueChange={(v) => { if (v) setMonth(v) }}>

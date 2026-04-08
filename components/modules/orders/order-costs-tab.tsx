@@ -5,6 +5,7 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { CurrencyInput } from "@/components/shared/currency-input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
@@ -122,7 +123,7 @@ export function OrderCostsTab({ orderId, costsByCategory: initial }: OrderCostsT
             <div className="space-y-1.5"><Label>Kategorie</Label><Select value={selectedCategory} onValueChange={(v) => setSelectedCategory(v ?? "other")}><SelectTrigger className="h-11 rounded-xl"><SelectValue /></SelectTrigger><SelectContent>{Object.entries(CATEGORY_LABELS).map(([key, label]) => (<SelectItem key={key} value={key}>{label}</SelectItem>))}</SelectContent></Select></div>
             <div className="space-y-1.5"><Label htmlFor="description">Beschreibung *</Label><Input id="description" name="description" placeholder="z.B. Betonstahl Lieferung" className="h-11 rounded-xl" required /></div>
             <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5"><Label htmlFor="amount">Betrag (EUR) *</Label><Input id="amount" name="amount" type="number" step="0.01" min="0" placeholder="0.00" className="h-11 rounded-xl" required /></div>
+              <div className="space-y-1.5"><Label htmlFor="amount">Betrag (EUR) *</Label><CurrencyInput name="amount" placeholder="0,00" required /></div>
               <div className="space-y-1.5"><Label htmlFor="date">Datum *</Label><Input id="date" name="date" type="date" defaultValue={new Date().toISOString().split("T")[0]} className="h-11 rounded-xl" required /></div>
             </div>
             <DialogFooter><Button type="button" variant="outline" className="rounded-xl" onClick={() => setIsAddOpen(false)}>Abbrechen</Button><Button type="submit" disabled={isPending} className="rounded-xl font-semibold">{isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />} Eintragen</Button></DialogFooter>

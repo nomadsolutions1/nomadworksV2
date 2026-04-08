@@ -24,7 +24,7 @@ export function ResetPasswordDialog({ employeeId, employeeName }: ResetPasswordD
     startTransition(async () => {
       const result = await resetEmployeePassword(employeeId, password)
       if (result.error) { toast.error(result.error) } else {
-        toast.success(`Passwort fuer ${employeeName} wurde zurueckgesetzt`)
+        toast.success(`Passwort für ${employeeName} wurde zurückgesetzt`)
         setPassword("")
         setOpen(false)
       }

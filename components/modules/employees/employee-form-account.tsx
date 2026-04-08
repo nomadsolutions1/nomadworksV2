@@ -41,7 +41,7 @@ export function EmployeeFormAccountSection({ withAccount, setWithAccount }: Empl
               <Label htmlFor="password">Initiales Passwort *</Label>
               <Input id="password" name="password" type="password" placeholder="Mindestens 8 Zeichen" className="h-11 rounded-xl" required={withAccount} minLength={8} />
               <p className="text-xs text-muted-foreground">
-                Teilen Sie dem Mitarbeiter dieses Passwort mit. Er kann es spaeter selbst aendern.
+                Teilen Sie dem Mitarbeiter dieses Passwort mit. Er kann es später selbst ändern.
               </p>
             </div>
           </div>

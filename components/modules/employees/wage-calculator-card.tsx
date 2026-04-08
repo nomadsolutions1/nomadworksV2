@@ -20,7 +20,7 @@ export function WageCalculatorCard({ hourlyRate, monthlySalary }: WageCalculator
       <CardHeader>
         <CardTitle className="text-base font-semibold text-foreground flex items-center gap-2">
           <Briefcase className="h-4 w-4 text-primary" />
-          Geschaetzte Personalkosten
+          Geschätzte Personalkosten
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">

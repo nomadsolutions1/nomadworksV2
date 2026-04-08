@@ -157,10 +157,10 @@ export function InvoiceForm({
               aria-label="Rechnung aus Auftrag erstellen"
             >
               <p className="text-sm font-semibold text-foreground">
-                Aus Auftrag uebernehmen
+                Aus Auftrag übernehmen
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Auftragspositionen automatisch einfuegen
+                Auftragspositionen automatisch einfügen
               </p>
             </button>
           </div>
