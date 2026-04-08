@@ -45,18 +45,18 @@ export function TimelineView({ date, assignments, employees, onDateChange }: Tim
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => shiftDate(-1)}>
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => shiftDate(-1)} aria-label="Vorheriger Tag">
               <ChevronLeft className="h-4 w-4" />
             </Button>
             <CardTitle className="text-base font-semibold">
               {formatFullDate(date)} ({getWeekdayName(date)})
             </CardTitle>
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => shiftDate(1)}>
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => shiftDate(1)} aria-label="Naechster Tag">
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
           {!isToday && (
-            <button onClick={() => onDateChange(getTodayString())} className="text-xs text-primary hover:underline">
+            <button onClick={() => onDateChange(getTodayString())} className="text-xs text-primary hover:underline" aria-label="Zum heutigen Tag springen">
               Heute
             </button>
           )}

@@ -172,6 +172,7 @@ export function WeekGrid({ assignments, employees, sites, weekStart }: WeekGridP
                               {dayAssignments.length === 0 ? (
                                 <button
                                   onClick={() => openNewDialog(emp.id, date)}
+                                  aria-label={`Zuweisung erstellen fuer ${emp.first_name} ${emp.last_name} am ${formatShortDate(date)}`}
                                   className="w-full h-9 rounded-lg border-2 border-dashed border-border hover:border-primary hover:bg-primary/5 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100"
                                 >
                                   <Plus className="h-3.5 w-3.5 text-muted-foreground" />
@@ -190,6 +191,7 @@ export function WeekGrid({ assignments, employees, sites, weekStart }: WeekGridP
                                       <button
                                         key={a.id}
                                         onClick={() => openEditDialog(a)}
+                                        aria-label={`Zuweisung bearbeiten: ${a.site_name} ${a.start_time || ""}-${a.end_time || ""}`}
                                         className={`w-full px-2 py-1 rounded-lg text-[11px] font-medium text-left transition-opacity hover:opacity-80 ${
                                           hasConflict ? "ring-2 ring-destructive" : ""
                                         }`}

@@ -134,7 +134,7 @@ export function UploadDialog({ open, onClose, sites, companyId }: UploadDialogPr
                     <span className="truncate max-w-[200px]">{f.name}</span>
                     <span className="text-xs text-muted-foreground">{(f.size / 1024 / 1024).toFixed(1)} MB</span>
                   </div>
-                  <button onClick={() => removeFile(i)} className="text-muted-foreground hover:text-destructive">
+                  <button onClick={() => removeFile(i)} className="text-muted-foreground hover:text-destructive" aria-label="Datei entfernen">
                     <X className="h-4 w-4" />
                   </button>
                 </div>

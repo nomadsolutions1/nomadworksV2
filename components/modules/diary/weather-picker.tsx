@@ -18,6 +18,8 @@ export function WeatherPicker({ value, onChange }: WeatherPickerProps) {
             key={option.label}
             type="button"
             onClick={() => onChange(isSelected ? null : option.label)}
+            aria-label={`Wetter: ${option.label}`}
+            aria-pressed={isSelected}
             className={cn(
               "flex items-center gap-2 px-3 py-2 rounded-xl border text-sm font-medium transition-all",
               isSelected

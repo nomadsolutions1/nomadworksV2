@@ -43,6 +43,7 @@ export function WeekNavigator({ weekStart, basePath = "/disposition" }: WeekNavi
         size="sm"
         className="rounded-lg"
         onClick={() => navigate(-1)}
+        aria-label="Vorherige Woche"
       >
         <ChevronLeft className="h-4 w-4" />
       </Button>
@@ -54,6 +55,7 @@ export function WeekNavigator({ weekStart, basePath = "/disposition" }: WeekNavi
         size="sm"
         className="rounded-lg"
         onClick={() => navigate(1)}
+        aria-label="Naechste Woche"
       >
         <ChevronRight className="h-4 w-4" />
       </Button>

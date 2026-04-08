@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { EmptyState } from "@/components/shared/empty-state"
+import { PageHeader } from "@/components/layout/page-header"
 import { Clock } from "lucide-react"
 import { ClockWidget } from "./clock-widget"
 import { AssignmentInfo } from "./assignment-info"
@@ -32,14 +33,10 @@ export function StempelnContent({
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
-      <div>
-        <h1 className="text-2xl font-semibold font-[family-name:var(--font-heading)] text-foreground">
-          Stempeluhr
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Ein- und Ausstempeln, Stundenuebersicht
-        </p>
-      </div>
+      <PageHeader
+        title="Stempeluhr"
+        description="Ein- und Ausstempeln, Stundenuebersicht"
+      />
 
       {assignedSite && <AssignmentInfo assignment={assignedSite} />}
 
@@ -53,7 +50,7 @@ export function StempelnContent({
       <Card className="rounded-2xl shadow-sm">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-base font-semibold font-[family-name:var(--font-heading)]">
+            <CardTitle className="text-base font-semibold font-heading">
               Heute
             </CardTitle>
             {todayTotal > 0 && (
@@ -84,7 +81,7 @@ export function StempelnContent({
       <Card className="rounded-2xl shadow-sm">
         <CardHeader className="pb-3">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle className="text-base font-semibold font-[family-name:var(--font-heading)]">
+            <CardTitle className="text-base font-semibold font-heading">
               Wochenuebersicht
             </CardTitle>
             <WeekNavigator weekStart={weekStart} />

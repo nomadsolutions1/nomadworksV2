@@ -385,6 +385,24 @@ export async function deleteAssignment(
   id: string
 ): Promise<{ success?: boolean; error?: string }> {
   return withAuth("disposition", "write", async ({ user, profile, db }) => {
+    // Only owner, super_admin, or the creator of the assignment may delete.
+    // Note: schedule_entries has no created_by column, so we check the
+    // activity log for the original "create" action as a fallback.
+    if (profile.role !== "owner" && profile.role !== "super_admin") {
+      // Check if the current user originally created this assignment
+      const { data: createLog } = await db
+        .from("activity_log")
+        .select("user_id")
+        .eq("entity_type", "assignment")
+        .eq("entity_id", id)
+        .eq("action", "create")
+        .maybeSingle()
+
+      if (!createLog || createLog.user_id !== user.id) {
+        return { error: "Nur der Inhaber oder der Ersteller darf Zuweisungen loeschen" }
+      }
+    }
+
     const { error } = await db
       .from("schedule_entries")
       .delete()

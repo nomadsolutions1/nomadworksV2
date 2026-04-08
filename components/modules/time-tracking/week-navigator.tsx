@@ -37,7 +37,7 @@ export function WeekNavigator({ weekStart, className }: WeekNavigatorProps) {
 
   return (
     <div className={`flex items-center gap-2 ${className ?? ""}`}>
-      <Button variant="outline" size="sm" className="rounded-lg h-9 w-9 p-0" onClick={() => navigate(-1)}>
+      <Button variant="outline" size="sm" className="rounded-lg h-9 w-9 p-0" onClick={() => navigate(-1)} aria-label="Vorherige Woche">
         <ChevronLeft className="h-4 w-4" />
       </Button>
       <div className="flex items-center gap-2 min-w-0">
@@ -51,7 +51,7 @@ export function WeekNavigator({ weekStart, className }: WeekNavigatorProps) {
           )}
         </div>
       </div>
-      <Button variant="outline" size="sm" className="rounded-lg h-9 w-9 p-0" onClick={() => navigate(1)}>
+      <Button variant="outline" size="sm" className="rounded-lg h-9 w-9 p-0" onClick={() => navigate(1)} aria-label="Naechste Woche">
         <ChevronRight className="h-4 w-4" />
       </Button>
       {!isCurrent && (

@@ -492,13 +492,22 @@ export async function deleteDiaryDocument(
   entryId: string
 ): Promise<{ success?: boolean; error?: string }> {
   return withAuth("bautagesbericht", "write", async ({ user, profile, db }) => {
-    // Get doc info for activity log
+    // Get doc info for permission check + activity log
     const { data: doc } = await db
       .from("diary_documents")
-      .select("file_name")
+      .select("file_name, uploaded_by")
       .eq("id", docId)
       .eq("company_id", profile.company_id)
       .maybeSingle()
+
+    if (!doc) {
+      return { error: "Dokument nicht gefunden" }
+    }
+
+    // Only owner or the uploader may delete (consistent with deleteDiaryEntry)
+    if (profile.role !== "owner" && doc.uploaded_by !== user.id) {
+      return { error: "Nur der Inhaber oder der Uploader darf Dokumente loeschen" }
+    }
 
     const { error } = await db
       .from("diary_documents")

@@ -241,6 +241,8 @@ export function AssignmentDialog({
                       key={idx}
                       type="button"
                       onClick={() => toggleDay(idx)}
+                      aria-label={`Tag auswaehlen: ${label}`}
+                      aria-pressed={selectedDays.includes(idx)}
                       className={`flex-1 py-2 rounded-lg text-xs font-medium transition-colors ${
                         selectedDays.includes(idx)
                           ? "bg-primary text-primary-foreground"

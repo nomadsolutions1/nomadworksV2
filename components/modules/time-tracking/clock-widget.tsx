@@ -146,9 +146,10 @@ export function ClockWidget({ openEntry: initialOpenEntry, sites, assignedSiteId
           <Button
             onClick={handleClockOut}
             disabled={isPending}
-            className="w-full h-[52px] rounded-xl bg-destructive hover:bg-destructive/90 font-semibold text-white text-base"
+            aria-label="Ausstempeln"
+            className="w-[200px] min-h-[200px] rounded-full bg-destructive hover:bg-destructive/90 font-semibold text-white text-2xl mx-auto flex flex-col items-center justify-center gap-3"
           >
-            {isPending ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : <LogOut className="h-5 w-5 mr-2" />}
+            {isPending ? <Loader2 className="h-10 w-10 animate-spin" /> : <LogOut className="h-10 w-10" />}
             AUSSTEMPELN
           </Button>
           <p className="flex items-center gap-1.5 text-xs text-muted-foreground justify-center">
@@ -204,9 +205,10 @@ export function ClockWidget({ openEntry: initialOpenEntry, sites, assignedSiteId
         <Button
           onClick={handleClockIn}
           disabled={isPending || !selectedSite || sites.length === 0}
-          className="w-full h-[52px] rounded-xl bg-success hover:bg-success/90 font-semibold text-white text-base"
+          aria-label="Einstempeln"
+          className="w-[200px] min-h-[200px] rounded-full bg-success hover:bg-success/90 font-semibold text-white text-2xl mx-auto flex flex-col items-center justify-center gap-3"
         >
-          {isPending ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : <LogIn className="h-5 w-5 mr-2" />}
+          {isPending ? <Loader2 className="h-10 w-10 animate-spin" /> : <LogIn className="h-10 w-10" />}
           EINSTEMPELN
         </Button>
         <p className="flex items-center gap-1.5 text-xs text-muted-foreground justify-center">

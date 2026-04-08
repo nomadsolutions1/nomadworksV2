@@ -94,6 +94,7 @@ export function DocumentUpload({ entryId, documents }: DocumentUploadProps) {
                     disabled={isPending}
                     className="inline-flex items-center justify-center h-8 w-8 rounded-lg hover:bg-destructive/10 transition-colors"
                     title="Loeschen"
+                    aria-label={`Dokument loeschen: ${doc.file_name}`}
                   >
                     <Trash2 className="h-4 w-4 text-destructive" />
                   </button>
