@@ -249,6 +249,12 @@ export function getOrderStatusConfig(status: string) {
   return cfg ?? { label: status, variant: "neutral" as const }
 }
 
+// Invoice status config resolver (single source of truth)
+export function getInvoiceStatusConfig(status: string) {
+  const cfg = INVOICE_STATUSES[status as keyof typeof INVOICE_STATUSES]
+  return cfg ?? { label: status, variant: "neutral" as const }
+}
+
 // Leave status config
 export const LEAVE_STATUS_CONFIG: Record<string, { label: string; variant: "success" | "warning" | "danger" | "neutral" }> = {
   approved: { label: "Genehmigt", variant: "success" },
