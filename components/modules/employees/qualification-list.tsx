@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Badge } from "@/components/ui/badge"
+import { StatusBadge } from "@/components/shared/status-badge"
 import { EmptyState } from "@/components/shared/empty-state"
 import { addQualification, deleteQualification } from "@/lib/actions/employees"
 import { formatDate } from "@/lib/utils/format"
@@ -152,8 +152,8 @@ export function QualificationList({ userId, qualifications: initial }: Qualifica
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  {status === "expired" && <Badge className="text-[10px] bg-danger/10 text-danger border-danger/20 rounded-full" variant="outline">Abgelaufen</Badge>}
-                  {status === "expiring" && <Badge className="text-[10px] bg-warning/10 text-warning border-warning/20 rounded-full" variant="outline">Laeuft ab</Badge>}
+                  {status === "expired" && <StatusBadge variant="danger" label="Abgelaufen" className="text-[10px]" />}
+                  {status === "expiring" && <StatusBadge variant="warning" label="Laeuft ab" className="text-[10px]" />}
                   <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-muted-foreground hover:text-danger hover:bg-danger/10 rounded-lg" onClick={() => handleDelete(qual.id)} disabled={isPending}>
                     <Trash2 className="h-4 w-4" />
                   </Button>

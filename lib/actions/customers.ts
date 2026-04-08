@@ -30,6 +30,10 @@ const customerSchema = z.object({
   email: z.string().email("Ungültige E-Mail").optional().or(z.literal("")),
   phone: z.string().optional(),
   address: z.string().optional(),
+  street: z.string().optional(),
+  zip: z.string().optional(),
+  city: z.string().optional(),
+  country: z.string().optional(),
   tax_id: z.string().optional(),
   notes: z.string().optional(),
 })
@@ -79,6 +83,11 @@ export async function createCustomer(
     if (!validated.success)
       return { error: validated.error.flatten().fieldErrors as Record<string, string[]> }
 
+    // Build address from AddressFields if provided, fall back to address string
+    const { street, zip, city } = validated.data
+    const combinedAddress = [street, zip && city ? `${zip} ${city}` : zip || city]
+      .filter(Boolean).join(", ") || validated.data.address || null
+
     const { data, error } = await db
       .from("customers")
       .insert({
@@ -87,9 +96,12 @@ export async function createCustomer(
         contact_person: validated.data.contact_person || null,
         email: validated.data.email || null,
         phone: validated.data.phone || null,
-        address: validated.data.address || null,
+        address: combinedAddress,
+        street: street || null,
+        zip: zip || null,
+        city: city || null,
         notes: validated.data.notes || null,
-      })
+      } as never)
       .select()
       .single()
 
@@ -121,6 +133,11 @@ export async function updateCustomer(
     if (!validated.success)
       return { error: validated.error.flatten().fieldErrors as Record<string, string[]> }
 
+    // Build address from AddressFields if provided, fall back to address string
+    const { street, zip, city } = validated.data
+    const combinedAddress = [street, zip && city ? `${zip} ${city}` : zip || city]
+      .filter(Boolean).join(", ") || validated.data.address || null
+
     const { error } = await db
       .from("customers")
       .update({
@@ -128,10 +145,13 @@ export async function updateCustomer(
         contact_person: validated.data.contact_person || null,
         email: validated.data.email || null,
         phone: validated.data.phone || null,
-        address: validated.data.address || null,
+        address: combinedAddress,
+        street: street || null,
+        zip: zip || null,
+        city: city || null,
         notes: validated.data.notes || null,
         updated_at: new Date().toISOString(),
-      })
+      } as never)
       .eq("id", id)
       .eq("company_id", profile.company_id)
 

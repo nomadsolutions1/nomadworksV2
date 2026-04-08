@@ -66,12 +66,12 @@ export function ForemanPermissions({ foremanId, permissions, canViewSensitiveDat
               <div key={mod.module_name} className="grid grid-cols-[1fr_80px_80px] gap-2 items-center rounded-xl px-3 py-2.5 hover:bg-muted/50">
                 <span className="text-sm font-medium text-foreground">{mod.label}</span>
                 <div className="flex justify-center">
-                  <button type="button" onClick={() => toggleView(mod.module_name)} className={`h-6 w-11 rounded-full transition-colors ${mod.can_view ? "bg-success" : "bg-muted"} relative`}>
+                  <button type="button" role="switch" aria-checked={mod.can_view} aria-label={`${mod.label} Modul Ansehen aktivieren`} onClick={() => toggleView(mod.module_name)} className={`h-6 w-11 rounded-full transition-colors ${mod.can_view ? "bg-success" : "bg-muted"} relative`}>
                     <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${mod.can_view ? "translate-x-5" : "translate-x-0.5"}`} />
                   </button>
                 </div>
                 <div className="flex justify-center">
-                  <button type="button" onClick={() => toggleEdit(mod.module_name)} className={`h-6 w-11 rounded-full transition-colors ${mod.can_edit ? "bg-primary" : "bg-muted"} relative`}>
+                  <button type="button" role="switch" aria-checked={mod.can_edit} aria-label={`${mod.label} Modul Bearbeiten aktivieren`} onClick={() => toggleEdit(mod.module_name)} className={`h-6 w-11 rounded-full transition-colors ${mod.can_edit ? "bg-primary" : "bg-muted"} relative`}>
                     <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${mod.can_edit ? "translate-x-5" : "translate-x-0.5"}`} />
                   </button>
                 </div>
@@ -94,7 +94,7 @@ export function ForemanPermissions({ foremanId, permissions, canViewSensitiveDat
               <p className="text-sm font-medium text-foreground">Zugriff auf sensible Personaldaten</p>
               <p className="text-xs text-muted-foreground">IBAN, Gehalt, Steuerklasse, SV-Nummer, Krankenversicherung</p>
             </div>
-            <button type="button" onClick={() => setCanViewSensitive(!canViewSensitive)} className={`h-6 w-11 rounded-full transition-colors ${canViewSensitive ? "bg-warning" : "bg-muted"} relative flex-shrink-0`}>
+            <button type="button" role="switch" aria-checked={canViewSensitive} aria-label="Zugriff auf sensible Personaldaten aktivieren" onClick={() => setCanViewSensitive(!canViewSensitive)} className={`h-6 w-11 rounded-full transition-colors ${canViewSensitive ? "bg-warning" : "bg-muted"} relative flex-shrink-0`}>
               <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${canViewSensitive ? "translate-x-5" : "translate-x-0.5"}`} />
             </button>
           </div>

@@ -5,6 +5,24 @@ import { logActivity } from "@/lib/utils/activity-logger"
 import { revalidatePath } from "next/cache"
 import { trackError } from "@/lib/utils/error-tracker"
 import { withAuth } from "@/lib/utils/auth-helper"
+import type { SupabaseClient } from "@supabase/supabase-js"
+
+// ─── Helpers ─────────────────────────────────────────────────
+
+/** Verify that an order belongs to the given company before operating on sub-entities. */
+async function verifyOrderOwnership(
+  db: SupabaseClient,
+  orderId: string,
+  companyId: string
+): Promise<boolean> {
+  const { data } = await db
+    .from("orders")
+    .select("id")
+    .eq("id", orderId)
+    .eq("company_id", companyId)
+    .single()
+  return !!data
+}
 
 // ─── Types ────────────────────────────────────────────────────
 
@@ -148,6 +166,15 @@ const measurementSchema = z.object({
   quantity: z.string().optional().transform((v) => (v && v.trim() !== "" ? parseFloat(v.replace(",", ".")) : 1)),
   notes: z.string().optional().transform((v) => v || null),
   site_id: z.string().uuid().optional().or(z.literal("")).transform((v) => v || null),
+})
+
+const orderStatusSchema = z.enum([
+  "offer", "commissioned", "in_progress", "acceptance", "completed", "complaint",
+])
+
+const changeOrderSchema = z.object({
+  description: z.string().min(1, "Beschreibung ist erforderlich"),
+  amount: z.number().positive("Betrag muss positiv sein"),
 })
 
 const budgetDistributionSchema = z.object({
@@ -319,6 +346,11 @@ export async function updateOrderStatus(
   status: OrderStatus
 ): Promise<{ success?: boolean; error?: string }> {
   return withAuth("auftraege", "write", async ({ user, profile, db }) => {
+    const statusValidation = orderStatusSchema.safeParse(status)
+    if (!statusValidation.success) {
+      return { error: "Ungültiger Status" }
+    }
+
     const { error } = await db
       .from("orders")
       .update({ status, updated_at: new Date().toISOString() })
@@ -485,6 +517,11 @@ export async function addChangeOrder(
   amount: number
 ): Promise<{ success?: boolean; error?: string }> {
   return withAuth("auftraege", "write", async ({ user, profile, db }) => {
+    const changeValidation = changeOrderSchema.safeParse({ description, amount })
+    if (!changeValidation.success) {
+      return { error: "Ungültige Eingabe: Beschreibung und positiver Betrag erforderlich" }
+    }
+
     const { data: order } = await db.from("orders")
       .select("budget, original_budget, change_order_notes")
       .eq("id", orderId)
@@ -535,7 +572,11 @@ export async function addChangeOrder(
 export async function getOrderItems(
   orderId: string
 ): Promise<{ data?: OrderItem[]; error?: string }> {
-  return withAuth("auftraege", "read", async ({ db }) => {
+  return withAuth("auftraege", "read", async ({ profile, db }) => {
+    if (!(await verifyOrderOwnership(db, orderId, profile.company_id))) {
+      return { error: "Auftrag nicht gefunden" }
+    }
+
     const { data, error } = await db
       .from("order_items")
       .select("*")
@@ -601,6 +642,10 @@ export async function updateOrderItem(
   formData: FormData
 ): Promise<{ success?: boolean; error?: string | Record<string, string[]> }> {
   return withAuth("auftraege", "write", async ({ user, profile, db }) => {
+    if (!(await verifyOrderOwnership(db, orderId, profile.company_id))) {
+      return { error: "Auftrag nicht gefunden" }
+    }
+
     const validated = orderItemSchema.safeParse(Object.fromEntries(formData))
     if (!validated.success)
       return { error: validated.error.flatten().fieldErrors as Record<string, string[]> }
@@ -643,6 +688,10 @@ export async function deleteOrderItem(
   orderId: string
 ): Promise<{ success?: boolean; error?: string }> {
   return withAuth("auftraege", "write", async ({ user, profile, db }) => {
+    if (!(await verifyOrderOwnership(db, orderId, profile.company_id))) {
+      return { error: "Auftrag nicht gefunden" }
+    }
+
     const { error } = await db
       .from("order_items")
       .delete()
@@ -759,6 +808,10 @@ export async function deleteOrderCost(
   orderId: string
 ): Promise<{ success?: boolean; error?: string }> {
   return withAuth("auftraege", "write", async ({ user, profile, db }) => {
+    if (!(await verifyOrderOwnership(db, orderId, profile.company_id))) {
+      return { error: "Auftrag nicht gefunden" }
+    }
+
     const { error } = await db
       .from("order_costs")
       .delete()
@@ -789,7 +842,11 @@ export async function deleteOrderCost(
 export async function getOrderMeasurements(
   orderId: string
 ): Promise<{ data?: OrderMeasurement[]; error?: string }> {
-  return withAuth("auftraege", "read", async ({ db }) => {
+  return withAuth("auftraege", "read", async ({ profile, db }) => {
+    if (!(await verifyOrderOwnership(db, orderId, profile.company_id))) {
+      return { error: "Auftrag nicht gefunden" }
+    }
+
     const { data, error } = await db
       .from("measurements")
       .select("*")
@@ -853,6 +910,10 @@ export async function deleteMeasurement(
   orderId: string
 ): Promise<{ success?: boolean; error?: string }> {
   return withAuth("auftraege", "write", async ({ user, profile, db }) => {
+    if (!(await verifyOrderOwnership(db, orderId, profile.company_id))) {
+      return { error: "Auftrag nicht gefunden" }
+    }
+
     const { error } = await db
       .from("measurements")
       .delete()
@@ -933,7 +994,11 @@ export async function getOrderFinancials(
 export async function getOrderTeam(
   orderId: string
 ): Promise<{ data?: OrderTeamMember[]; error?: string }> {
-  return withAuth("auftraege", "read", async ({ db }) => {
+  return withAuth("auftraege", "read", async ({ profile, db }) => {
+    if (!(await verifyOrderOwnership(db, orderId, profile.company_id))) {
+      return { error: "Auftrag nicht gefunden" }
+    }
+
     const { data, error } = await db
       .from("order_assignments")
       .select("resource_id, resource_type")
@@ -951,6 +1016,7 @@ export async function getOrderTeam(
       .from("profiles")
       .select("id, first_name, last_name, role")
       .in("id", userIds)
+      .eq("company_id", profile.company_id)
 
     const team: OrderTeamMember[] = (profiles ?? []).map((prof) => ({
       id: prof.id,

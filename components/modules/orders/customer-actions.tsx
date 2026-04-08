@@ -30,7 +30,7 @@ export function CustomerActions({ customerId }: CustomerActionsProps) {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="h-8 w-8" />}><MoreHorizontal className="h-4 w-4" /></DropdownMenuTrigger>
+        <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Aktionen" />}><MoreHorizontal className="h-4 w-4" /></DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="rounded-xl">
           <DropdownMenuItem className="text-danger gap-2 cursor-pointer" onClick={() => setShowDelete(true)}><Trash2 className="h-4 w-4" /> Loeschen</DropdownMenuItem>
         </DropdownMenuContent>

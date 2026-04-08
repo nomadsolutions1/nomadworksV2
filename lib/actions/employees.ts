@@ -862,6 +862,7 @@ export async function getForemanModulePermissions(
       .from("foreman_permissions")
       .select("module_name, can_view, can_edit")
       .eq("foreman_id", foremanId)
+      .eq("company_id", profile.company_id)
 
     if (error) {
       trackError("employees", "getForemanModulePermissions", error.message)
@@ -882,7 +883,7 @@ export async function updateForemanPermissions(
     }
 
     // Delete existing permissions and insert new ones
-    await db.from("foreman_permissions").delete().eq("foreman_id", foremanId)
+    await db.from("foreman_permissions").delete().eq("foreman_id", foremanId).eq("company_id", profile.company_id)
 
     if (modules.length > 0) {
       const rows = modules

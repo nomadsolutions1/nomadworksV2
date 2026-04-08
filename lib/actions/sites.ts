@@ -103,7 +103,7 @@ export type SiteMeasurement = {
 
 const siteSchema = z.object({
   name: z.string().min(1, "Name ist erforderlich"),
-  order_id: z.string().uuid("Bitte wählen Sie einen Auftrag aus"),
+  order_id: z.string().uuid("Bitte wählen Sie einen Auftrag aus").optional().or(z.literal("")),
   address: z.string().optional(),
   street: z.string().optional().transform((v) => v || null),
   zip: z.string().optional().transform((v) => v || null),
@@ -584,11 +584,11 @@ export async function getSiteCosts(siteId: string): Promise<{ data?: SiteCosts; 
       // asset_assignments table may not exist yet
     }
 
-    // 4. Subcontractor costs
+    // 4. Subcontractor costs — proportionally allocated across sites sharing the same order
     let subcontractorCosts = 0
     const { data: siteOrderData } = await db
       .from("construction_sites")
-      .select("order_id")
+      .select("order_id, budget")
       .eq("id", siteId)
       .eq("company_id", profile.company_id)
       .single()
@@ -596,14 +596,35 @@ export async function getSiteCosts(siteId: string): Promise<{ data?: SiteCosts; 
     const siteOrderId = siteOrderData?.order_id ?? null
 
     if (siteOrderId) {
-      const { data: assignData } = await db
-        .from("subcontractor_assignments")
-        .select("invoiced_amount, agreed_amount")
-        .eq("order_id", siteOrderId)
-        .eq("company_id", profile.company_id)
+      const [assignRes, siblingSitesRes] = await Promise.all([
+        db.from("subcontractor_assignments")
+          .select("invoiced_amount, agreed_amount")
+          .eq("order_id", siteOrderId)
+          .eq("company_id", profile.company_id),
+        db.from("construction_sites")
+          .select("id, budget")
+          .eq("order_id", siteOrderId)
+          .eq("company_id", profile.company_id),
+      ])
 
-      for (const a of assignData ?? []) {
-        subcontractorCosts += (a.invoiced_amount as number) || (a.agreed_amount as number) || 0
+      let totalSubCost = 0
+      for (const a of assignRes.data ?? []) {
+        totalSubCost += (a.invoiced_amount as number) || (a.agreed_amount as number) || 0
+      }
+
+      // Proportional allocation: by budget share if budgets exist, otherwise equal split
+      const siblings = siblingSitesRes.data ?? []
+      if (siblings.length > 0 && totalSubCost > 0) {
+        const totalBudgetAllSites = siblings.reduce((s, si) => s + (Number(si.budget) || 0), 0)
+        const siteBudget = Number(siteOrderData?.budget) || 0
+
+        if (totalBudgetAllSites > 0 && siteBudget > 0) {
+          // Weighted by budget proportion
+          subcontractorCosts = totalSubCost * (siteBudget / totalBudgetAllSites)
+        } else {
+          // Equal split across all sites
+          subcontractorCosts = totalSubCost / siblings.length
+        }
       }
     }
 

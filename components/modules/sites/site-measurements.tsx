@@ -72,7 +72,7 @@ export function SiteMeasurements({ siteId }: SiteMeasurementsProps) {
                       <td className="py-2 text-right">{m.unit}</td>
                       <td className="py-2 text-right font-mono">{m.quantity}</td>
                       <td className="py-2 text-right font-mono font-medium">{m.calculated_value?.toFixed(2) ?? "—"}</td>
-                      <td className="py-2"><button onClick={() => handleDelete(m.id)} className="text-muted-foreground hover:text-danger" disabled={isPending}><Trash2 className="h-3.5 w-3.5" /></button></td>
+                      <td className="py-2"><button onClick={() => handleDelete(m.id)} className="text-muted-foreground hover:text-danger" disabled={isPending} aria-label="Messung loeschen"><Trash2 className="h-3.5 w-3.5" /></button></td>
                     </tr>
                   ))}
                 </tbody>
