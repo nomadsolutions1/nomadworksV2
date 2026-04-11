@@ -67,13 +67,20 @@ const bulkAssignmentSchema = z.object({
 
 // ─── Helpers ──────────────────────────────────────────────────
 
+// DB CHECK-Constraint `schedule_entries_shift_check` erlaubt nur `morning`/`afternoon`/NULL
+// (Legacy aus v1). Deutsche UI-Werte müssen auf diese englischen DB-Werte gemappt werden.
+// nacht/ganztag/custom → null (kein passender Legacy-Wert)
 function mapShiftTypeToDb(shiftType: string): string | null {
-  if (shiftType === "ganztag") return null
-  return shiftType
+  if (shiftType === "frueh") return "morning"
+  if (shiftType === "spaet") return "afternoon"
+  // ganztag, nacht, custom → null
+  return null
 }
 
 function mapDbToShiftType(shift: string | null): string {
-  return shift || "ganztag"
+  if (shift === "morning") return "frueh"
+  if (shift === "afternoon") return "spaet"
+  return "ganztag"
 }
 
 function rowToAssignment(

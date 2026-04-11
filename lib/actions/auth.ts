@@ -49,36 +49,11 @@ export async function login(prevState: AuthState, formData: FormData): Promise<A
     .eq("id", user.id)
     .single()
 
+  // SECURITY: Company + Profile werden ausschließlich im /auth/callback nach
+  // Email-Verification erstellt, nicht hier im Login-Flow. Früher hat dieser
+  // Block anonyme Firmen-Erstellung erlaubt (Spam-Pfad) — entfernt April 2026.
   if (!profile) {
-    const { createAdminClient } = await import("@/lib/supabase/admin")
-    const admin = createAdminClient()
-    const meta = user.user_metadata || {}
-    const companyName = meta.company_name || `${meta.first_name || "Neue"} Firma`
-
-    const { data: company } = await admin
-      .from("companies")
-      .insert({
-        name: companyName,
-        plan: "trial",
-        trial_ends_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-        max_employees: 5,
-        is_active: true,
-      })
-      .select("id")
-      .single()
-
-    if (company) {
-      await admin.from("profiles").insert({
-        id: user.id,
-        company_id: company.id,
-        first_name: meta.first_name || "",
-        last_name: meta.last_name || "",
-        role: "owner",
-      })
-    }
-
-    revalidatePath("/", "layout")
-    redirect("/dashboard")
+    return { error: { _form: ["Kein Profil für diese Email gefunden. Bitte registrieren oder eine Einladung anfordern."] } }
   }
 
   revalidatePath("/", "layout")
