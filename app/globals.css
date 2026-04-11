@@ -1,68 +1,159 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * ── Baustelle Modern — Design Tokens v3 ──
+ * Primary: Slate #334155  (moderner/neutraler als Navy)
+ * Accent:  Safety Orange #EA580C
+ * Font:    Plus Jakarta Sans (Heading + Body)
+ * Radius:  0.75rem (Bento-tauglich)
+ *
+ * Light- und Dark Mode sind gleichrangig aufgebaut.
+ * Tailwind v4 Syntax: @theme inline + CSS-Variablen,
+ * damit next-themes (.dark) die Werte überschreiben kann.
+ */
+
+:root {
+  /* Surfaces */
+  --background: #ffffff;
+  --foreground: #0f172a;          /* slate-900 */
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+
+  /* Primary — Slate 700 */
+  --primary: #334155;
+  --primary-foreground: #ffffff;
+
+  /* Accent — Safety Orange 600 */
+  --accent: #ea580c;
+  --accent-foreground: #ffffff;
+
+  /* Secondary & Muted */
+  --secondary: #f1f5f9;           /* slate-100 */
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;    /* slate-500 */
+
+  /* Border / Input / Ring */
+  --border: #e2e8f0;              /* slate-200 */
+  --input: #e2e8f0;
+  --ring: #ea580c;                /* focus = orange */
+
+  /* Semantic */
+  --success: #16a34a;             /* green-600 */
+  --success-foreground: #ffffff;
+  --warning: #f59e0b;             /* amber-500 */
+  --warning-foreground: #422006;
+  --danger: #ef4444;              /* red-500 */
+  --danger-foreground: #ffffff;
+  --destructive: #ef4444;         /* alias, bestehende shadcn primitives */
+  --destructive-foreground: #ffffff;
+
+  /* Sidebar (behalten aus v2, aber Slate-neutralisiert) */
+  --sidebar-bg: #0f172a;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-accent: #1e293b;
+  --sidebar-muted: #334155;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+
+  /* Radius-Basis */
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #0b1220;          /* very dark slate */
+  --foreground: #f1f5f9;
+  --card: #111a2e;
+  --card-foreground: #f1f5f9;
+  --popover: #111a2e;
+  --popover-foreground: #f1f5f9;
+
+  --primary: #f1f5f9;             /* invertiert — im Dark Mode wird Primary hell */
+  --primary-foreground: #0f172a;
+
+  --accent: #ea580c;              /* Safety Orange bleibt */
+  --accent-foreground: #ffffff;
+
+  --secondary: #1e293b;
+  --secondary-foreground: #f1f5f9;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #ea580c;
+
+  --success: #22c55e;
+  --success-foreground: #ffffff;
+  --warning: #fbbf24;
+  --warning-foreground: #1a1205;
+  --danger: #f87171;
+  --danger-foreground: #1a0505;
+  --destructive: #f87171;
+  --destructive-foreground: #1a0505;
+
+  --sidebar-bg: #0b1220;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-accent: #111a2e;
+  --sidebar-muted: #1e293b;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+}
+
 @theme inline {
-  /* ── Primary ── */
-  --color-primary: #1e3a5f;
-  --color-primary-foreground: #ffffff;
+  /* ── Surfaces ── */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
 
-  /* ── Accent ── */
-  --color-accent: #f59e0b;
-  --color-accent-foreground: #451a03;
+  /* ── Primary / Accent ── */
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
 
-  /* ── Success ── */
-  --color-success: #10b981;
-  --color-success-foreground: #ffffff;
+  /* ── Secondary / Muted ── */
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
 
-  /* ── Warning (distinct from accent) ── */
-  --color-warning: #eab308;
-  --color-warning-foreground: #422006;
+  /* ── Border / Input / Ring ── */
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 
-  /* ── Danger / Destructive ── */
-  --color-danger: #ef4444;
-  --color-danger-foreground: #ffffff;
-  --color-destructive: #ef4444;
-
-  /* ── Background & Foreground ── */
-  --color-background: #ffffff;
-  --color-foreground: #0f172a;
-
-  /* ── Muted ── */
-  --color-muted: #f1f5f9;
-  --color-muted-foreground: #64748b;
-
-  /* ── Card ── */
-  --color-card: #ffffff;
-  --color-card-foreground: #0f172a;
-
-  /* ── Popover ── */
-  --color-popover: #ffffff;
-  --color-popover-foreground: #0f172a;
-
-  /* ── Secondary ── */
-  --color-secondary: #f1f5f9;
-  --color-secondary-foreground: #0f172a;
-
-  /* ── Border & Input & Ring ── */
-  --color-border: #e2e8f0;
-  --color-input: #e2e8f0;
-  --color-ring: #1e3a5f;
+  /* ── Semantic ── */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
 
   /* ── Sidebar ── */
-  --color-sidebar-bg: #0f172a;
-  --color-sidebar-foreground: #e2e8f0;
-  --color-sidebar-accent: #1e293b;
-  --color-sidebar-muted: #334155;
-  --color-sidebar-border: rgba(255, 255, 255, 0.1);
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-muted: var(--sidebar-muted);
+  --color-sidebar-border: var(--sidebar-border);
 
-  /* ── Border Radius ── */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  /* ── Radii ── */
+  --radius-sm: calc(var(--radius) - 0.375rem);  /* 0.375rem */
+  --radius-md: calc(var(--radius) - 0.25rem);   /* 0.5rem  */
+  --radius-lg: var(--radius);                    /* 0.75rem */
+  --radius-xl: calc(var(--radius) + 0.25rem);   /* 1rem    */
 
   /* ── Fonts ── */
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-plus-jakarta-sans);
   --font-heading: var(--font-plus-jakarta-sans);
   --font-mono: var(--font-jetbrains-mono);
 }
@@ -83,6 +174,7 @@
     font-family: var(--font-sans);
     background-color: var(--color-background);
     color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
   }
 
   h1,
@@ -92,5 +184,7 @@
   h5,
   h6 {
     font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 }

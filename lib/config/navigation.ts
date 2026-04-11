@@ -22,6 +22,14 @@ export interface NavModule {
   href: string
   icon: LucideIcon
   module?: string // maps to foreman_permissions.module_name for RBAC
+  /**
+   * v3 Rebuild Flag (Sarah Chen, 2026-04-10):
+   * Module sind im v2-Branch noch vorhanden, werden aber im v3-Rebuild
+   * neu portiert. Solange `disabled: true`, erscheinen sie in der Nav
+   * (damit die Reihenfolge stabil bleibt und keine 404er fliegen),
+   * sind aber nicht klickbar. Sidebar/Header prüft dieses Flag.
+   */
+  disabled?: boolean
 }
 
 export interface WorkerTab {
@@ -42,9 +50,11 @@ export const APP_MODULES: NavModule[] = [
   { key: "zeiterfassung", label: "Zeiterfassung", href: "/disposition/zeiterfassung", icon: Clock, module: "zeiterfassung" },
   { key: "rechnungen", label: "Rechnungen", href: "/rechnungen", icon: Receipt, module: "rechnungen" },
   { key: "bautagesbericht", label: "Bautagesbericht", href: "/bautagesbericht", icon: ClipboardList, module: "bautagesbericht" },
-  { key: "fuhrpark", label: "Fuhrpark", href: "/fuhrpark", icon: Truck, module: "fuhrpark" },
-  { key: "lager", label: "Lager & Einkauf", href: "/lager", icon: Package, module: "lager" },
-  { key: "subunternehmer", label: "Subunternehmer", href: "/subunternehmer", icon: Handshake, module: "subunternehmer" },
+  // v3 Rebuild: Marcus portiert diese Module als Nächstes.
+  // Bis dahin disabled=true, damit die v3-Landing keine 404er wirft.
+  { key: "fuhrpark", label: "Fuhrpark", href: "/fuhrpark", icon: Truck, module: "fuhrpark", disabled: true },
+  { key: "lager", label: "Lager & Einkauf", href: "/lager", icon: Package, module: "lager", disabled: true },
+  { key: "subunternehmer", label: "Subunternehmer", href: "/subunternehmer", icon: Handshake, module: "subunternehmer", disabled: true },
 ]
 
 // ── Admin Modules (super_admin) ──
