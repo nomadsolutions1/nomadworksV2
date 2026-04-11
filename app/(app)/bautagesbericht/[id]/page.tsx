@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { getDiaryEntry, getDiaryDocuments } from "@/lib/actions/diary"
+import { getDiaryEntry, getDiaryDocuments, getDiaryPhotos } from "@/lib/actions/diary"
 import { DiaryDetail } from "@/components/modules/diary/diary-detail"
 import { formatDate } from "@/lib/utils/format"
 import type { Metadata } from "next"
@@ -17,12 +17,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BautagesberichtDetailPage({ params }: Props) {
   const { id } = await params
 
-  const [{ data: entry }, { data: documents = [] }] = await Promise.all([
+  const [{ data: entry }, { data: documents = [] }, { data: photos = [] }] = await Promise.all([
     getDiaryEntry(id),
     getDiaryDocuments(id),
+    getDiaryPhotos(id),
   ])
 
   if (!entry) notFound()
 
-  return <DiaryDetail entry={entry} documents={documents} />
+  return <DiaryDetail entry={entry} documents={documents} photos={photos} />
 }

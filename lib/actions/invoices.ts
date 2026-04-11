@@ -5,6 +5,7 @@ import { logActivity } from "@/lib/utils/activity-logger"
 import { revalidatePath } from "next/cache"
 import { trackError } from "@/lib/utils/error-tracker"
 import { withAuth } from "@/lib/utils/auth-helper"
+import { buildDatevCsv, datevFmtDate, datevFmtNumber } from "@/lib/utils/datev"
 import type { SupabaseClient } from "@supabase/supabase-js"
 
 // ─── Types ────────────────────────────────────────────────────
@@ -1225,4 +1226,92 @@ export async function createRegieInvoice(
     data?: Invoice
     error?: string | Record<string, string[]>
   }>
+}
+
+// ─── DATEV-Export Rechnungen ─────────────────────────────────
+// Liefert alle Rechnungen im Zeitraum als DATEV-kompatibles CSV.
+// Für Owner + Accountant (Leserecht auf "rechnungen").
+
+export async function exportInvoicesDatev(
+  from: string,
+  to: string
+): Promise<{ data?: string; error?: string }> {
+  return withAuth("rechnungen", "read", async ({ user, profile, db }) => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(from) || !/^\d{4}-\d{2}-\d{2}$/.test(to)) {
+      return { error: "Ungültiger Zeitraum. Bitte Start- und Enddatum auswählen." }
+    }
+    if (new Date(from) > new Date(to)) {
+      return { error: "Startdatum liegt nach dem Enddatum." }
+    }
+
+    const { data: invoices, error } = await db
+      .from("invoices")
+      .select("id, invoice_number, invoice_date, due_date, status, subtotal, tax_rate, tax_amount, total, paid_amount, paid_date, customer_id")
+      .eq("company_id", profile.company_id)
+      .gte("invoice_date", from)
+      .lte("invoice_date", to)
+      .order("invoice_date", { ascending: true })
+
+    if (error) {
+      trackError("invoices", "exportInvoicesDatev", error.message, { table: "invoices" })
+      return { error: "Rechnungen konnten nicht geladen werden." }
+    }
+
+    const customerIds = Array.from(new Set((invoices ?? []).map((i) => i.customer_id).filter(Boolean) as string[]))
+    const { data: customers } = customerIds.length
+      ? await db.from("customers").select("id, name, customer_number").in("id", customerIds).eq("company_id", profile.company_id)
+      : { data: [] as Array<Record<string, unknown>> }
+
+    const customerMap = new Map<string, { name: string; number: string }>()
+    for (const c of (customers ?? []) as Array<Record<string, unknown>>) {
+      customerMap.set(c.id as string, {
+        name: (c.name as string) || "",
+        number: (c.customer_number as string) || "",
+      })
+    }
+
+    const header = [
+      "Rechnungsnummer",
+      "Rechnungsdatum",
+      "Fälligkeit",
+      "Kundennummer",
+      "Kunde",
+      "Status",
+      "Netto",
+      "USt-Satz",
+      "USt-Betrag",
+      "Brutto",
+      "Bezahlt",
+      "Zahlungsdatum",
+    ]
+
+    const rows: Array<Array<string | number>> = (invoices ?? []).map((inv) => {
+      const cust = customerMap.get(inv.customer_id as string)
+      return [
+        inv.invoice_number,
+        datevFmtDate(inv.invoice_date as string),
+        datevFmtDate(inv.due_date as string | null),
+        cust?.number || "",
+        cust?.name || "—",
+        inv.status as string,
+        datevFmtNumber(Number(inv.subtotal ?? 0)),
+        datevFmtNumber(Number(inv.tax_rate ?? 0)),
+        datevFmtNumber(Number(inv.tax_amount ?? 0)),
+        datevFmtNumber(Number(inv.total ?? 0)),
+        datevFmtNumber(Number(inv.paid_amount ?? 0)),
+        datevFmtDate(inv.paid_date as string | null),
+      ]
+    })
+
+    await logActivity({
+      companyId: profile.company_id,
+      userId: user.id,
+      action: "export",
+      entityType: "invoice",
+      entityId: "datev",
+      title: `DATEV-Rechnungen exportiert (${from} – ${to})`,
+    })
+
+    return { data: buildDatevCsv(header, rows) }
+  }) as Promise<{ data?: string; error?: string }>
 }

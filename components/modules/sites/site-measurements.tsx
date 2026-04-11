@@ -8,14 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Plus, Trash2, Loader2 } from "lucide-react"
-import { getSiteMeasurements } from "@/lib/actions/sites"
-// TODO: Request from Elena (Agent 3) — addSiteMeasurement, deleteSiteMeasurement actions
-async function addSiteMeasurement(_siteId: string, _fd: FormData): Promise<{ error?: string }> {
-  return { error: "Aktion noch nicht implementiert — bitte Elena kontaktieren." }
-}
-async function deleteSiteMeasurement(_id: string, _siteId: string): Promise<{ error?: string }> {
-  return { error: "Aktion noch nicht implementiert — bitte Elena kontaktieren." }
-}
+import { getSiteMeasurements, addSiteMeasurement, deleteSiteMeasurement } from "@/lib/actions/sites"
 import type { SiteMeasurement } from "@/lib/actions/sites"
 import { toast } from "sonner"
 

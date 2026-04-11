@@ -38,6 +38,25 @@ export async function POST(req: NextRequest) {
         }
 
         const planInfo = PLANS[plan as keyof typeof PLANS]
+        const subscriptionId = session.subscription as string | null
+
+        // Idempotency: skip if this subscription is already recorded on the company.
+        // Stripe may re-deliver the same event; mutating again would reset trial_ends_at
+        // even though nothing changed.
+        const { data: existing } = await db
+          .from("companies")
+          .select("plan, stripe_subscription_id")
+          .eq("id", companyId)
+          .maybeSingle()
+
+        if (
+          existing &&
+          existing.plan === plan &&
+          existing.stripe_subscription_id === subscriptionId
+        ) {
+          console.log(`[stripe-webhook] checkout.session.completed (${event.id}) already applied, skip`)
+          break
+        }
 
         await db
           .from("companies")
@@ -45,7 +64,7 @@ export async function POST(req: NextRequest) {
             plan,
             is_active: true,
             stripe_customer_id: session.customer as string,
-            stripe_subscription_id: session.subscription as string,
+            stripe_subscription_id: subscriptionId,
             max_employees: planInfo?.maxEmployees ?? 10,
             monthly_price: planInfo?.price ?? 0,
             trial_ends_at: null,
@@ -73,13 +92,31 @@ export async function POST(req: NextRequest) {
 
         if (newPlan) {
           const planInfo = PLANS[newPlan as keyof typeof PLANS]
+          const shouldBeActive = subscription.status === "active"
+
+          // Idempotency: skip if state already matches
+          const { data: existing } = await db
+            .from("companies")
+            .select("plan, is_active")
+            .eq("id", companyId)
+            .maybeSingle()
+
+          if (
+            existing &&
+            existing.plan === newPlan &&
+            existing.is_active === shouldBeActive
+          ) {
+            console.log(`[stripe-webhook] subscription.updated (${event.id}) already applied, skip`)
+            break
+          }
+
           await db
             .from("companies")
             .update({
               plan: newPlan,
               max_employees: planInfo?.maxEmployees ?? 10,
               monthly_price: planInfo?.price ?? 0,
-              is_active: subscription.status === "active",
+              is_active: shouldBeActive,
             })
             .eq("id", companyId)
 
@@ -95,6 +132,18 @@ export async function POST(req: NextRequest) {
 
         if (!companyId) {
           console.warn("[stripe-webhook] subscription.deleted missing company_id in metadata")
+          break
+        }
+
+        // Idempotency: skip if already deactivated
+        const { data: existing } = await db
+          .from("companies")
+          .select("plan, stripe_subscription_id")
+          .eq("id", companyId)
+          .maybeSingle()
+
+        if (existing && existing.plan === "trial" && existing.stripe_subscription_id === null) {
+          console.log(`[stripe-webhook] subscription.deleted (${event.id}) already applied, skip`)
           break
         }
 
@@ -139,6 +188,21 @@ export async function POST(req: NextRequest) {
           .maybeSingle()
 
         if (company) {
+          // Idempotency: avoid duplicate notifications if Stripe redelivers.
+          // Scope by event.id stored in the notification link field.
+          const eventLink = `stripe_event:${event.id}`
+          const { data: existingNote } = await db
+            .from("notifications")
+            .select("id")
+            .eq("company_id", company.id)
+            .eq("link", eventLink)
+            .maybeSingle()
+
+          if (existingNote) {
+            console.log(`[stripe-webhook] payment_failed (${event.id}) notification already created, skip`)
+            break
+          }
+
           await db
             .from("notifications")
             .insert({
@@ -147,6 +211,7 @@ export async function POST(req: NextRequest) {
               title: "Zahlung fehlgeschlagen",
               message: "Die letzte Zahlung für Ihr Abonnement konnte nicht verarbeitet werden. Bitte aktualisieren Sie Ihre Zahlungsmethode.",
               severity: "warning",
+              link: eventLink,
             })
 
           console.log(`[stripe-webhook] Payment failed for company ${company.id}`)

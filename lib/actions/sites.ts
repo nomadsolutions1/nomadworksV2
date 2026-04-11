@@ -60,6 +60,8 @@ export type SiteCosts = {
   subcontractorCosts: number
   totalCosts: number
   budget: number | null
+  orderBudget: number | null
+  effectiveBudget: number | null
   budgetUsedPercent: number
   costBreakdown: {
     category: string
@@ -628,18 +630,31 @@ export async function getSiteCosts(siteId: string): Promise<{ data?: SiteCosts; 
       }
     }
 
-    // 5. Budget from site
+    // 5. Budget from site + order fallback
     const { data: siteData } = await db
       .from("construction_sites")
-      .select("budget")
+      .select("budget, order_id")
       .eq("id", siteId)
       .eq("company_id", profile.company_id)
       .single()
 
     const budget = siteData?.budget != null ? Number(siteData.budget) : null
 
+    let orderBudget: number | null = null
+    if (siteData?.order_id) {
+      const { data: orderData } = await db
+        .from("orders")
+        .select("budget")
+        .eq("id", siteData.order_id)
+        .eq("company_id", profile.company_id)
+        .single()
+      if (orderData?.budget != null) orderBudget = Number(orderData.budget)
+    }
+
+    const effectiveBudget = budget ?? orderBudget
+
     const totalCosts = Math.round((personalCosts + materialCosts + equipmentCosts + vehicleCosts + subcontractorCosts) * 100) / 100
-    const budgetUsedPercent = budget && budget > 0 ? Math.round((totalCosts / budget) * 1000) / 10 : 0
+    const budgetUsedPercent = effectiveBudget && effectiveBudget > 0 ? Math.round((totalCosts / effectiveBudget) * 1000) / 10 : 0
 
     // Build breakdown
     const breakdown = [
@@ -663,6 +678,8 @@ export async function getSiteCosts(siteId: string): Promise<{ data?: SiteCosts; 
         subcontractorCosts: Math.round(subcontractorCosts * 100) / 100,
         totalCosts,
         budget,
+        orderBudget,
+        effectiveBudget,
         budgetUsedPercent,
         costBreakdown,
       },
@@ -723,6 +740,16 @@ export async function getSiteTeam(siteId: string): Promise<{ data?: SiteTeamMemb
 
 // ─── Site Measurements (Aufmaß) ──────────────────────────────
 
+const siteMeasurementSchema = z.object({
+  description: z.string().min(1, "Beschreibung ist erforderlich"),
+  length: z.string().optional().transform((v) => (v && v.trim() ? parseFloat(v.replace(",", ".")) : null)),
+  width: z.string().optional().transform((v) => (v && v.trim() ? parseFloat(v.replace(",", ".")) : null)),
+  height: z.string().optional().transform((v) => (v && v.trim() ? parseFloat(v.replace(",", ".")) : null)),
+  unit: z.string().min(1, "Einheit ist erforderlich"),
+  quantity: z.string().optional().transform((v) => (v && v.trim() ? parseFloat(v.replace(",", ".")) : 1)),
+  notes: z.string().optional().transform((v) => v || null),
+})
+
 export async function getSiteMeasurements(siteId: string): Promise<{ data?: SiteMeasurement[]; error?: string }> {
   return withAuth("baustellen", "read", async ({ profile, db }) => {
     const { data, error } = await db.from("measurements")
@@ -737,4 +764,89 @@ export async function getSiteMeasurements(siteId: string): Promise<{ data?: Site
     }
     return { data: (data as SiteMeasurement[]) || [] }
   }) as Promise<{ data?: SiteMeasurement[]; error?: string }>
+}
+
+export async function addSiteMeasurement(siteId: string, formData: FormData): Promise<{ success?: boolean; error?: string }> {
+  return withAuth("baustellen", "write", async ({ user, profile, db }) => {
+    const validated = siteMeasurementSchema.safeParse(Object.fromEntries(formData))
+    if (!validated.success) return { error: "Validierungsfehler" }
+
+    // Ownership check: site must belong to this company
+    const { data: site } = await db.from("construction_sites")
+      .select("id, name")
+      .eq("id", siteId)
+      .eq("company_id", profile.company_id)
+      .single()
+    if (!site) return { error: "Baustelle nicht gefunden" }
+
+    const d = validated.data
+    const calc = (d.length ?? 1) * (d.width ?? 1) * (d.height ?? 1) * (d.quantity ?? 1)
+
+    const { data: inserted, error } = await db.from("measurements").insert({
+      company_id: profile.company_id,
+      site_id: siteId,
+      measured_by: user.id,
+      description: d.description,
+      length: d.length,
+      width: d.width,
+      height: d.height,
+      unit: d.unit,
+      quantity: d.quantity ?? 1,
+      calculated_value: Math.round(calc * 1000) / 1000,
+      notes: d.notes,
+    } as never).select("id").single()
+
+    if (error) {
+      trackError("sites", "addSiteMeasurement", error.message, { table: "measurements" })
+      return { error: error.message }
+    }
+
+    await logActivity({
+      companyId: profile.company_id,
+      userId: user.id,
+      action: "create",
+      entityType: "measurement",
+      entityId: inserted?.id,
+      title: `Aufmaß "${d.description}" auf Baustelle "${site.name}" angelegt`,
+    })
+
+    revalidatePath(`/baustellen/${siteId}`)
+    return { success: true }
+  }) as Promise<{ success?: boolean; error?: string }>
+}
+
+export async function deleteSiteMeasurement(id: string, siteId: string): Promise<{ success?: boolean; error?: string }> {
+  return withAuth("baustellen", "write", async ({ user, profile, db }) => {
+    // Ownership pre-check
+    const { data: existing } = await db.from("measurements")
+      .select("id, description")
+      .eq("id", id)
+      .eq("site_id", siteId)
+      .eq("company_id", profile.company_id)
+      .single()
+    if (!existing) return { error: "Aufmaß nicht gefunden" }
+
+    const { error } = await db.from("measurements")
+      .delete()
+      .eq("id", id)
+      .eq("site_id", siteId)
+      .eq("company_id", profile.company_id)
+
+    if (error) {
+      trackError("sites", "deleteSiteMeasurement", error.message, { table: "measurements" })
+      return { error: error.message }
+    }
+
+    await logActivity({
+      companyId: profile.company_id,
+      userId: user.id,
+      action: "delete",
+      entityType: "measurement",
+      entityId: id,
+      title: `Aufmaß "${existing.description}" gelöscht`,
+    })
+
+    revalidatePath(`/baustellen/${siteId}`)
+    return { success: true }
+  }) as Promise<{ success?: boolean; error?: string }>
 }

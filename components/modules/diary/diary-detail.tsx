@@ -3,19 +3,21 @@
 import { Breadcrumbs } from "@/components/layout/breadcrumbs"
 import { PageHeader } from "@/components/layout/page-header"
 import { DocumentUpload } from "./document-upload"
+import { DiaryPhotoUpload } from "./photo-upload"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { formatDate, formatDateTime } from "@/lib/utils/format"
 import { WEATHER_OPTIONS } from "@/lib/utils/constants"
 import Link from "next/link"
 import {
-  Calendar, MapPin, Pencil, Thermometer, Wind, AlertTriangle, Wrench, FileText,
+  Calendar, MapPin, Pencil, Thermometer, Wind, AlertTriangle, Wrench, FileText, Camera, Printer,
 } from "lucide-react"
-import type { DiaryEntry, DiaryDocument } from "@/lib/actions/diary"
+import type { DiaryEntry, DiaryDocument, DiaryPhoto } from "@/lib/actions/diary"
 
 interface DiaryDetailProps {
   entry: DiaryEntry
   documents: DiaryDocument[]
+  photos: DiaryPhoto[]
 }
 
 function getWeatherOption(label: string | null) {
@@ -23,7 +25,7 @@ function getWeatherOption(label: string | null) {
   return WEATHER_OPTIONS.find((o) => o.label === label) ?? null
 }
 
-export function DiaryDetail({ entry, documents }: DiaryDetailProps) {
+export function DiaryDetail({ entry, documents, photos }: DiaryDetailProps) {
   const weatherOpt = getWeatherOption(entry.weather)
 
   return (
@@ -38,12 +40,20 @@ export function DiaryDetail({ entry, documents }: DiaryDetailProps) {
         title={`Bautagesbericht – ${formatDate(entry.entry_date)}`}
         description={entry.site_name ?? undefined}
       >
-        <Link href={`/bautagesbericht/${entry.id}/bearbeiten`}>
-          <Button variant="outline" className="rounded-xl h-11 gap-2">
-            <Pencil className="h-4 w-4" />
-            Bearbeiten
-          </Button>
-        </Link>
+        <div className="flex gap-2">
+          <Link href={`/bautagesbericht/${entry.id}/drucken`} target="_blank">
+            <Button variant="outline" className="rounded-xl h-11 gap-2">
+              <Printer className="h-4 w-4" />
+              Drucken
+            </Button>
+          </Link>
+          <Link href={`/bautagesbericht/${entry.id}/bearbeiten`}>
+            <Button variant="outline" className="rounded-xl h-11 gap-2">
+              <Pencil className="h-4 w-4" />
+              Bearbeiten
+            </Button>
+          </Link>
+        </div>
       </PageHeader>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -102,6 +112,17 @@ export function DiaryDetail({ entry, documents }: DiaryDetailProps) {
               </CardContent>
             </Card>
           )}
+          <Card className="rounded-2xl shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-base font-semibold text-foreground flex items-center gap-2">
+                <Camera className="h-4 w-4 text-primary" />
+                Fotos
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <DiaryPhotoUpload entryId={entry.id} photos={photos} />
+            </CardContent>
+          </Card>
           <Card className="rounded-2xl shadow-sm">
             <CardHeader>
               <CardTitle className="text-base font-semibold text-foreground flex items-center gap-2">

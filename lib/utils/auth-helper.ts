@@ -68,6 +68,39 @@ export async function requireCompanyAuth(): Promise<
   return { user: ctx.user, profile: ctx.profile, db: ctx.db }
 }
 
+// ─── Role-based module deltas (V3-7) ─────────────────────────
+// These deltas apply IN ADDITION to the foreman_permissions table.
+// Purpose: office/accountant/employee get sensible defaults without
+// requiring per-user permission rows.
+
+/**
+ * Modules that `accountant` (Steuerberater) can access.
+ * Read-only for rechnungen and mitarbeiter (SOKA export needs employee data),
+ * plus firma is owner-only so not listed.
+ */
+const ACCOUNTANT_READ_MODULES = new Set<string>([
+  "rechnungen",
+  "mitarbeiter",
+])
+
+/**
+ * Modules `office` (Büro-Mitarbeiter) always has, on top of any foreman_permissions.
+ * Office is a superset of foreman + full rechnungen + mitarbeiter (no sensitive data
+ * unless can_view_sensitive_data is explicitly set).
+ */
+const OFFICE_ALL_MODULES = new Set<string>([
+  "mitarbeiter",
+  "baustellen",
+  "zeiterfassung",
+  "disposition",
+  "auftraege",
+  "fuhrpark",
+  "lager",
+  "rechnungen",
+  "subunternehmer",
+  "bautagesbericht",
+])
+
 /**
  * Check if a user has permission for a specific module.
  * Returns true if the user has the permission, false otherwise.
@@ -75,7 +108,10 @@ export async function requireCompanyAuth(): Promise<
  * Super admin never has module permissions (uses admin panel).
  * Worker/Employee never has module permissions.
  *
- * FIX: Uses the passed db client instead of creating a new admin client.
+ * Role-deltas (V3-7):
+ * - accountant: read-only access to rechnungen + mitarbeiter (hard-coded).
+ * - office: full access to all standard modules (hard-coded).
+ * - foreman: still driven by foreman_permissions table (existing behavior).
  */
 export async function checkModuleAccess(
   profile: UserProfile,
@@ -90,7 +126,19 @@ export async function checkModuleAccess(
   // Super admin: never (they use the admin panel, not company modules)
   if (profile.role === "super_admin") return false
 
-  // Foreman + Office + Accountant: check foreman_permissions table
+  // Accountant: read-only on whitelisted modules, nothing else.
+  if (profile.role === "accountant") {
+    if (mode === "write") return false
+    return ACCOUNTANT_READ_MODULES.has(moduleName)
+  }
+
+  // Office: full read+write on all standard modules by default.
+  if (profile.role === "office") {
+    if (OFFICE_ALL_MODULES.has(moduleName)) return true
+    // Fall through to foreman_permissions for any non-standard module
+  }
+
+  // Foreman (and office fall-through): check foreman_permissions table
   const { data } = await db
     .from("foreman_permissions")
     .select("can_view, can_edit")
@@ -132,19 +180,32 @@ export async function getForemanPermissions(
 /**
  * Check if a role can access a given module.
  * Used by both proxy.ts and server actions.
+ * Mirrors checkModuleAccess role-deltas (V3-7).
  */
 export function canRoleAccessModule(
   role: string,
   moduleName: string,
-  foremanPermissions?: Record<string, { can_view: boolean; can_edit: boolean }>
+  foremanPermissions?: Record<string, { can_view: boolean; can_edit: boolean }>,
+  mode: "read" | "write" = "read"
 ): boolean {
   if (role === "owner") return true
-  if (role === "super_admin") return false // admin uses admin panel
+  if (role === "super_admin") return false
   if (role === "worker" || role === "employee") return false
 
-  // Foreman + Office + Accountant: check permissions map
-  if ((role === "foreman" || role === "office" || role === "accountant") && foremanPermissions) {
-    return !!foremanPermissions[moduleName]?.can_view
+  if (role === "accountant") {
+    if (mode === "write") return false
+    return ACCOUNTANT_READ_MODULES.has(moduleName)
+  }
+
+  if (role === "office") {
+    if (OFFICE_ALL_MODULES.has(moduleName)) return true
+    // fall through to foreman_permissions
+  }
+
+  if ((role === "foreman" || role === "office") && foremanPermissions) {
+    const perm = foremanPermissions[moduleName]
+    if (!perm) return false
+    return mode === "write" ? !!perm.can_edit : !!perm.can_view
   }
 
   return false
