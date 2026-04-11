@@ -39,6 +39,15 @@ export type DiaryDocument = {
   created_at: string
 }
 
+export type DiaryPhoto = {
+  id: string
+  diary_entry_id: string
+  file_path: string
+  file_url: string
+  caption: string | null
+  created_at: string
+}
+
 export type DiaryStats = {
   monthCount: number
   todayCount: number
@@ -530,6 +539,210 @@ export async function deleteDiaryDocument(
     })
 
     revalidatePath(`/bautagesbericht/${entryId}`)
+    return { success: true }
+  }) as Promise<{ success?: boolean; error?: string }>
+}
+
+// ─── Diary Photos (Supabase Storage: bucket "diary-photos") ───
+
+const PHOTO_BUCKET = "diary-photos"
+const MAX_PHOTOS_PER_ENTRY = 10
+const MAX_PHOTO_SIZE_BYTES = 5 * 1024 * 1024 // 5 MB
+const ALLOWED_PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"]
+
+function buildPhotoUrl(filePath: string): string {
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ""
+  return `${base}/storage/v1/object/public/${PHOTO_BUCKET}/${filePath}`
+}
+
+// ─── getDiaryPhotos ───────────────────────────────────────────
+
+export async function getDiaryPhotos(
+  entryId: string
+): Promise<{ data?: DiaryPhoto[]; error?: string }> {
+  return withAuth("bautagesbericht", "read", async ({ profile, db }) => {
+    // Ownership-Check: diary_entry must belong to company
+    const { data: entryCheck } = await db
+      .from("diary_entries")
+      .select("id")
+      .eq("id", entryId)
+      .eq("company_id", profile.company_id)
+      .maybeSingle()
+
+    if (!entryCheck) return { data: [] }
+
+    const { data: photos, error } = await db
+      .from("diary_photos")
+      .select("*")
+      .eq("diary_entry_id", entryId)
+      .order("created_at", { ascending: true })
+
+    if (error) {
+      trackError("diary", "getDiaryPhotos", error.message, { table: "diary_photos" })
+      return { error: "Fotos konnten nicht geladen werden" }
+    }
+
+    const rows = photos ?? []
+    return {
+      data: rows.map((r) => ({
+        id: r.id,
+        diary_entry_id: r.diary_entry_id,
+        file_path: r.file_path,
+        file_url: buildPhotoUrl(r.file_path),
+        caption: r.caption,
+        created_at: r.created_at,
+      })),
+    }
+  }) as Promise<{ data?: DiaryPhoto[]; error?: string }>
+}
+
+// ─── uploadDiaryPhoto ─────────────────────────────────────────
+
+export async function uploadDiaryPhoto(
+  formData: FormData
+): Promise<{ success?: boolean; data?: DiaryPhoto; error?: string }> {
+  return withAuth("bautagesbericht", "write", async ({ user, profile, db }) => {
+    const entryId = formData.get("diary_entry_id")
+    const file = formData.get("file")
+    const caption = formData.get("caption")
+
+    if (typeof entryId !== "string" || !entryId) {
+      return { error: "Bautagesbericht-ID fehlt" }
+    }
+    if (!(file instanceof File)) {
+      return { error: "Datei fehlt" }
+    }
+    if (file.size > MAX_PHOTO_SIZE_BYTES) {
+      return { error: "Foto ist zu groß (max. 5 MB)" }
+    }
+    if (!ALLOWED_PHOTO_TYPES.includes(file.type)) {
+      return { error: "Nur JPG, PNG oder WebP erlaubt" }
+    }
+
+    // Ownership-Check
+    const { data: entryCheck } = await db
+      .from("diary_entries")
+      .select("id, entry_date, site_id")
+      .eq("id", entryId)
+      .eq("company_id", profile.company_id)
+      .maybeSingle()
+
+    if (!entryCheck) return { error: "Bautagesbericht nicht gefunden" }
+
+    // Limit: max 10 photos per entry
+    const { count } = await db
+      .from("diary_photos")
+      .select("id", { count: "exact", head: true })
+      .eq("diary_entry_id", entryId)
+
+    if ((count ?? 0) >= MAX_PHOTOS_PER_ENTRY) {
+      return { error: `Maximal ${MAX_PHOTOS_PER_ENTRY} Fotos pro Bericht` }
+    }
+
+    // Build pro-company path: {company_id}/{diary_id}/{timestamp}-{filename}
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_")
+    const filePath = `${profile.company_id}/${entryId}/${Date.now()}-${safeName}`
+
+    const arrayBuffer = await file.arrayBuffer()
+    const { error: uploadError } = await db.storage
+      .from(PHOTO_BUCKET)
+      .upload(filePath, arrayBuffer, {
+        contentType: file.type,
+        upsert: false,
+      })
+
+    if (uploadError) {
+      trackError("diary", "uploadDiaryPhoto.storage", uploadError.message, { bucket: PHOTO_BUCKET })
+      return { error: `Upload fehlgeschlagen: ${uploadError.message}` }
+    }
+
+    const captionStr =
+      typeof caption === "string" && caption.trim() ? caption.trim() : null
+
+    const { data: row, error: insertError } = await db
+      .from("diary_photos")
+      .insert({
+        diary_entry_id: entryId,
+        file_path: filePath,
+        caption: captionStr,
+      })
+      .select()
+      .single()
+
+    if (insertError) {
+      // Rollback storage upload
+      await db.storage.from(PHOTO_BUCKET).remove([filePath])
+      trackError("diary", "uploadDiaryPhoto.insert", insertError.message, { table: "diary_photos" })
+      return { error: "Foto-Metadaten konnten nicht gespeichert werden" }
+    }
+
+    await logActivity({
+      companyId: profile.company_id,
+      userId: user.id,
+      action: "create",
+      entityType: "diary_photo",
+      entityId: row.id,
+      title: `Foto hochgeladen für Bautagesbericht ${entryCheck.entry_date}`,
+    })
+
+    revalidatePath(`/bautagesbericht/${entryId}`)
+    return {
+      success: true,
+      data: {
+        id: row.id,
+        diary_entry_id: row.diary_entry_id,
+        file_path: row.file_path,
+        file_url: buildPhotoUrl(row.file_path),
+        caption: row.caption,
+        created_at: row.created_at,
+      },
+    }
+  }) as Promise<{ success?: boolean; data?: DiaryPhoto; error?: string }>
+}
+
+// ─── deleteDiaryPhoto ─────────────────────────────────────────
+
+export async function deleteDiaryPhoto(
+  photoId: string
+): Promise<{ success?: boolean; error?: string }> {
+  return withAuth("bautagesbericht", "write", async ({ user, profile, db }) => {
+    // Load photo + check ownership via diary_entry
+    const { data: photo } = await db
+      .from("diary_photos")
+      .select("id, file_path, diary_entry_id, diary_entries!inner(company_id)")
+      .eq("id", photoId)
+      .maybeSingle()
+
+    if (!photo) return { error: "Foto nicht gefunden" }
+
+    const entryCompany = (photo as unknown as {
+      diary_entries: { company_id: string } | { company_id: string }[]
+    }).diary_entries
+    const companyId = Array.isArray(entryCompany) ? entryCompany[0]?.company_id : entryCompany?.company_id
+    if (companyId !== profile.company_id) {
+      return { error: "Foto gehört nicht zu Ihrer Firma" }
+    }
+
+    // Delete storage object
+    await db.storage.from(PHOTO_BUCKET).remove([photo.file_path])
+
+    const { error } = await db.from("diary_photos").delete().eq("id", photoId)
+
+    if (error) {
+      trackError("diary", "deleteDiaryPhoto", error.message, { table: "diary_photos" })
+      return { error: "Foto konnte nicht gelöscht werden" }
+    }
+
+    await logActivity({
+      companyId: profile.company_id,
+      userId: user.id,
+      action: "delete",
+      entityType: "diary_photo",
+      entityId: photoId,
+      title: "Bautagesbericht-Foto gelöscht",
+    })
+
+    revalidatePath(`/bautagesbericht/${photo.diary_entry_id}`)
     return { success: true }
   }) as Promise<{ success?: boolean; error?: string }>
 }

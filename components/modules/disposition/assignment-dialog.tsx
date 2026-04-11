@@ -21,6 +21,7 @@ interface Site { id: string; name: string; status: string }
 interface Props {
   open: boolean; onClose: () => void; prefilledDate?: string; prefilledUserId?: string
   existingAssignment?: Assignment; employees: Employee[]; sites: Site[]; weekStart?: string
+  startInBulkMode?: boolean
 }
 
 const SHIFTS = [
@@ -33,7 +34,7 @@ const DAYS = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 
 export function AssignmentDialog({
   open, onClose, prefilledDate, prefilledUserId,
-  existingAssignment, employees, sites, weekStart,
+  existingAssignment, employees, sites, weekStart, startInBulkMode,
 }: Props) {
   const router = useRouter()
   const isEdit = !!existingAssignment
@@ -48,7 +49,7 @@ export function AssignmentDialog({
   const [breakMinutes, setBreakMinutes] = useState(String(existingAssignment?.break_minutes ?? 60))
   const [notes, setNotes] = useState(existingAssignment?.notes ?? "")
   const [selectedDays, setSelectedDays] = useState<number[]>([0, 1, 2, 3, 4])
-  const [bulkMode, setBulkMode] = useState(false)
+  const [bulkMode, setBulkMode] = useState(startInBulkMode ?? false)
 
   function applyPreset(p: typeof SHIFTS[number]) {
     setShiftType(p.key); setStartTime(p.start); setEndTime(p.end); setBreakMinutes(String(p.br))

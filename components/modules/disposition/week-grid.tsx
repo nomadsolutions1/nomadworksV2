@@ -4,7 +4,7 @@ import { useState, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, AlertTriangle, Plus, Moon } from "lucide-react"
+import { ChevronLeft, ChevronRight, AlertTriangle, Plus, Moon, CalendarPlus } from "lucide-react"
 import { AssignmentDialog } from "./assignment-dialog"
 import { getSiteColor } from "@/lib/utils/colors"
 import {
@@ -47,6 +47,7 @@ export function WeekGrid({ assignments, employees, sites, weekStart }: WeekGridP
   const [selectedDate, setSelectedDate] = useState("")
   const [selectedUserId, setSelectedUserId] = useState("")
   const [editingAssignment, setEditingAssignment] = useState<Assignment | undefined>()
+  const [bulkModeStart, setBulkModeStart] = useState(false)
 
   const weekDates = getWeekDateStrings(weekStart)
   const today = getTodayString()
@@ -74,6 +75,7 @@ export function WeekGrid({ assignments, employees, sites, weekStart }: WeekGridP
     setSelectedUserId(userId)
     setSelectedDate(date)
     setEditingAssignment(undefined)
+    setBulkModeStart(false)
     setDialogOpen(true)
   }
 
@@ -81,6 +83,15 @@ export function WeekGrid({ assignments, employees, sites, weekStart }: WeekGridP
     setEditingAssignment(assignment)
     setSelectedDate(assignment.date)
     setSelectedUserId(assignment.user_id)
+    setBulkModeStart(false)
+    setDialogOpen(true)
+  }
+
+  function openWeekPlanDialog() {
+    setEditingAssignment(undefined)
+    setSelectedUserId("")
+    setSelectedDate(weekDates[0])
+    setBulkModeStart(true)
     setDialogOpen(true)
   }
 
@@ -90,7 +101,7 @@ export function WeekGrid({ assignments, employees, sites, weekStart }: WeekGridP
 
   const dialogKey = editingAssignment
     ? `edit-${editingAssignment.id}`
-    : `new-${selectedUserId}-${selectedDate}`
+    : `new-${selectedUserId}-${selectedDate}-${bulkModeStart ? "bulk" : "single"}`
 
   return (
     <div className="space-y-4">
@@ -115,6 +126,16 @@ export function WeekGrid({ assignments, employees, sites, weekStart }: WeekGridP
             Heute
           </Button>
         )}
+        <div className="ml-auto">
+          <Button
+            size="sm"
+            className="rounded-lg gap-1.5 font-semibold"
+            onClick={openWeekPlanDialog}
+          >
+            <CalendarPlus className="h-4 w-4" />
+            Woche planen
+          </Button>
+        </div>
       </div>
 
       {/* Grid */}
@@ -241,6 +262,8 @@ export function WeekGrid({ assignments, employees, sites, weekStart }: WeekGridP
         existingAssignment={editingAssignment}
         employees={employees}
         sites={sites}
+        weekStart={weekStart}
+        startInBulkMode={bulkModeStart}
       />
     </div>
   )
