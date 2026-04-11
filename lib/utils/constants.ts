@@ -97,6 +97,20 @@ export const INVOICE_STATUSES = {
   overdue: { label: "Überfällig", variant: "danger" as const },
 } as const
 
+export const PURCHASE_ORDER_STATUSES = {
+  draft: { label: "Entwurf", variant: "neutral" as const },
+  ordered: { label: "Bestellt", variant: "info" as const },
+  partially_delivered: { label: "Teilgeliefert", variant: "warning" as const },
+  delivered: { label: "Geliefert", variant: "success" as const },
+  cancelled: { label: "Storniert", variant: "danger" as const },
+} as const
+
+export const STOCK_MOVEMENT_TYPES = {
+  in: { label: "Eingang", variant: "success" as const },
+  out: { label: "Ausgang", variant: "danger" as const },
+  return: { label: "Rückgabe", variant: "warning" as const },
+} as const
+
 export const VEHICLE_TYPE_LABELS = {
   truck: "LKW",
   car: "PKW",
@@ -253,6 +267,18 @@ export function getOrderStatusConfig(status: string) {
 export function getInvoiceStatusConfig(status: string) {
   const cfg = INVOICE_STATUSES[status as keyof typeof INVOICE_STATUSES]
   return cfg ?? { label: status, variant: "neutral" as const }
+}
+
+// Purchase order status config resolver
+export function getPurchaseOrderStatusConfig(status: string) {
+  const cfg = PURCHASE_ORDER_STATUSES[status as keyof typeof PURCHASE_ORDER_STATUSES]
+  return cfg ?? { label: status, variant: "neutral" as const }
+}
+
+// Stock movement type config resolver
+export function getStockMovementTypeConfig(type: string) {
+  const cfg = STOCK_MOVEMENT_TYPES[type as keyof typeof STOCK_MOVEMENT_TYPES]
+  return cfg ?? { label: type, variant: "neutral" as const }
 }
 
 // Leave status config
