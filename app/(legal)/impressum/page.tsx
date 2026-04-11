@@ -40,6 +40,14 @@ export default function ImpressumPage() {
       </section>
 
       <section className="space-y-2">
+        <h2 className="text-lg font-semibold text-foreground">Berufshaftpflichtversicherung</h2>
+        <p>
+          [PLATZHALTER: Name und Anschrift des Versicherers]<br />
+          [PLATZHALTER: Geltungsraum der Versicherung]
+        </p>
+      </section>
+
+      <section className="space-y-2">
         <h2 className="text-lg font-semibold text-foreground">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
         <p>Mikail Sünger, Hochstr. 17, 47228 Duisburg</p>
       </section>

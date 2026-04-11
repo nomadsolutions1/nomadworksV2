@@ -70,7 +70,14 @@ export default function DatenschutzPage() {
             <a href="https://stripe.com/de/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Datenschutzhinweise</a>
           </li>
           <li>
-            <strong>Resend Inc.</strong> — Transaktions-E-Mails (Bestätigungen, Passwort-Reset).
+            <strong>Resend Inc.</strong> (USA) — Transaktions-E-Mails (Bestätigungen, Passwort-Reset,
+            Einladungen). Datenübermittlung auf Basis von EU-Standardvertragsklauseln.
+          </li>
+          <li>
+            <strong>Sentry (Functional Software Inc.)</strong> (USA) — Fehlerprotokollierung (Error
+            Tracking) zur Stabilität und Sicherheit der Plattform. Übermittelt werden technische
+            Fehlerdaten (Stack Traces, Browser, URL). Datenübermittlung auf Basis von
+            EU-Standardvertragsklauseln. Nur aktiv, wenn Sie in optionale Cookies eingewilligt haben.
           </li>
         </ul>
         <p>Mit allen Auftragsverarbeitern bestehen Verträge gemäß Art. 28 DSGVO bzw. EU-Standardvertragsklauseln.</p>
@@ -107,11 +114,26 @@ export default function DatenschutzPage() {
         </p>
       </Section>
 
-      <Section title="8. Cookies">
+      <Section title="8. Cookies und Einwilligung">
         <p>
-          NomadWorks verwendet ausschließlich technisch notwendige Cookies für die Authentifizierung
-          (Supabase Auth Session). Es werden keine Tracking-Cookies, Werbe-Cookies oder Analyse-Tools
-          wie Google Analytics eingesetzt.
+          NomadWorks verwendet zwei Kategorien von Cookies:
+        </p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li>
+            <strong>Notwendige Cookies:</strong> Erforderlich für Anmeldung und Sitzungsverwaltung
+            (Supabase Auth Session). Ohne diese Cookies funktioniert die Software nicht. Rechtsgrundlage:
+            Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung).
+          </li>
+          <li>
+            <strong>Optionale Cookies (Error Tracking):</strong> Sentry erfasst technische Fehler, damit
+            wir Probleme schneller beheben können. Nur aktiv nach Ihrer ausdrücklichen Einwilligung
+            (Opt-in). Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung). Sie können diese
+            jederzeit über den Cookie-Banner widerrufen.
+          </li>
+        </ul>
+        <p>
+          Es werden keine Tracking-Cookies für Werbung oder Profilbildung eingesetzt. Google Analytics
+          wird nicht verwendet.
         </p>
       </Section>
 
