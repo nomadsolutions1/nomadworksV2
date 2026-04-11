@@ -125,9 +125,54 @@ async function loadMaterialCost(db: DB, companyId: string, siteId: string): Prom
   return computeMaterialCost(moveRes.data ?? [], priceMap)
 }
 
+// ─── Fleet Cost Loader ──────────────────────────────────────
+// v2 schema-reality (David's note V3-4):
+// Weder `fuel_logs` noch `trip_logs` haben einen `site_id`-FK — sie sind
+// auf Fahrzeugebene geloggt. `equipment_costs` ebenfalls nicht.
+// Wir leiten Fleet-Kosten pro Baustelle deshalb über den aktuellen
+// `assigned_site`-Zustand auf `equipment` ab (statische Zuweisung).
+// Für Vehicles existiert kein `assigned_site` in v2 — `assigned_to` zeigt
+// auf einen User, nicht auf eine Baustelle. Daher: vehicles tragen
+// aktuell NICHT zu getSiteCosts bei (dokumentiert in phase-v3-4-report.md).
+// Erweiterung auf trip_logs.site_id ist ein Backlog-Item (V3-5+).
+
+async function loadFleetCost(db: DB, companyId: string, siteId: string): Promise<number> {
+  // Aktuelle Equipment auf dieser Baustelle
+  const { data: assignedEquip, error: eqErr } = await db
+    .from("equipment")
+    .select("id, daily_rate")
+    .eq("company_id", companyId)
+    .eq("assigned_site", siteId)
+    .is("deleted_at", null)
+
+  if (eqErr) {
+    trackError("cross-module", "loadFleetCost.equipment", eqErr.message, { siteId })
+    return 0
+  }
+
+  if (!assignedEquip || assignedEquip.length === 0) return 0
+
+  const equipIds = assignedEquip.map((e) => e.id)
+
+  // Tatsächliche gebuchte Equipment-Kosten
+  const { data: costs, error: costErr } = await db
+    .from("equipment_costs")
+    .select("equipment_id, amount")
+    .eq("company_id", companyId)
+    .in("equipment_id", equipIds)
+
+  if (costErr) {
+    trackError("cross-module", "loadFleetCost.costs", costErr.message, { siteId })
+    return 0
+  }
+
+  const actual = (costs ?? []).reduce((sum, c) => sum + (c.amount ?? 0), 0)
+  return Math.round(actual * 100) / 100
+}
+
 // ─── getSiteCosts ────────────────────────────────────────────
-// Nur labor (time_entries) + material (stock_movements) werden aktuell summiert.
-// fleet + subs sind Platzhalter (0) — implementiert in V3-4 / V3-5.
+// labor (time_entries) + material (stock_movements) + fleet (equipment_costs via assigned_site).
+// subs bleibt Platzhalter (0) — V3-5 (Subunternehmer).
 
 export async function getSiteCosts(
   siteId: string
@@ -143,12 +188,12 @@ export async function getSiteCosts(
 
     if (!site) return { error: "Baustelle nicht gefunden" }
 
-    const [labor, material] = await Promise.all([
+    const [labor, material, fleet] = await Promise.all([
       loadLaborCost(db, profile.company_id, siteId),
       loadMaterialCost(db, profile.company_id, siteId),
+      loadFleetCost(db, profile.company_id, siteId),
     ])
 
-    const fleet = 0
     const subs = 0
     const total = Math.round((labor + material + fleet + subs) * 100) / 100
 
@@ -231,4 +276,179 @@ export async function getMaterialUsage(
 
     return { data: result }
   }) as Promise<{ data?: MaterialUsageRow[]; error?: string }>
+}
+
+// ─── getVehicleUtilization ───────────────────────────────────
+// Aggregates trip + fuel + equipment cost activity per vehicle.
+// Architektur-Doc Use Case #5: Einsatztage / km / Kosten pro Fahrzeug.
+
+export type VehicleUtilizationRow = {
+  vehicle_id: string
+  license_plate: string
+  make: string
+  model: string
+  total_km: number
+  trip_count: number
+  active_days: number
+  fuel_cost: number
+  fuel_liters: number
+}
+
+export type VehicleUtilizationParams = {
+  vehicleId?: string
+  range?: { from: string; to: string }
+}
+
+export async function getVehicleUtilization(
+  params: VehicleUtilizationParams = {}
+): Promise<{ data?: VehicleUtilizationRow[]; error?: string }> {
+  return withAuth(null, "read", async ({ profile, db }) => {
+    let vehQuery = db
+      .from("vehicles")
+      .select("id, license_plate, make, model")
+      .eq("company_id", profile.company_id)
+      .is("deleted_at", null)
+
+    if (params.vehicleId) vehQuery = vehQuery.eq("id", params.vehicleId)
+
+    const { data: vehicles, error: vErr } = await vehQuery
+    if (vErr) {
+      trackError("cross-module", "getVehicleUtilization.vehicles", vErr.message)
+      return { error: "Fahrzeuge konnten nicht geladen werden" }
+    }
+    if (!vehicles || vehicles.length === 0) return { data: [] }
+
+    const vehicleIds = vehicles.map((v) => v.id)
+
+    // Parallel loaders — no sequential fetches
+    let tripQuery = db
+      .from("trip_logs")
+      .select("vehicle_id, km, date")
+      .eq("company_id", profile.company_id)
+      .in("vehicle_id", vehicleIds)
+
+    let fuelQuery = db
+      .from("fuel_logs")
+      .select("vehicle_id, liters, cost, date")
+      .eq("company_id", profile.company_id)
+      .in("vehicle_id", vehicleIds)
+
+    if (params.range?.from) {
+      tripQuery = tripQuery.gte("date", params.range.from)
+      fuelQuery = fuelQuery.gte("date", params.range.from)
+    }
+    if (params.range?.to) {
+      tripQuery = tripQuery.lte("date", params.range.to)
+      fuelQuery = fuelQuery.lte("date", params.range.to)
+    }
+
+    const [tripsRes, fuelRes] = await Promise.all([tripQuery, fuelQuery])
+
+    if (tripsRes.error) {
+      trackError("cross-module", "getVehicleUtilization.trips", tripsRes.error.message)
+      return { error: "Fahrten konnten nicht geladen werden" }
+    }
+    if (fuelRes.error) {
+      trackError("cross-module", "getVehicleUtilization.fuel", fuelRes.error.message)
+      return { error: "Tankbuch konnte nicht geladen werden" }
+    }
+
+    const trips = tripsRes.data ?? []
+    const fuelEntries = fuelRes.data ?? []
+
+    // Aggregate per vehicle
+    const rows: VehicleUtilizationRow[] = vehicles.map((v) => {
+      const vTrips = trips.filter((t) => t.vehicle_id === v.id)
+      const vFuel = fuelEntries.filter((f) => f.vehicle_id === v.id)
+
+      const uniqueDays = new Set<string>()
+      let totalKm = 0
+      for (const t of vTrips) {
+        totalKm += t.km ?? 0
+        if (t.date) uniqueDays.add(t.date)
+      }
+      for (const f of vFuel) {
+        if (f.date) uniqueDays.add(f.date)
+      }
+
+      const fuelCost = vFuel.reduce((s, f) => s + (f.cost ?? 0), 0)
+      const fuelLiters = vFuel.reduce((s, f) => s + (f.liters ?? 0), 0)
+
+      return {
+        vehicle_id: v.id,
+        license_plate: v.license_plate,
+        make: v.make,
+        model: v.model,
+        total_km: Math.round(totalKm * 100) / 100,
+        trip_count: vTrips.length,
+        active_days: uniqueDays.size,
+        fuel_cost: Math.round(fuelCost * 100) / 100,
+        fuel_liters: Math.round(fuelLiters * 100) / 100,
+      }
+    })
+
+    return { data: rows.sort((a, b) => b.total_km - a.total_km) }
+  }) as Promise<{ data?: VehicleUtilizationRow[]; error?: string }>
+}
+
+// ─── getTuvWarnings ──────────────────────────────────────────
+// Fahrzeuge mit TÜV fällig innerhalb der nächsten `days` Tage (inkl. überfällig).
+// Teil der getActiveWarnings-Use-Case aus cross-module-architecture.md.
+
+export type TuvWarning = {
+  vehicle_id: string
+  license_plate: string
+  make: string
+  model: string
+  next_inspection: string
+  days_until: number
+  severity: "overdue" | "critical" | "warning"
+}
+
+export async function getTuvWarnings(
+  days: number = 30
+): Promise<{ data?: TuvWarning[]; error?: string }> {
+  return withAuth(null, "read", async ({ profile, db }) => {
+    const today = new Date()
+    const todayStr = today.toISOString().split("T")[0]
+    const horizon = new Date(today.getTime() + days * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0]
+
+    const { data, error } = await db
+      .from("vehicles")
+      .select("id, license_plate, make, model, next_inspection")
+      .eq("company_id", profile.company_id)
+      .is("deleted_at", null)
+      .not("next_inspection", "is", null)
+      .lte("next_inspection", horizon)
+      .order("next_inspection", { ascending: true })
+
+    if (error) {
+      trackError("cross-module", "getTuvWarnings", error.message)
+      return { error: "TÜV-Warnungen konnten nicht geladen werden" }
+    }
+
+    const warnings: TuvWarning[] = (data ?? [])
+      .filter((v) => v.next_inspection)
+      .map((v) => {
+        const inspection = v.next_inspection as string
+        const diffDays = Math.floor(
+          (new Date(inspection).getTime() - new Date(todayStr).getTime()) / 86400000
+        )
+        const severity: TuvWarning["severity"] =
+          diffDays < 0 ? "overdue" : diffDays <= 7 ? "critical" : "warning"
+        return {
+          vehicle_id: v.id,
+          license_plate: v.license_plate,
+          make: v.make,
+          model: v.model,
+          next_inspection: inspection,
+          days_until: diffDays,
+          severity,
+        }
+      })
+
+    return { data: warnings }
+  }) as Promise<{ data?: TuvWarning[]; error?: string }>
 }

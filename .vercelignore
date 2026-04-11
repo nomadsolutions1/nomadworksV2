@@ -1,0 +1,8 @@
+.vs/
+.git/
+.next/
+node_modules/
+docs/
+tests/
+*.log
+nul
