@@ -50,10 +50,9 @@ export const APP_MODULES: NavModule[] = [
   { key: "zeiterfassung", label: "Zeiterfassung", href: "/disposition/zeiterfassung", icon: Clock, module: "zeiterfassung" },
   { key: "rechnungen", label: "Rechnungen", href: "/rechnungen", icon: Receipt, module: "rechnungen" },
   { key: "bautagesbericht", label: "Bautagesbericht", href: "/bautagesbericht", icon: ClipboardList, module: "bautagesbericht" },
-  // v3 Rebuild: Marcus portiert diese Module als Nächstes.
-  // Bis dahin disabled=true, damit die v3-Landing keine 404er wirft.
+  // v3 G6 (2026-04-10): Alle Module sind in v3 portiert und aktiv.
   { key: "fuhrpark", label: "Fuhrpark", href: "/fuhrpark", icon: Truck, module: "fuhrpark" },
-  { key: "lager", label: "Lager & Einkauf", href: "/lager", icon: Package, module: "lager", disabled: true },
+  { key: "lager", label: "Lager & Einkauf", href: "/lager", icon: Package, module: "lager" },
   { key: "subunternehmer", label: "Subunternehmer", href: "/subunternehmer", icon: Handshake, module: "subunternehmer" },
 ]
 
