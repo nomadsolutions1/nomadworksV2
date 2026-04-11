@@ -54,7 +54,7 @@ export const APP_MODULES: NavModule[] = [
   // Bis dahin disabled=true, damit die v3-Landing keine 404er wirft.
   { key: "fuhrpark", label: "Fuhrpark", href: "/fuhrpark", icon: Truck, module: "fuhrpark" },
   { key: "lager", label: "Lager & Einkauf", href: "/lager", icon: Package, module: "lager", disabled: true },
-  { key: "subunternehmer", label: "Subunternehmer", href: "/subunternehmer", icon: Handshake, module: "subunternehmer", disabled: true },
+  { key: "subunternehmer", label: "Subunternehmer", href: "/subunternehmer", icon: Handshake, module: "subunternehmer" },
 ]
 
 // ── Admin Modules (super_admin) ──

@@ -170,9 +170,49 @@ async function loadFleetCost(db: DB, companyId: string, siteId: string): Promise
   return Math.round(actual * 100) / 100
 }
 
+// ─── Subs Cost Loader (V3-5) ────────────────────────────────
+// subcontractor_assignments haben keinen direkten site_id-FK —
+// sie sind an `orders` gehängt, orders tragen `site_id`. Wir aggregieren
+// über den Umweg: orders mit site_id === siteId → assignments.
+// Verwendet `invoiced_amount` wenn vorhanden, sonst `agreed_amount`.
+async function loadSubsCost(db: DB, companyId: string, siteId: string): Promise<number> {
+  const { data: orders, error: oErr } = await db
+    .from("orders")
+    .select("id")
+    .eq("company_id", companyId)
+    .eq("site_id", siteId)
+    .is("deleted_at", null)
+
+  if (oErr) {
+    trackError("cross-module", "loadSubsCost.orders", oErr.message, { siteId })
+    return 0
+  }
+
+  if (!orders || orders.length === 0) return 0
+  const orderIds = orders.map((o) => o.id)
+
+  const { data: assignments, error: aErr } = await db
+    .from("subcontractor_assignments")
+    .select("agreed_amount, invoiced_amount, status")
+    .eq("company_id", companyId)
+    .in("order_id", orderIds)
+    .neq("status", "cancelled")
+
+  if (aErr) {
+    trackError("cross-module", "loadSubsCost.assignments", aErr.message, { siteId })
+    return 0
+  }
+
+  const total = (assignments ?? []).reduce((sum, a) => {
+    const amount = a.invoiced_amount ?? a.agreed_amount ?? 0
+    return sum + (amount ?? 0)
+  }, 0)
+  return Math.round(total * 100) / 100
+}
+
 // ─── getSiteCosts ────────────────────────────────────────────
-// labor (time_entries) + material (stock_movements) + fleet (equipment_costs via assigned_site).
-// subs bleibt Platzhalter (0) — V3-5 (Subunternehmer).
+// labor (time_entries) + material (stock_movements) + fleet (equipment_costs via assigned_site)
+// + subs (subcontractor_assignments via orders.site_id).
 
 export async function getSiteCosts(
   siteId: string
@@ -188,13 +228,13 @@ export async function getSiteCosts(
 
     if (!site) return { error: "Baustelle nicht gefunden" }
 
-    const [labor, material, fleet] = await Promise.all([
+    const [labor, material, fleet, subs] = await Promise.all([
       loadLaborCost(db, profile.company_id, siteId),
       loadMaterialCost(db, profile.company_id, siteId),
       loadFleetCost(db, profile.company_id, siteId),
+      loadSubsCost(db, profile.company_id, siteId),
     ])
 
-    const subs = 0
     const total = Math.round((labor + material + fleet + subs) * 100) / 100
 
     return {
